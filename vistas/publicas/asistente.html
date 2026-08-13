@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Asistente Ameli - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="asistente_publico">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" selected>Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Invitado</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Visitante</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../index.html">
+                        <span>⌂</span>
+                        Inicio                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/carrito.html">
+                        <span>🛒</span>
+                        Carrito                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/publicas/asistente.html">
+                        <span>✦</span>
+                        Asistente                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/acceso.html">
+                        <span>↪</span>
+                        Ingresar                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Visitante</span>
+                    <h1>Asistente Ameli</h1>
+                    <p>Consulta tallas, materiales y disponibilidad.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="chat-layout">
+        <section class="panel chat-panel">
+            <div class="chat-cabecera"><div class="avatar-asistente">A</div><div><strong>Asistente Ameli</strong><span><i></i> Disponible</span></div><button type="button" data-accion="limpiar-chat">Limpiar</button></div>
+            <div class="mensajes-chat" id="mensajesChat">
+                <div class="mensaje asistente">¡Hola! Puedo ayudarte con tallas, materiales, disponibilidad.</div>
+                            </div>
+            <div class="sugerencias-chat"><button>Guía de tallas</button><button>Materiales</button><button>¿Hay existencias?</button></div>
+            <form id="formChat" class="entrada-chat"><input id="mensajeChat" type="text" required placeholder="Escribe tu consulta"><button type="submit" aria-label="Enviar">➜</button></form>
+        </section>
+        <aside class="panel ayuda-chat"><h2>Consultas disponibles</h2><div class="lista-ayuda"><article><span>📏</span><div><strong>Guía de tallas</strong><p>Medidas de cuello, pecho y largo.</p></div></article><article><span>🧵</span><div><strong>Materiales</strong><p>Características y cuidados.</p></div></article><article><span>▦</span><div><strong>Productos</strong><p>Precio y disponibilidad de ejemplo.</p></div></article></div><div class="alerta info"><strong>Alternativa segura</strong><p>Si el asistente no está disponible, se muestran respuestas frecuentes y contacto de soporte.</p></div></aside>
+    </div>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

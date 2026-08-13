@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Beneficios y fidelización - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="fidelizacion">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Beneficios y fidelización</h1>
+                    <p>Consulta puntos, movimientos y preferencias de aviso.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <section class="tarjeta-puntos"><div><span>Nivel actual</span><h2>Compañero Plata</h2><p>Acumulas puntos con cada compra completada.</p></div><div class="saldo-puntos"><strong>1.240</strong><span>puntos disponibles</span></div></section>
+    <div class="dos-columnas">
+        <section class="panel"><h2>Progreso del nivel</h2><div class="progreso"><div style="width:82%"></div></div><div class="fila-entre"><span>1.240 puntos</span><span>1.500 para nivel Oro</span></div><div class="alerta exito"><strong>Próximo beneficio</strong><p>10 % de descuento en accesorios seleccionados.</p></div></section>
+        <section class="panel"><h2>Preferencias de notificación</h2><div class="lista-switch"><label><span><strong>Estado de pedidos</strong><small>Correo y notificación dentro del sitio.</small></span><input type="checkbox" checked></label><label><span><strong>Promociones</strong><small>Beneficios y productos nuevos.</small></span><input type="checkbox"></label><label><span><strong>Recordatorios de puntos</strong><small>Avisos antes del vencimiento.</small></span><input type="checkbox" checked></label></div><button class="boton primario" type="button" data-accion="guardar">Guardar preferencias</button></section>
+    </div>
+    <section class="panel"><div class="titulo-panel"><div><h2>Movimientos recientes</h2><p>Historial de acumulación y canje.</p></div></div><div class="tabla-responsive"><table><thead><tr><th>Fecha</th><th>Movimiento</th><th>Pedido</th><th>Puntos</th></tr></thead><tbody><tr><td>11/08/2026</td><td>Compra completada</td><td>AM-1048</td><td class="positivo">+347</td></tr><tr><td>03/08/2026</td><td>Canje en compra</td><td>AM-1034</td><td class="negativo">−500</td></tr><tr><td>28/07/2026</td><td>Compra completada</td><td>AM-1029</td><td class="positivo">+218</td></tr></tbody></table></div></section>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

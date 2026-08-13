@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Operación diaria - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="operaciones">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" selected>Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Logistica</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Logistica</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu activo" href="../../vistas/logistica/operaciones.html">
+                        <span>⌂</span>
+                        Operación diaria                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/preparacion.html">
+                        <span>▤</span>
+                        Preparación                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/despacho.html">
+                        <span>➜</span>
+                        Despachos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/entrega.html">
+                        <span>✓</span>
+                        Entregas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/incidencias.html">
+                        <span>!</span>
+                        Incidencias                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Logistica</span>
+                    <h1>Operación diaria</h1>
+                    <p>Pedidos pendientes y carga de trabajo del equipo.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <section class="indicadores-grid"><article class="tarjeta-indicador rosa"><span>Por preparar</span><strong>8</strong><small>3 con prioridad alta</small></article><article class="tarjeta-indicador azul"><span>Listos para despacho</span><strong>5</strong><small>Antes de las 5:00 p. m.</small></article><article class="tarjeta-indicador morado"><span>En ruta</span><strong>7</strong><small>2 próximos a entrega</small></article><article class="tarjeta-indicador verde"><span>Entregados hoy</span><strong>12</strong><small>96 % a tiempo</small></article></section><section class="panel"><div class="titulo-panel"><div><h2>Cola operativa</h2><p>Pedidos ordenados por prioridad y hora de ingreso.</p></div><button class="boton secundario" data-accion="actualizar">↻ Actualizar</button></div><div class="tabla-responsive"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Canal</th><th>Estado</th><th></th></tr></thead><tbody><tr data-fila-busqueda="am-1048 andrea mora 11/08/2026 34700 en preparación web"><td><strong>AM-1048</strong></td><td>Andrea Mora</td><td>11/08/2026</td><td>₡34.700</td><td>Web</td><td><span class="estado aviso">En preparación</span></td><td><button class="menu-puntos" data-modal-titulo="Detalle del pedido AM-1048">•••</button></td></tr><tr data-fila-busqueda="am-1047 luis vargas 11/08/2026 21800 listo para despacho web"><td><strong>AM-1047</strong></td><td>Luis Vargas</td><td>11/08/2026</td><td>₡21.800</td><td>Web</td><td><span class="estado info">Listo para despacho</span></td><td><button class="menu-puntos" data-modal-titulo="Detalle del pedido AM-1047">•••</button></td></tr><tr data-fila-busqueda="am-1046 sofía rojas 10/08/2026 28900 en ruta asistente"><td><strong>AM-1046</strong></td><td>Sofía Rojas</td><td>10/08/2026</td><td>₡28.900</td><td>Asistente</td><td><span class="estado aviso">En ruta</span></td><td><button class="menu-puntos" data-modal-titulo="Detalle del pedido AM-1046">•••</button></td></tr><tr data-fila-busqueda="am-1045 carlos solano 10/08/2026 15400 entregado web"><td><strong>AM-1045</strong></td><td>Carlos Solano</td><td>10/08/2026</td><td>₡15.400</td><td>Web</td><td><span class="estado exito">Entregado</span></td><td><button class="menu-puntos" data-modal-titulo="Detalle del pedido AM-1045">•••</button></td></tr></tbody></table></div></section><section class="panel"><h2>Carga del equipo</h2><div class="equipo-grid"><article><span>DS</span><div><strong>Daniel Soto</strong><p>Preparación · 4 pedidos</p><div class="progreso"><div style="width:70%"></div></div></div></article><article><span>MR</span><div><strong>Melissa Rojas</strong><p>Despacho · 3 pedidos</p><div class="progreso"><div style="width:52%"></div></div></article><article><span>JP</span><div><strong>José Pérez</strong><p>Entrega · 5 pedidos</p><div class="progreso"><div style="width:82%"></div></div></article></div></section>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

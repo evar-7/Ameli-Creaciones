@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Confirmación de entregas - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="entrega">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" selected>Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Logistica</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Logistica</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/logistica/operaciones.html">
+                        <span>⌂</span>
+                        Operación diaria                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/preparacion.html">
+                        <span>▤</span>
+                        Preparación                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/despacho.html">
+                        <span>➜</span>
+                        Despachos                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/logistica/entrega.html">
+                        <span>✓</span>
+                        Entregas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/incidencias.html">
+                        <span>!</span>
+                        Incidencias                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Logistica</span>
+                    <h1>Confirmación de entregas</h1>
+                    <p>Registra recepción y evidencia visual.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <section class="indicadores-grid tres"><article class="tarjeta-indicador morado"><span>En ruta</span><strong>7</strong><small>Entregas activas</small></article><article class="tarjeta-indicador verde"><span>Entregados hoy</span><strong>12</strong><small>96 % a tiempo</small></article><article class="tarjeta-indicador rosa"><span>Pendientes de evidencia</span><strong>2</strong><small>Requieren revisión</small></article></section><section class="panel"><h2>Registrar entrega</h2><form class="formulario-grid formulario-demostracion"><label>Número de pedido<input value="AM-1046" required></label><label>Persona que recibe<input required placeholder="Nombre completo"></label><label>Fecha<input type="date" value="2026-08-11" required></label><label>Hora<input type="time" value="17:10" required></label><label>Resultado<select required><option>Entregado correctamente</option><option>No se encontró destinatario</option><option>Dirección incorrecta</option><option>Producto rechazado</option></select></label><label>Evidencia visual<input type="file" accept="image/*"></label><label class="campo-completo">Observaciones<textarea rows="3" placeholder="Estado del paquete y comentarios"></textarea></label><label class="check campo-completo"><input type="checkbox" required> Confirmo que los datos de entrega son correctos.</label><button class="boton primario campo-completo" type="submit">Registrar entrega</button></form></section><div class="alerta info"><strong>Presentación sin carga real</strong><p>El selector de archivo permite visualizar el flujo, pero la imagen no se envía a ningún servidor.</p></div>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

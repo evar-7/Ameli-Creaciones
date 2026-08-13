@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Mi perfil y direcciones - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="perfil">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Mi perfil y direcciones</h1>
+                    <p>Actualiza tus datos personales y lugares de entrega.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="dos-columnas perfil-layout">
+        <aside class="panel perfil-resumen"><div class="avatar-grande">AM</div><h2>Andrea Mora</h2><p>Cliente desde enero de 2026</p><span class="estado exito">Cuenta activa</span><dl><div><dt>Pedidos</dt><dd>8</dd></div><div><dt>Mascotas</dt><dd>2</dd></div><div><dt>Puntos</dt><dd>1.240</dd></div></dl></aside>
+        <div>
+            <form class="panel formulario-grid formulario-demostracion"><div class="titulo-panel campo-completo"><div><h2>Información personal</h2><p>Datos utilizados para contacto y facturación.</p></div><button class="boton primario" type="submit">Guardar cambios</button></div><label>Nombre<input type="text" value="Andrea" required></label><label>Apellidos<input type="text" value="Mora Solís" required></label><label>Correo<input type="email" value="andrea@email.com" required></label><label>Teléfono<input type="tel" value="8888-1234" required></label><label class="campo-completo">Identificación<input type="text" value="1-1234-5678" disabled></label></form>
+            <section class="panel"><div class="titulo-panel"><div><h2>Direcciones de entrega</h2><p>Administra las ubicaciones disponibles.</p></div><button class="boton secundario" type="button" data-modal-titulo="Registrar dirección">+ Agregar</button></div><div class="direcciones-grid"><article><div class="fila-entre"><strong>Casa</strong><span class="estado exito">Principal</span></div><p>San Pedro, Montes de Oca<br>100 m norte del parque</p><div><button data-modal-titulo="Editar dirección">Editar</button><button data-accion="estado">Desactivar</button></div></article><article><div class="fila-entre"><strong>Oficina</strong><span class="estado info">Secundaria</span></div><p>Curridabat, edificio central<br>Recepción principal</p><div><button data-modal-titulo="Editar dirección">Editar</button><button data-accion="estado">Desactivar</button></div></article></div></section>
+        </div>
+    </div>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Todo para consentir a tu mascota - Ameli Creaciones</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="inicio_publico">
+    <header class="barra-superior">
+        <a class="marca" href="index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="index.html" selected>Visitante</option>
+                    <option value="vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Invitado</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Visitante</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu activo" href="index.html">
+                        <span>⌂</span>
+                        Inicio                    </a>
+                                                        <a class="enlace-menu " href="vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="vistas/publicas/carrito.html">
+                        <span>🛒</span>
+                        Carrito                    </a>
+                                                        <a class="enlace-menu " href="vistas/publicas/asistente.html">
+                        <span>✦</span>
+                        Asistente                    </a>
+                                                        <a class="enlace-menu " href="vistas/publicas/acceso.html">
+                        <span>↪</span>
+                        Ingresar                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Visitante</span>
+                    <h1>Todo para consentir a tu mascota</h1>
+                    <p>Prendas y accesorios personalizados hechos con cariño.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <section class="hero-tienda">
+        <div>
+            <span class="kicker">Accesorios personalizados</span>
+            <h2>Diseños únicos para compañeros únicos.</h2>
+            <p>Explora prendas, accesorios y detalles pensados para la comodidad y personalidad de cada mascota.</p>
+            <div class="grupo-botones">
+                <a class="boton primario" href="vistas/publicas/catalogo.html">Ver catálogo</a>
+                <a class="boton claro" href="vistas/publicas/acceso.html">Crear cuenta</a>
+            </div>
+        </div>
+        <div class="mascota-hero" aria-hidden="true"><span>🐕</span><small>Hecho a su medida</small></div>
+    </section>
+
+    <section class="beneficios-grid">
+        <article><span>✂</span><div><strong>Personalización</strong><p>Medidas, colores y estilos para cada mascota.</p></div></article>
+        <article><span>♡</span><div><strong>Comodidad primero</strong><p>Alternativas según especie, talla y preferencias.</p></div></article>
+        <article><span>🚚</span><div><strong>Seguimiento</strong><p>Consulta el estado de cada pedido.</p></div></article>
+    </section>
+
+    <section class="seccion">
+        <div class="titulo-seccion"><div><span>Selección destacada</span><h2>Productos favoritos</h2></div><a href="vistas/publicas/catalogo.html">Ver todos →</a></div>
+        <div class="productos-grid">
+                <article class="tarjeta-producto" data-fila-busqueda="arnés confort lavanda accesorios">
+        <div class="imagen-producto"><span>🦮</span><small>Perro</small></div>
+        <div class="contenido-producto">
+            <span class="categoria-producto">Accesorios</span>
+            <h3>Arnés confort lavanda</h3>
+            <div class="pie-producto"><strong>₡12.900</strong><span>18 disponibles</span></div>
+            <button class="boton primario ancho add-to-cart" type="button" data-id="1" data-name="Arnés confort lavanda" data-price="12900" >Agregar al carrito</button>
+        </div>
+    </article>
+        <article class="tarjeta-producto" data-fila-busqueda="suéter tejido bosque ropa">
+        <div class="imagen-producto"><span>🧶</span><small>Perro</small></div>
+        <div class="contenido-producto">
+            <span class="categoria-producto">Ropa</span>
+            <h3>Suéter tejido bosque</h3>
+            <div class="pie-producto"><strong>₡15.900</strong><span>7 disponibles</span></div>
+            <button class="boton primario ancho add-to-cart" type="button" data-id="2" data-name="Suéter tejido bosque" data-price="15900" >Agregar al carrito</button>
+        </div>
+    </article>
+        <article class="tarjeta-producto" data-fila-busqueda="collar luna reflectante accesorios">
+        <div class="imagen-producto"><span>🌙</span><small>Gato</small></div>
+        <div class="contenido-producto">
+            <span class="categoria-producto">Accesorios</span>
+            <h3>Collar luna reflectante</h3>
+            <div class="pie-producto"><strong>₡8.900</strong><span>24 disponibles</span></div>
+            <button class="boton primario ancho add-to-cart" type="button" data-id="3" data-name="Collar luna reflectante" data-price="8900" >Agregar al carrito</button>
+        </div>
+    </article>
+        <article class="tarjeta-producto" data-fila-busqueda="cama nube pequeña descanso">
+        <div class="imagen-producto"><span>☁️</span><small>Gato</small></div>
+        <div class="contenido-producto">
+            <span class="categoria-producto">Descanso</span>
+            <h3>Cama nube pequeña</h3>
+            <div class="pie-producto"><strong>₡21.900</strong><span>4 disponibles</span></div>
+            <button class="boton primario ancho add-to-cart" type="button" data-id="4" data-name="Cama nube pequeña" data-price="21900" >Agregar al carrito</button>
+        </div>
+    </article>
+            </div>
+    </section>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Rendimiento del motor - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="motor">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" selected>Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Administrador</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Administrador</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/admin/dashboard.html">
+                        <span>⌂</span>
+                        Dashboard                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/usuarios.html">
+                        <span>♙</span>
+                        Usuarios internos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/productos.html">
+                        <span>▦</span>
+                        Productos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/categorias.html">
+                        <span>◫</span>
+                        Categorías                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/proveedores.html">
+                        <span>◇</span>
+                        Proveedores                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/inventario.html">
+                        <span>▥</span>
+                        Inventario                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/prediccion.html">
+                        <span>↗</span>
+                        Predicción                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/compras.html">
+                        <span>▤</span>
+                        Compras                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/crm.html">
+                        <span>◎</span>
+                        CRM                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/reportes.html">
+                        <span>▥</span>
+                        Reportes                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/admin/motor.html">
+                        <span>✦</span>
+                        Motor IA                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/auditoria.html">
+                        <span>⌕</span>
+                        Auditoría                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/respaldos.html">
+                        <span>◉</span>
+                        Respaldos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/cobertura.html">
+                        <span>✓</span>
+                        Cobertura HU                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Administrador</span>
+                    <h1>Rendimiento del motor</h1>
+                    <p>Calidad, disponibilidad y aceptación de recomendaciones.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <section class="indicadores-grid"><article class="tarjeta-indicador verde"><span>Disponibilidad</span><strong>99,2 %</strong><small>Últimos 30 días</small></article><article class="tarjeta-indicador morado"><span>Aceptación</span><strong>68 %</strong><small>Recomendaciones útiles</small></article><article class="tarjeta-indicador azul"><span>Tiempo promedio</span><strong>1,7 s</strong><small>Dentro de la meta</small></article><article class="tarjeta-indicador rosa"><span>Alternativas usadas</span><strong>14</strong><small>Fallback seguro</small></article></section><div class="dos-columnas"><section class="panel"><h2>Calificaciones por semana</h2><div class="grafico-barras"><div style="height:56%"><span>S1</span></div><div style="height:72%"><span>S2</span></div><div style="height:68%"><span>S3</span></div><div style="height:84%"><span>S4</span></div></div></section><section class="panel"><h2>Estado del servicio</h2><div class="lista-seguridad"><article><span>✓</span><div><strong>Motor principal</strong><p>Responde con normalidad.</p></div><span class="estado exito">Disponible</span></article><article><span>✓</span><div><strong>Catálogo seguro alternativo</strong><p>Productos por talla y categoría.</p></div><span class="estado exito">Disponible</span></article><article><span>◷</span><div><strong>Última evaluación</strong><p>11/08/2026 · 16:45</p></div><span class="estado exito">Verificado</span></article></div></section></div><section class="panel"><h2>Motivos de recomendación</h2><div class="tabla-responsive"><table><thead><tr><th>Motivo</th><th>Recomendaciones</th><th>Aceptadas</th><th>Tasa</th></tr></thead><tbody><tr><td>Compatibilidad de talla</td><td>842</td><td>624</td><td>74 %</td></tr><tr><td>Preferencia de estilo</td><td>685</td><td>452</td><td>66 %</td></tr><tr><td>Historial de compra</td><td>391</td><td>235</td><td>60 %</td></tr></tbody></table></div></section>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

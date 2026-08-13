@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Incidencias logísticas - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="incidencias">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" selected>Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Logistica</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Logistica</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/logistica/operaciones.html">
+                        <span>⌂</span>
+                        Operación diaria                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/preparacion.html">
+                        <span>▤</span>
+                        Preparación                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/despacho.html">
+                        <span>➜</span>
+                        Despachos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/entrega.html">
+                        <span>✓</span>
+                        Entregas                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/logistica/incidencias.html">
+                        <span>!</span>
+                        Incidencias                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Logistica</span>
+                    <h1>Incidencias logísticas</h1>
+                    <p>Documenta faltantes, retrasos y devoluciones.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <div class="acciones-cabecera"><button class="boton primario" type="button" data-modal-titulo="Registrar incidencia logística">+ Registrar incidencia</button></div><section class="indicadores-grid tres"><article class="tarjeta-indicador rosa"><span>Abiertas</span><strong>4</strong><small>2 de prioridad alta</small></article><article class="tarjeta-indicador azul"><span>En seguimiento</span><strong>6</strong><small>Responsable asignado</small></article><article class="tarjeta-indicador verde"><span>Resueltas hoy</span><strong>9</strong><small>Tiempo medio 42 min</small></article></section><div class="barra-filtros"><label class="buscador"><span>⌕</span><input type="search" data-filtro-tabla placeholder="Buscar pedido o tipo de incidencia"></label><select aria-label="Filtrar por estado"><option>Todos los estados</option><option>Activo</option><option>Inactivo</option><option>Pendiente</option></select><button class="boton secundario" type="button" data-accion="exportar">Exportar</button></div><section class="panel"><div class="tabla-responsive"><table><thead><tr><th>ID</th><th>Pedido</th><th>Tipo</th><th>Descripción</th><th>Prioridad</th><th>Estado</th><th></th></tr></thead><tbody><tr data-fila-busqueda="inc-084 am-1043 faltante"><td><strong>INC-084</strong></td><td>AM-1043</td><td>Artículo faltante</td><td>Falta placa personalizada</td><td><span class="estado peligro">Crítico</span></td><td><span class="estado aviso">Pendiente</span></td><td><button data-modal-titulo="Atender incidencia">Atender</button></td></tr><tr data-fila-busqueda="inc-083 am-1041 retraso"><td><strong>INC-083</strong></td><td>AM-1041</td><td>Retraso</td><td>Demora por condiciones climáticas</td><td><span class="estado aviso">Bajo</span></td><td><span class="estado aviso">En ruta</span></td><td><button data-modal-titulo="Actualizar incidencia">Actualizar</button></td></tr></tbody></table></div></section>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

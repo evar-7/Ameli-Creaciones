@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Seguridad de la cuenta - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="seguridad">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Seguridad de la cuenta</h1>
+                    <p>Contraseña, sesiones y alertas de acceso.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="dos-columnas">
+        <form class="panel formulario-apilado formulario-demostracion"><h2>Cambiar contraseña</h2><p>Usa al menos 8 caracteres, mayúsculas, números y símbolos.</p><label>Contraseña actual<input type="password" required></label><label>Nueva contraseña<input type="password" required minlength="8"></label><label>Confirmar nueva contraseña<input type="password" required minlength="8"></label><div class="fortaleza-clave"><span class="completo"></span><span class="completo"></span><span></span><span></span><small>Fortaleza media</small></div><button class="boton primario" type="submit">Actualizar contraseña</button></form>
+        <section class="panel"><h2>Protección de acceso</h2><div class="lista-seguridad"><article><span>⌾</span><div><strong>Bloqueo por intentos</strong><p>La vista muestra el bloqueo temporal después de 5 intentos fallidos.</p></div><span class="estado exito">Activo</span></article><article><span>◷</span><div><strong>Expiración de sesión</strong><p>Cierre visual después de 15 minutos de inactividad.</p></div><span class="estado exito">Activo</span></article><article><span>✉</span><div><strong>Alertas de acceso</strong><p>Notificación ante un ingreso desde un dispositivo nuevo.</p></div><span class="estado exito">Activo</span></article></div></section>
+    </div>
+    <section class="panel"><h2>Sesiones recientes</h2><div class="tabla-responsive"><table><thead><tr><th>Dispositivo</th><th>Ubicación</th><th>Última actividad</th><th>Estado</th><th></th></tr></thead><tbody><tr><td>Firefox · Windows 11</td><td>San José, CR</td><td>Ahora</td><td><span class="estado exito">Activo</span></td><td><button class="enlace-boton" data-accion="cerrar-sesion">Sesión actual</button></td></tr><tr><td>Chrome · Android</td><td>Heredia, CR</td><td>Hace 2 días</td><td><span class="estado exito">Activo</span></td><td><button class="enlace-peligro" data-accion="cerrar-sesion">Cerrar</button></td></tr></tbody></table></div></section>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

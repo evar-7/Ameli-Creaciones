@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Carrito de compra - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="carrito">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" selected>Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Invitado</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Visitante</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../index.html">
+                        <span>⌂</span>
+                        Inicio                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/publicas/carrito.html">
+                        <span>🛒</span>
+                        Carrito                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/asistente.html">
+                        <span>✦</span>
+                        Asistente                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/acceso.html">
+                        <span>↪</span>
+                        Ingresar                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Visitante</span>
+                    <h1>Carrito de compra</h1>
+                    <p>Revisa cantidades, elimina artículos y continúa al pago.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="dos-columnas carrito-layout">
+        <section class="panel">
+            <div class="titulo-panel"><div><h2>Productos seleccionados</h2><p>Las cantidades se guardan únicamente en este navegador.</p></div><button class="enlace-peligro" type="button" data-vaciar-carrito>Vaciar</button></div>
+            <div id="contenidoCarrito" class="lista-carrito"></div>
+            <div id="carritoVacio" class="estado-vacio"><span>🛒</span><h3>Tu carrito está vacío</h3><p>Agrega productos desde el catálogo para verlos aquí.</p><a class="boton primario" href="../../vistas/publicas/catalogo.html">Ir al catálogo</a></div>
+        </section>
+        <aside class="panel resumen-compra">
+            <h2>Resumen</h2>
+            <div><span>Subtotal</span><strong id="subtotalCarrito">₡0</strong></div>
+            <div><span>Envío estimado</span><strong>₡2.500</strong></div>
+            <label>Código promocional<div class="campo-boton"><input type="text" placeholder="AMELI10"><button type="button" data-accion="cupon">Aplicar</button></div></label>
+            <div class="total"><span>Total estimado</span><strong id="totalCarrito">₡2.500</strong></div>
+            <a class="boton primario ancho" href="../../vistas/cliente/checkout.html">Continuar compra</a>
+            <small>Para confirmar el pedido se presenta la vista de inicio de sesión.</small>
+        </aside>
+    </div>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

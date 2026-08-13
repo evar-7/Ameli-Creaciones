@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Predicción de demanda - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="prediccion">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" selected>Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Administrador</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Administrador</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/admin/dashboard.html">
+                        <span>⌂</span>
+                        Dashboard                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/usuarios.html">
+                        <span>♙</span>
+                        Usuarios internos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/productos.html">
+                        <span>▦</span>
+                        Productos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/categorias.html">
+                        <span>◫</span>
+                        Categorías                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/proveedores.html">
+                        <span>◇</span>
+                        Proveedores                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/inventario.html">
+                        <span>▥</span>
+                        Inventario                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/admin/prediccion.html">
+                        <span>↗</span>
+                        Predicción                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/compras.html">
+                        <span>▤</span>
+                        Compras                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/crm.html">
+                        <span>◎</span>
+                        CRM                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/reportes.html">
+                        <span>▥</span>
+                        Reportes                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/motor.html">
+                        <span>✦</span>
+                        Motor IA                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/auditoria.html">
+                        <span>⌕</span>
+                        Auditoría                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/respaldos.html">
+                        <span>◉</span>
+                        Respaldos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/cobertura.html">
+                        <span>✓</span>
+                        Cobertura HU                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Administrador</span>
+                    <h1>Predicción de demanda</h1>
+                    <p>Proyección de consumo y riesgos de inventario.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <section class="panel prediccion-cabecera"><div><span class="kicker">Próximos 30 días</span><h2>Proyección de demanda</h2><p>Estimación visual basada en ventas históricas y tendencias de temporada.</p></div><div class="precision"><strong>87 %</strong><span>precisión estimada</span></div></section>
+    <section class="indicadores-grid tres"><article class="tarjeta-indicador verde"><span>Demanda creciente</span><strong>8 productos</strong><small>Principalmente accesorios</small></article><article class="tarjeta-indicador rosa"><span>Riesgo de agotamiento</span><strong>3 productos</strong><small>Requieren compra</small></article><article class="tarjeta-indicador azul"><span>Sobreinventario</span><strong>4 productos</strong><small>Revisar promociones</small></article></section>
+    <div class="dos-columnas"><section class="panel"><h2>Pronóstico por producto</h2><div class="tabla-responsive"><table><thead><tr><th>Producto</th><th>Actual</th><th>Demanda</th><th>Diferencia</th><th>Recomendación</th></tr></thead><tbody><tr><td>Suéter tejido bosque</td><td>7</td><td>32</td><td class="negativo">−25</td><td><span class="estado peligro">Crítico</span></td></tr><tr><td>Arnés confort lavanda</td><td>18</td><td>24</td><td class="negativo">−6</td><td><span class="estado aviso">Bajo</span></td></tr><tr><td>Pañuelo floral</td><td>31</td><td>16</td><td class="positivo">+15</td><td><span class="estado exito">Disponible</span></td></tr></tbody></table></div></section><section class="panel"><h2>Tendencia proyectada</h2><div class="grafico-linea"><svg viewBox="0 0 500 220" role="img" aria-label="Tendencia de demanda"><polyline points="10,180 90,145 170,160 250,95 330,110 410,48 490,60"></polyline><circle cx="90" cy="145" r="6"></circle><circle cx="250" cy="95" r="6"></circle><circle cx="410" cy="48" r="6"></circle></svg></div><div class="alerta info"><strong>Revisión humana</strong><p>La predicción se presenta como apoyo; la orden de compra requiere aprobación.</p></div></section></div>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

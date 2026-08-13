@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Preparación de pedidos - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="preparacion">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" selected>Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Logistica</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Logistica</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/logistica/operaciones.html">
+                        <span>⌂</span>
+                        Operación diaria                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/logistica/preparacion.html">
+                        <span>▤</span>
+                        Preparación                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/despacho.html">
+                        <span>➜</span>
+                        Despachos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/entrega.html">
+                        <span>✓</span>
+                        Entregas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/logistica/incidencias.html">
+                        <span>!</span>
+                        Incidencias                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Logistica</span>
+                    <h1>Preparación de pedidos</h1>
+                    <p>Verifica artículos e inicia el alistamiento.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <section class="panel orden-operativa"><div class="fila-entre"><div><span>Pedido prioritario</span><h2>AM-1048</h2><p>Andrea Mora · Entrega estándar</p></div><span class="estado aviso">En preparación</span></div><div class="datos-operativos"><div><span>Ingreso</span><strong>11/08 · 14:25</strong></div><div><span>Salida estimada</span><strong>12/08 · 10:00</strong></div><div><span>Artículos</span><strong>3 unidades</strong></div></div></section><div class="dos-columnas"><section class="panel"><h2>Lista de verificación</h2><div class="checklist"><label><input type="checkbox" checked><span>Arnés confort lavanda · Talla M</span><em>1</em></label><label><input type="checkbox"><span>Pañuelo floral · Personalizado “Milo”</span><em>1</em></label><label><input type="checkbox"><span>Placa personalizada · Acabado plata</span><em>1</em></label></div><button class="boton primario ancho" data-accion="preparado">Marcar preparación completa</button></section><section class="panel"><h2>Datos para el empaque</h2><dl class="detalle-lista"><div><dt>Cliente</dt><dd>Andrea Mora</dd></div><div><dt>Mascota</dt><dd>Milo · Corgi</dd></div><div><dt>Dirección</dt><dd>San Pedro, Montes de Oca</dd></div><div><dt>Observación</dt><dd>Usar empaque sin plástico.</dd></div></dl><div class="alerta aviso"><strong>Validación pendiente</strong><p>El botón final se habilita al verificar todos los artículos.</p></div></section></div>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

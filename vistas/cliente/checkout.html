@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Carrito y confirmación de compra - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="checkout">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Carrito y confirmación de compra</h1>
+                    <p>Dirección, entrega, puntos y método de pago.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="pasos-compra"><div class="activo"><span>1</span>Carrito</div><div class="activo"><span>2</span>Entrega</div><div><span>3</span>Pago</div><div><span>4</span>Confirmación</div></div>
+    <form class="checkout-grid formulario-demostracion">
+        <div>
+            <section class="panel"><div class="titulo-panel"><div><h2>Dirección de entrega</h2><p>Selecciona una dirección guardada o registra otra.</p></div><button class="boton secundario" type="button" data-modal-titulo="Registrar dirección">+ Nueva dirección</button></div><label class="opcion-seleccionada"><input type="radio" name="direccion" checked><span><strong>Casa · Andrea Mora</strong><small>San Pedro, Montes de Oca · 100 m norte del parque</small></span><em>Principal</em></label><label class="opcion-seleccionada"><input type="radio" name="direccion"><span><strong>Oficina</strong><small>Curridabat, edificio central · recepción</small></span></label></section>
+            <section class="panel"><h2>Método de entrega</h2><label class="opcion-seleccionada"><input type="radio" name="entrega" checked><span><strong>Envío estándar</strong><small>2 a 4 días hábiles</small></span><em>₡2.500</em></label><label class="opcion-seleccionada"><input type="radio" name="entrega"><span><strong>Recoger en taller</strong><small>Te avisaremos cuando esté listo</small></span><em>Gratis</em></label></section>
+            <section class="panel"><h2>Método de pago</h2><div class="formulario-grid"><label class="campo-completo">Nombre en la tarjeta<input type="text" required></label><label class="campo-completo">Número de tarjeta<input type="text" required inputmode="numeric" placeholder="•••• •••• •••• 4242"></label><label>Vencimiento<input type="text" required placeholder="MM/AA"></label><label>CVV<input type="password" required maxlength="4"></label></div></section>
+        </div>
+        <aside class="panel resumen-compra fijo"><h2>Resumen del pedido</h2><div><span>Productos</span><strong>₡28.300</strong></div><div><span>Envío</span><strong>₡2.500</strong></div><label class="puntos-check"><span><strong>Usar 500 puntos</strong><small>Descuento de ₡5.000</small></span><input type="checkbox" data-puntos></label><div class="total"><span>Total</span><strong id="totalCheckout">₡30.800</strong></div><label class="check"><input type="checkbox" required> Confirmo los datos del pedido.</label><button class="boton primario ancho" type="submit">Confirmar compra</button><small>Esta acción muestra una confirmación visual; no se procesa ningún pago.</small></aside>
+    </form>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

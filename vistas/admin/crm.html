@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>CRM y comportamiento - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="crm">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" >Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" selected>Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Administrador</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Administrador</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/admin/dashboard.html">
+                        <span>⌂</span>
+                        Dashboard                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/usuarios.html">
+                        <span>♙</span>
+                        Usuarios internos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/productos.html">
+                        <span>▦</span>
+                        Productos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/categorias.html">
+                        <span>◫</span>
+                        Categorías                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/proveedores.html">
+                        <span>◇</span>
+                        Proveedores                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/inventario.html">
+                        <span>▥</span>
+                        Inventario                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/prediccion.html">
+                        <span>↗</span>
+                        Predicción                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/compras.html">
+                        <span>▤</span>
+                        Compras                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/admin/crm.html">
+                        <span>◎</span>
+                        CRM                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/reportes.html">
+                        <span>▥</span>
+                        Reportes                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/motor.html">
+                        <span>✦</span>
+                        Motor IA                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/auditoria.html">
+                        <span>⌕</span>
+                        Auditoría                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/respaldos.html">
+                        <span>◉</span>
+                        Respaldos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/admin/cobertura.html">
+                        <span>✓</span>
+                        Cobertura HU                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Administrador</span>
+                    <h1>CRM y comportamiento</h1>
+                    <p>Segmentos, frecuencia de compra y clientes destacados.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+            <section class="indicadores-grid"><article class="tarjeta-indicador verde"><span>Clientes activos</span><strong>486</strong><small>+5,2 % mensual</small></article><article class="tarjeta-indicador azul"><span>Compra promedio</span><strong>₡27.450</strong><small>+₡1.840</small></article><article class="tarjeta-indicador morado"><span>Recompra</span><strong>42 %</strong><small>Clientes que regresan</small></article><article class="tarjeta-indicador rosa"><span>Puntos por canjear</span><strong>48.230</strong><small>Vencen este trimestre</small></article></section><div class="dos-columnas"><section class="panel"><h2>Segmentos de clientes</h2><div class="segmentos"><article><span class="morado"></span><div><strong>Clientes frecuentes</strong><p>3 o más compras en 90 días</p></div><em>128</em></article><article><span class="azul"></span><div><strong>Nuevos clientes</strong><p>Registrados en los últimos 30 días</p></div><em>38</em></article><article><span class="rosa"></span><div><strong>En riesgo</strong><p>Sin compra en más de 120 días</p></div><em>54</em></article></div></section><section class="panel"><h2>Preferencias destacadas</h2><div class="preferencias-barras"><div><span>Accesorios</span><i><b style="width:82%"></b></i><strong>82 %</strong></div><div><span>Ropa</span><i><b style="width:64%"></b></i><strong>64 %</strong></div><div><span>Personalización</span><i><b style="width:57%"></b></i><strong>57 %</strong></div><div><span>Descanso</span><i><b style="width:31%"></b></i><strong>31 %</strong></div></div></section></div><section class="panel"><h2>Clientes destacados</h2><div class="tabla-responsive"><table><thead><tr><th>Cliente</th><th>Mascotas</th><th>Compras</th><th>Total</th><th>Puntos</th><th>Segmento</th></tr></thead><tbody><tr><td>Andrea Mora</td><td>2</td><td>8</td><td>₡218.900</td><td>1.240</td><td><span class="estado exito">Activo</span></td></tr><tr><td>Luis Vargas</td><td>1</td><td>6</td><td>₡184.500</td><td>980</td><td><span class="estado exito">Activo</span></td></tr></tbody></table></div></section>        </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

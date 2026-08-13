@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Mis mascotas - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="mascotas">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu " href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Mis mascotas</h1>
+                    <p>Administra perfiles biométricos y preferencias de estilo.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <div class="acciones-cabecera"><button class="boton primario" type="button" data-modal-titulo="Registrar perfil de mascota">+ Registrar mascota</button></div>
+    <section class="mascotas-grid">
+                    <article class="panel tarjeta-mascota"><div class="mascota-portada"><span>🐕</span><span class="estado exito">Activo</span></div><div class="fila-entre"><div><h2>Milo</h2><p>Perro · Corgi</p></div><button class="menu-puntos" data-modal-titulo="Editar mascota" type="button">•••</button></div><dl class="datos-mascota"><div><dt>Edad</dt><dd>3 años</dd></div><div><dt>Peso</dt><dd>12 kg</dd></div><div><dt>Talla</dt><dd>M</dd></div><div><dt>Color</dt><dd>Canela</dd></div></dl><div class="preferencias"><strong>Preferencias de estilo</strong><div class="chips"><span class="chip">Cómodo</span><span class="chip">Ajustable</span><span class="chip">Tonos suaves</span></div></div><div class="grupo-botones"><button class="boton secundario" data-modal-titulo="Editar perfil biométrico">Editar perfil</button><button class="boton claro" data-accion="estado">Cambiar estado</button></div></article>
+                    <article class="panel tarjeta-mascota"><div class="mascota-portada"><span>🐈</span><span class="estado exito">Activo</span></div><div class="fila-entre"><div><h2>Nala</h2><p>Gato · Mestiza</p></div><button class="menu-puntos" data-modal-titulo="Editar mascota" type="button">•••</button></div><dl class="datos-mascota"><div><dt>Edad</dt><dd>2 años</dd></div><div><dt>Peso</dt><dd>4 kg</dd></div><div><dt>Talla</dt><dd>S</dd></div><div><dt>Color</dt><dd>Gris</dd></div></dl><div class="preferencias"><strong>Preferencias de estilo</strong><div class="chips"><span class="chip">Cómodo</span><span class="chip">Ajustable</span><span class="chip">Tonos suaves</span></div></div><div class="grupo-botones"><button class="boton secundario" data-modal-titulo="Editar perfil biométrico">Editar perfil</button><button class="boton claro" data-accion="estado">Cambiar estado</button></div></article>
+                <button class="tarjeta-agregar" type="button" data-modal-titulo="Registrar perfil de mascota"><span>＋</span><strong>Agregar otra mascota</strong><small>Registra medidas y preferencias.</small></button>
+    </section>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

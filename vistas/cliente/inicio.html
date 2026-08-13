@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capa de presentación de la tienda Ameli Creaciones">
+    <title>Hola, Andrea - Ameli Creaciones</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body data-page="inicio_cliente">
+    <header class="barra-superior">
+        <a class="marca" href="../../index.html" aria-label="Ir al inicio">
+            <span class="marca-icono">A</span>
+            <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+        </a>
+
+        <button class="boton-menu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+        <div class="acciones-superiores">
+            <label class="selector-rol">
+                <span>Vista:</span>
+                <select id="selectorRol" aria-label="Cambiar vista por rol">
+                    <option value="../../index.html" >Visitante</option>
+                    <option value="../../vistas/cliente/inicio.html" selected>Cliente</option>
+                    <option value="../../vistas/admin/dashboard.html" >Administrador</option>
+                    <option value="../../vistas/logistica/operaciones.html" >Logística</option>
+                </select>
+            </label>
+            <a class="carrito-superior" href="../../vistas/publicas/carrito.html">
+                🛒 <span id="contadorCarrito">0</span>
+            </a>
+            <span class="usuario-superior">Cliente</span>
+        </div>
+    </header>
+
+    <div class="estructura-app">
+        <aside class="menu-lateral" id="menuLateral">
+            <div class="menu-rol">
+                <span>Menú de navegación</span>
+                <strong>Cliente</strong>
+            </div>
+            <nav aria-label="Navegación principal">
+                                                        <a class="enlace-menu activo" href="../../vistas/cliente/inicio.html">
+                        <span>⌂</span>
+                        Resumen                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/publicas/catalogo.html">
+                        <span>▦</span>
+                        Catálogo                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/recomendaciones.html">
+                        <span>✦</span>
+                        Recomendaciones                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/mascotas.html">
+                        <span>🐾</span>
+                        Mis mascotas                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/checkout.html">
+                        <span>🛒</span>
+                        Carrito y pago                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/pedidos.html">
+                        <span>▤</span>
+                        Mis pedidos                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/fidelizacion.html">
+                        <span>★</span>
+                        Fidelización                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/perfil.html">
+                        <span>●</span>
+                        Mi perfil                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/seguridad.html">
+                        <span>⌾</span>
+                        Seguridad                    </a>
+                                                        <a class="enlace-menu " href="../../vistas/cliente/asistente.html">
+                        <span>💬</span>
+                        Asistente                    </a>
+                            </nav>
+            <div class="nota-menu">
+                <strong>Presentación visual</strong>
+                <p>Los datos son ejemplos locales y se reinician al recargar.</p>
+            </div>
+        </aside>
+        <main class="contenido-principal">
+            <section class="cabecera-pagina">
+                <div>
+                    <span class="etiqueta-rol">Cliente</span>
+                    <h1>Hola, Andrea</h1>
+                    <p>Resumen de tus mascotas, pedidos y beneficios.</p>
+                </div>
+                <div class="fecha-vista">
+                    <span>Última actualización</span>
+                    <strong>11 agosto 2026 · 5:00 p. m.</strong>
+                </div>
+            </section>
+
+                <section class="indicadores-grid">
+        <article class="tarjeta-indicador morado"><span>Puntos disponibles</span><strong>1.240</strong><small>A 260 puntos del próximo beneficio</small></article>        <article class="tarjeta-indicador azul"><span>Pedido activo</span><strong>AM-1048</strong><small>En preparación</small></article>        <article class="tarjeta-indicador rosa"><span>Mascotas</span><strong>2</strong><small>Perfiles activos</small></article>        <article class="tarjeta-indicador verde"><span>Favoritos</span><strong>6</strong><small>Productos guardados</small></article>    </section>
+    <div class="dos-columnas">
+        <section class="panel"><div class="titulo-panel"><div><h2>Tu pedido más reciente</h2><p>Seguimiento de la compra realizada el 11 de agosto.</p></div><a href="../../vistas/cliente/pedidos.html">Ver pedidos</a></div>    <div class="pedido-resumen"><div class="fila-entre"><div><strong>AM-1048</strong><span>11/08/2026</span></div><span class="estado aviso">En preparación</span></div><div class="linea-tiempo"><div class="completo"><i></i><span>Confirmado</span></div><div class="completo"><i></i><span>Preparación</span></div><div><i></i><span>Despacho</span></div><div><i></i><span>Entrega</span></div></div><div class="fila-entre"><span>Total</span><strong>₡34.700</strong></div></div>
+    </section>
+        <section class="panel"><div class="titulo-panel"><div><h2>Perfil seleccionado</h2><p>Las recomendaciones se ajustan a esta mascota.</p></div><a href="../../vistas/cliente/mascotas.html">Administrar</a></div><div class="mascota-resumen"><span>🐕</span><div><h3>Milo</h3><p>Corgi · 3 años · Talla M</p><div class="chips"><span class="chip">Cómodo</span><span class="chip">Colores tierra</span><span class="chip">Reflectante</span></div></div></div></section>
+    </div>
+    <section class="panel"><div class="titulo-panel"><div><h2>Accesos rápidos</h2><p>Continúa con las tareas más comunes.</p></div></div><div class="accesos-grid"><a href="../../vistas/cliente/recomendaciones.html"><span>✦</span><strong>Ver recomendaciones</strong><small>Productos para Milo</small></a><a href="../../vistas/cliente/checkout.html"><span>🛒</span><strong>Completar compra</strong><small>Revisar carrito</small></a><a href="../../vistas/cliente/fidelizacion.html"><span>★</span><strong>Mis beneficios</strong><small>Puntos y avisos</small></a></div></section>
+            </main>
+    </div>
+
+    <div class="modal" id="modalGeneral" aria-hidden="true">
+        <div class="fondo-modal" data-cerrar-modal></div>
+        <section class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+            <button class="cerrar-modal" type="button" data-cerrar-modal aria-label="Cerrar">×</button>
+            <h2 id="tituloModal">Formulario</h2>
+            <p id="textoModal" class="texto-secundario">Complete la información solicitada.</p>
+            <form class="formulario-grid formulario-demostracion">
+                <label>Nombre o descripción
+                    <input type="text" name="nombre" required placeholder="Escriba aquí">
+                    <span class="mensaje-error">Este campo es obligatorio.</span>
+                </label>
+                <label>Estado
+                    <select name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option>Activo</option>
+                        <option>Inactivo</option>
+                        <option>Pendiente</option>
+                    </select>
+                    <span class="mensaje-error">Seleccione una opción.</span>
+                </label>
+                <label class="campo-completo">Observaciones
+                    <textarea name="observaciones" rows="3" placeholder="Información adicional"></textarea>
+                </label>
+                <div class="acciones-formulario campo-completo">
+                    <button class="boton secundario" type="button" data-cerrar-modal>Cancelar</button>
+                    <button class="boton primario" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="notificacion" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>
