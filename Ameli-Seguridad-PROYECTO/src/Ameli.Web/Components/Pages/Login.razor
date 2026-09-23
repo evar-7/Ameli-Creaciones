@@ -1,0 +1,26 @@
+@page "/ingresar"
+@attribute [AllowAnonymous]
+<PageTitle>Ingresar | Ameli Creaciones</PageTitle>
+<PageHeading Eyebrow="Visitante" Title="Acceso a tu cuenta" Description="Todo lo que necesitas para cuidar su estilo, en un solo lugar." />
+<div class="acceso-grid">
+    <section class="panel auth-panel">
+        <div class="auth-heading"><span class="auth-step">BIENVENIDO A AMELI</span><h2>Bienvenido de nuevo</h2><p>Ingresa con tu correo y contraseña.</p></div>
+        <form method="post" action="/account/login" class="formulario-apilado auth-form">
+            <AntiforgeryToken />
+            @if (!string.IsNullOrEmpty(Error)) { <div class="feedback error" role="alert">@ErrorText</div> }
+            @if (!string.IsNullOrEmpty(State)) { <div class="feedback info" role="status">@StateText</div> }
+            <label for="login-email">Correo electrónico<input id="login-email" name="email" type="email" required maxlength="254" autocomplete="username" placeholder="nombre@correo.com" /></label>
+            <label for="login-password">Contraseña<div class="campo-clave"><input id="login-password" name="password" type="password" required maxlength="128" autocomplete="current-password" placeholder="Tu contraseña" /><button type="button" data-ver-clave aria-controls="login-password" aria-label="Mostrar contraseña">Ver</button></div></label>
+            <div class="fila-entre"><span></span><a class="enlace-boton" href="/recuperar">¿Olvidaste tu contraseña?</a></div>
+            <button class="boton primario ancho" type="submit" data-pending="Ingresando…">Ingresar</button>
+            <p class="mensaje-seguridad">Tu cuenta se bloquea durante 15 minutos después de 5 intentos fallidos.</p>
+        </form>
+    </section>
+    <RoleSummary />
+</div>
+@code {
+    [SupplyParameterFromQuery(Name = "error")] public string? Error { get; set; }
+    [SupplyParameterFromQuery(Name = "estado")] public string? State { get; set; }
+    private string ErrorText => Error switch { "campos" => "Completa un correo válido y tu contraseña.", "limite" => "Demasiados intentos. Espera un momento antes de continuar.", _ => "No se pudo iniciar sesión. Revisa tus credenciales o intenta más tarde." };
+    private string StateText => State switch { "restablecida" => "Contraseña actualizada. Ingresa con tu nueva contraseña.", "cerrada" => "Cerraste la sesión correctamente.", _ => "Sesión expirada o revocada. Inicia sesión nuevamente." };
+}

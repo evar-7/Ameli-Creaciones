@@ -1,0 +1,4 @@
+@page "/cliente"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Mi cuenta | Ameli</PageTitle>
+<Welcome Role="@Roles.Client" Title="Mi cuenta" />

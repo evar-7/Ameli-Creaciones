@@ -1,0 +1,53 @@
+@inherits LayoutComponentBase
+@inject IHttpContextAccessor Accessor
+
+<a class="saltar-contenido" href="#principal">Saltar al contenido</a>
+<header class="barra-superior">
+    <a class="marca" href="/" aria-label="Ameli Creaciones, inicio">
+        <span class="marca-icono">A</span>
+        <span><strong>Ameli</strong><small>Creaciones para mascotas</small></span>
+    </a>
+    <button class="boton-menu" type="button" aria-label="Abrir menú" aria-controls="menuLateral" aria-expanded="false">☰</button>
+    <div class="acciones-superiores">
+        @if (Authenticated)
+        {
+            <span class="usuario-superior">@User.Identity?.Name</span>
+            <form method="post" action="/account/logout" class="logout-form"><AntiforgeryToken /><button class="logout-button" type="submit">Salir</button></form>
+        }
+        else { <span class="usuario-superior">Invitado</span> }
+    </div>
+</header>
+<div class="estructura-app">
+    <aside class="menu-lateral" id="menuLateral">
+        <div class="menu-rol"><span>Menú de navegación</span><strong>@(Authenticated ? Role : "Visitante")</strong></div>
+        <nav aria-label="Navegación principal">
+            @if (Authenticated)
+            {
+                <NavLink class="enlace-menu" ActiveClass="activo" href="@Roles.Home(Role)" Match="NavLinkMatch.All"><span aria-hidden="true">⌂</span> Mi inicio</NavLink>
+                <NavLink class="enlace-menu" ActiveClass="activo" href="/mi-seguridad"><span aria-hidden="true">⌾</span> Mi seguridad</NavLink>
+                @if (Role == Roles.Administrator)
+                { <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/accesos"><span aria-hidden="true">♙</span> Usuarios y accesos</NavLink> }
+            }
+            else
+            {
+                <NavLink class="enlace-menu" ActiveClass="activo" href="/ingresar"><span aria-hidden="true">↪</span> Ingresar</NavLink>
+                <NavLink class="enlace-menu" ActiveClass="activo" href="/recuperar"><span aria-hidden="true">⌾</span> Recuperar acceso</NavLink>
+            }
+        </nav>
+        <div class="nota-menu"><strong>Tu cuenta, protegida</strong><p>La sesión se cierra tras 15 minutos sin actividad.</p></div>
+    </aside>
+    <main class="contenido-principal" id="principal">@Body</main>
+</div>
+@if (Authenticated)
+{
+    var status = Accessor.HttpContext?.Items["SessionStatus"] as SessionStatus;
+    <form id="session-control" class="oculto" data-idle-expires="@status?.Session.IdleExpiresAtUtc.ToString("O")" data-absolute-expires="@status?.Session.AbsoluteExpiresAtUtc.ToString("O")"><AntiforgeryToken /></form>
+    <div id="session-warning" class="session-warning oculto" role="status" aria-live="polite">
+        <span>Tu sesión cerrará pronto por inactividad.</span><button class="boton primario" id="keep-session" type="button">Continuar sesión</button>
+    </div>
+}
+@code {
+    private ClaimsPrincipal User => Accessor.HttpContext?.User ?? new();
+    private bool Authenticated => User.Identity?.IsAuthenticated == true;
+    private string Role => User.FindFirstValue(ClaimTypes.Role) ?? Roles.Client;
+}

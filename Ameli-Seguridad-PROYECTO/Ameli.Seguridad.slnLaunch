@@ -1,0 +1,9 @@
+[
+  {
+    "Name": "Ameli - API y Web",
+    "Projects": [
+      { "Path": "src\\Ameli.Api\\Ameli.Api.csproj", "Action": "Start" },
+      { "Path": "src\\Ameli.Web\\Ameli.Web.csproj", "Action": "Start" }
+    ]
+  }
+]

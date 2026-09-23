@@ -1,0 +1,4 @@
+@page "/administracion"
+@attribute [Authorize(Roles = Roles.Administrator)]
+<PageTitle>Administración | Ameli</PageTitle>
+<Welcome Role="@Roles.Administrator" Title="Administración" />

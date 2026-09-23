@@ -1,0 +1,88 @@
+@page "/administracion/accesos"
+@attribute [Authorize(Roles = Roles.Administrator)]
+@inject SecurityApiClient Api
+<PageTitle>Usuarios y accesos | Ameli Creaciones</PageTitle>
+<PageHeading Eyebrow="Administrador" Title="Usuarios y accesos" Description="Gestiona roles, estados y bloqueos de las cuentas." />
+@if (Error is not null) { <div class="feedback error" role="alert">@ErrorText</div> }
+@if (State == "guardado") { <div class="feedback success" role="status">El cambio se guardó. Las sesiones afectadas fueron invalidadas.</div> }
+<form class="barra-filtros access-search" method="get" action="/administracion/accesos">
+    <label class="buscador"><span aria-hidden="true">⌕</span><span class="sr-only">Buscar por nombre o correo</span><input type="search" name="q" value="@Query" placeholder="Buscar por nombre o correo" maxlength="100" /></label>
+    <button class="boton primario" type="submit">Buscar</button><a class="boton secundario" href="/administracion/accesos">Limpiar</a>
+</form>
+<section class="panel">
+    @if (LoadError is not null) { <div class="feedback error" role="alert">@LoadError</div> }
+    else if (Users.Count == 0) { <div class="estado-vacio"><h2>No se encontraron cuentas</h2><p>Prueba otro nombre o correo.</p></div> }
+    else
+    {
+        <div class="tabla-responsive"><table><thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Último acceso (UTC)</th><th>Acciones</th></tr></thead><tbody>
+        @foreach (var user in Users)
+        {
+            <tr><td><div class="celda-persona"><span>@Initial(user.Name)</span><strong>@user.Name</strong></div></td><td>@user.Email</td><td>@user.Role</td>
+                <td><span class="estado @(!user.IsActive ? "peligro" : IsLocked(user) ? "advertencia" : "exito")">@(!user.IsActive ? "Inactivo" : IsLocked(user) ? "Bloqueado" : "Activo")</span></td>
+                <td>@(user.LastLoginUtc?.ToString("dd/MM/yyyy HH:mm") ?? "Sin ingresos")</td><td><button class="boton secundario" type="button" data-open-dialog="access-@user.Id">Gestionar</button></td></tr>
+        }
+        </tbody></table></div>
+    }
+</section>
+@foreach (var user in Users)
+{
+    <dialog class="access-dialog" id="access-@user.Id" aria-labelledby="title-@user.Id">
+        <div class="dialog-heading"><h2 id="title-@user.Id">Acceso de @user.Name</h2><button type="button" data-close-dialog aria-label="Cerrar">×</button></div>
+        <p>@user.Email</p>
+        @if (Roles.IsInternal(user.Role) && user.IsActive)
+        {
+            <form method="post" action="/account/users/role" class="formulario-apilado dialog-section">
+                <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" />
+                <label for="role-@user.Id">Rol y permisos<select id="role-@user.Id" name="role" required>
+                    <option value="@Roles.Administrator" selected="@(user.Role == Roles.Administrator)">Administrador</option>
+                    <option value="@Roles.Logistics" selected="@(user.Role == Roles.Logistics)">Logística</option>
+                </select></label>
+                <p class="help-text">Al cambiar el rol se cerrarán sus sesiones anteriores.</p><button class="boton primario" type="submit">Guardar rol</button>
+            </form>
+        }
+        <form method="post" action="/account/users/status" class="formulario-apilado dialog-section">
+            <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" /><input type="hidden" name="isActive" value="@(!user.IsActive ? "true" : "false")" />
+            <h3>@(user.IsActive ? "Desactivar cuenta" : "Reactivar cuenta")</h3>
+            <label for="reason-@user.Id">Motivo<textarea id="reason-@user.Id" name="reason" required minlength="5" maxlength="500" rows="2"></textarea></label>
+            <button class="boton secundario" type="submit">@(user.IsActive ? "Desactivar cuenta" : "Reactivar cuenta")</button>
+        </form>
+        <form method="post" action="/account/users/revoke-sessions" class="formulario-apilado dialog-section">
+            <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" /><h3>Cerrar todas sus sesiones</h3>
+            <label for="revoke-reason-@user.Id">Motivo<input id="revoke-reason-@user.Id" name="reason" required minlength="5" maxlength="500" /></label>
+            <button class="boton secundario" type="submit">Cerrar sesiones</button>
+        </form>
+        @if (IsLocked(user))
+        {
+            <form method="post" action="/account/users/unlock" class="formulario-apilado dialog-section">
+                <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" /><h3>Desbloqueo autorizado</h3>
+                <p class="help-text">Bloqueada hasta @user.LockedUntilUtc?.ToString("dd/MM/yyyy HH:mm") UTC. Verifica la identidad antes de desbloquear.</p>
+                <label for="unlock-reason-@user.Id">Motivo<input id="unlock-reason-@user.Id" name="reason" required minlength="5" maxlength="500" /></label>
+                <label for="evidence-@user.Id">Referencia de la verificación de identidad<input id="evidence-@user.Id" name="identityEvidence" required minlength="5" maxlength="500" placeholder="Referencia de la gestión realizada" /></label>
+                <button class="boton primario" type="submit">Desbloquear cuenta</button>
+            </form>
+        }
+    </dialog>
+}
+@code {
+    [SupplyParameterFromQuery(Name = "q")] public string? Query { get; set; }
+    [SupplyParameterFromQuery(Name = "error")] public string? Error { get; set; }
+    [SupplyParameterFromQuery(Name = "estado")] public string? State { get; set; }
+    private List<UserView> Users = [];
+    private string? LoadError;
+    private static string Initial(string name) => string.IsNullOrEmpty(name) ? "A" : name[..1].ToUpperInvariant();
+    private static bool IsLocked(UserView user) => user.LockedUntilUtc > DateTimeOffset.UtcNow;
+    private string ErrorText => Error switch
+    {
+        "last_administrator" => "No puedes quitar el acceso al último administrador activo. Habilita otro administrador primero.",
+        "invalid_role" => "El rol no está permitido o la cuenta interna no está activa.",
+        "not_locked" => "La cuenta ya no tiene un bloqueo temporal vigente.",
+        "forbidden" => "Tu cuenta no tiene permiso para esta operación.",
+        "not_found" => "No se encontró la cuenta seleccionada.",
+        _ => "Revisa los campos obligatorios y vuelve a intentarlo."
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        try { Users = await Api.SendAsync<List<UserView>>(HttpMethod.Get, "admin/users?q=" + Uri.EscapeDataString(Query ?? "")); }
+        catch (ApiFault ex) { LoadError = ex.Message; }
+    }
+}

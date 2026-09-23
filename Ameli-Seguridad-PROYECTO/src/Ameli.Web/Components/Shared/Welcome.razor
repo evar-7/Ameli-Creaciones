@@ -1,0 +1,10 @@
+@inject IHttpContextAccessor Accessor
+<PageHeading Eyebrow="@Role" Title="@Title" Description="Bienvenido a tu espacio de Ameli Creaciones." />
+<div class="dos-columnas">
+    <section class="panel"><span class="etiqueta-rol">MI CUENTA</span><h2>@Accessor.HttpContext?.User.Identity?.Name</h2><p>@Accessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email)</p><a class="boton primario" href="/mi-seguridad">Revisar mi seguridad</a></section>
+    <section class="panel"><h2>@(Role == Roles.Administrator ? "Gestiona los accesos" : "Tienes el control de tu sesión")</h2>
+        @if (Role == Roles.Administrator) { <p>Consulta las cuentas, asigna roles y gestiona bloqueos del personal.</p><a class="boton secundario" href="/administracion/accesos">Usuarios y accesos</a> }
+        else { <p>Puedes revisar tus sesiones activas, actualizar tu contraseña y cerrar accesos que ya no utilizas.</p><span class="estado exito">Sesión activa</span> }
+    </section>
+</div>
+@code { [Parameter] public string Role { get; set; } = ""; [Parameter] public string Title { get; set; } = ""; }

@@ -1,0 +1,50 @@
+@page "/mi-seguridad"
+@attribute [Authorize]
+@inject SecurityApiClient Api
+<PageTitle>Mi seguridad | Ameli Creaciones</PageTitle>
+<PageHeading Eyebrow="Mi cuenta" Title="Seguridad y sesiones" Description="Actualiza tu contraseña y revisa tus accesos activos." />
+@if (Error is not null) { <div class="feedback error" role="alert">@(Error == "politica" ? "Usa de 8 a 64 caracteres, con mayúscula, minúscula, número y símbolo. Ambas contraseñas deben coincidir." : "No se pudo actualizar la contraseña. Revisa la contraseña actual.")</div> }
+@if (State is not null) { <div class="feedback success" role="status">Sesión cerrada correctamente.</div> }
+<div class="dos-columnas">
+    <form class="panel formulario-apilado" method="post" action="/account/change-password" data-password-confirm>
+        <AntiforgeryToken /><h2>Cambiar contraseña</h2><p>Al actualizarla se cerrarán todas tus sesiones.</p>
+        <label for="current-password">Contraseña actual<input id="current-password" name="currentPassword" type="password" required maxlength="128" autocomplete="current-password" /></label>
+        <label for="new-password">Nueva contraseña<input id="new-password" name="password" type="password" required minlength="8" maxlength="64" autocomplete="new-password" aria-describedby="password-rules" /></label>
+        <p class="help-text" id="password-rules">De 8 a 64 caracteres, con mayúscula, minúscula, número y símbolo.</p>
+        <label for="confirm-password">Confirmar contraseña<input id="confirm-password" name="confirmPassword" type="password" required minlength="8" maxlength="64" autocomplete="new-password" /></label>
+        <button class="boton primario" type="submit" data-pending="Actualizando…">Actualizar contraseña</button>
+    </form>
+    <section class="panel"><h2>Protección de acceso</h2><div class="lista-seguridad">
+        <article><span aria-hidden="true">⌾</span><div><strong>Bloqueo por intentos</strong><p>15 minutos de bloqueo después de 5 intentos fallidos.</p></div><span class="estado exito">Activo</span></article>
+        <article><span aria-hidden="true">◷</span><div><strong>Expiración de sesión</strong><p>Cierre después de 15 minutos sin actividad.</p></div><span class="estado exito">Activo</span></article>
+        <article><span aria-hidden="true">✉</span><div><strong>Alertas de seguridad</strong><p>Recibirás un aviso si tu cuenta se bloquea.</p></div><span class="estado exito">Activo</span></article>
+    </div></section>
+</div>
+<section class="panel sessions-panel"><div class="seccion-titulo"><h2>Sesiones activas</h2>
+    <form method="post" action="/account/logout-all"><AntiforgeryToken /><button class="boton secundario" type="submit">Cerrar todas</button></form></div>
+    @if (LoadError is not null) { <div class="feedback error" role="alert">@LoadError</div> }
+    else if (Sessions.Count == 0) { <p>No hay otras sesiones activas.</p> }
+    else
+    {
+        <div class="tabla-responsive"><table><thead><tr><th>Dispositivo</th><th>Última actividad (UTC)</th><th>Estado</th><th>Acción</th></tr></thead><tbody>
+        @foreach (var session in Sessions)
+        {
+            <tr><td class="device-cell">@(string.IsNullOrWhiteSpace(session.Device) ? "Dispositivo sin identificar" : session.Device)</td><td>@session.LastActivityAtUtc.ToString("dd/MM/yyyy HH:mm")</td><td><span class="estado exito">@(session.IsCurrent ? "Sesión actual" : "Activa")</span></td><td>
+                @if (!session.IsCurrent) { <form method="post" action="/account/revoke-session"><AntiforgeryToken /><input type="hidden" name="sessionId" value="@session.Id" /><button class="enlace-boton" type="submit">Cerrar sesión</button></form> }
+                else { <span>Este dispositivo</span> }
+            </td></tr>
+        }
+        </tbody></table></div>
+    }
+</section>
+@code {
+    [SupplyParameterFromQuery(Name = "error")] public string? Error { get; set; }
+    [SupplyParameterFromQuery(Name = "estado")] public string? State { get; set; }
+    private List<SessionView> Sessions = [];
+    private string? LoadError;
+    protected override async Task OnInitializedAsync()
+    {
+        try { Sessions = await Api.SendAsync<List<SessionView>>(HttpMethod.Get, "auth/sessions"); }
+        catch (ApiFault ex) { LoadError = ex.Message; }
+    }
+}

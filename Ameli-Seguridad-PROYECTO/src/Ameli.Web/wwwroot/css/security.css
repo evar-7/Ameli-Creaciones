@@ -1,0 +1,46 @@
+/* Componentes de seguridad sobre el diseño original de Ameli Creaciones. */
+.auth-heading { padding: 28px 28px 0; }
+.auth-step { display: block; color: var(--morado); letter-spacing: .1em; font-size: .68rem; font-weight: 700; margin-bottom: 14px; }
+.auth-form { padding: 12px 28px 28px; }
+.auth-form p { margin-bottom: 0; }
+.auth-panel h2 { font-size: 1.65rem; }
+.resumen-roles { min-height: 430px; padding: 35px; }
+.resumen-roles ul { padding-left: 20px; }
+.role-footnote { margin-top: 20px; font-size: .85rem; }
+.campo-clave input { padding-right: 68px; }
+.feedback { padding: 13px 16px; border-radius: 10px; margin-bottom: 18px; border: 1px solid transparent; font-size: .9rem; }
+.feedback.error { color: #842e3a; background: var(--rojo-suave); border-color: #efc8ce; }
+.feedback.success { color: #285c39; background: var(--verde-suave); border-color: #c6e2d0; }
+.feedback.info { color: #3d3261; background: var(--morado-suave); border-color: #ded0e8; }
+.auth-form .feedback { margin-bottom: 0; }
+.narrow-panel { max-width: 630px; margin: 0 auto; }
+.help-text { font-size: .79rem; margin: 0; line-height: 1.5; }
+.sessions-panel { margin-top: 24px; }
+.seccion-titulo { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 15px; }
+.seccion-titulo h2 { margin: 0; }
+.device-cell { max-width: 360px; overflow-wrap: anywhere; font-size: .78rem; }
+.access-search { margin-bottom: 22px; }
+.access-search .buscador { flex: 1; }
+.access-search .buscador input { min-width: 100px; }
+.access-dialog { width: min(540px, calc(100vw - 32px)); max-height: 90vh; overflow: auto; border: 1px solid var(--borde); border-radius: 18px; padding: 26px; color: var(--texto); box-shadow: var(--sombra); }
+.access-dialog::backdrop { background: rgba(30, 19, 36, .48); }
+.dialog-heading { display: flex; justify-content: space-between; align-items: start; gap: 14px; }
+.dialog-heading button { border: 0; background: transparent; color: var(--texto-suave); font-size: 1.5rem; }
+.dialog-section { padding: 18px 0; border-top: 1px solid var(--borde); }
+.logout-form { margin: 0; }
+.logout-button { border: 1px solid #c9b7d4; border-radius: 9px; background: transparent; color: white; padding: 7px 12px; }
+.session-warning { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; align-items: center; gap: 15px; padding: 16px 22px; border-radius: 13px; border: 1px solid #e3cb8c; background: var(--amarillo-suave); box-shadow: var(--sombra); max-width: calc(100% - 30px); }
+.sr-only, .saltar-contenido { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.saltar-contenido:focus { position: fixed; clip: auto; width: auto; height: auto; top: 10px; left: 10px; z-index: 100; margin: 0; padding: 12px; background: white; border-radius: 5px; }
+:focus-visible { outline: 3px solid var(--morado); outline-offset: 3px; }
+.barra-superior :focus-visible { outline-color: #fff; }
+@media (max-width: 700px) {
+    .resumen-roles { min-height: auto; padding: 24px; }
+    .auth-heading { padding: 22px 22px 0; }
+    .auth-form { padding: 12px 22px 22px; }
+    .access-search { flex-wrap: wrap; }
+    .access-search .buscador { flex-basis: 100%; }
+    .acciones-superiores .usuario-superior { display: none; }
+    .session-warning, .seccion-titulo { flex-wrap: wrap; }
+    .dos-columnas { grid-template-columns: 1fr; }
+}

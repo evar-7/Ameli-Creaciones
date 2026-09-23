@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><UserSecretsId>ameli-security-web-local</UserSecretsId></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../Ameli.Contracts/Ameli.Contracts.csproj" /></ItemGroup>
+</Project>

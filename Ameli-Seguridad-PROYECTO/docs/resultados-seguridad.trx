@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="26cfcb6a-1f66-4600-96cc-2c02164d515c" name="@localhost 2026-09-22 15:48:20" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-22T15:48:20.3663285-07:00" queuing="2026-09-22T15:48:20.3663286-07:00" start="2026-09-22T15:48:16.1264970-07:00" finish="2026-09-22T15:48:39.8037106-07:00" />
+  <TestSettings name="default" id="1c6ab0df-a8fa-4d45-b0df-c9c17e5b2d54">
+    <Deployment runDeploymentRoot="_localhost_2026-09-22_15_48_20" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="826e0c9a-5748-447d-b005-73a41c8ee4e0" testId="aab450a9-f017-84ab-4b4c-61488eebf1bf" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA002_AccountAndOriginLimitsDoNotSendExtraLinks" computerName="localhost" duration="00:00:00.0601277" startTime="2026-09-22T15:48:31.7754989-07:00" endTime="2026-09-22T15:48:32.2185311-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="826e0c9a-5748-447d-b005-73a41c8ee4e0" />
+    <UnitTestResult executionId="bee74869-cdc2-4040-843f-c944d7b30153" testId="25e1f376-6365-c305-4ce9-809de0fdb968" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_AdministratorCanRevokeAllSessionsWithReason" computerName="localhost" duration="00:00:00.5009363" startTime="2026-09-22T15:48:24.2278400-07:00" endTime="2026-09-22T15:48:25.0892675-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bee74869-cdc2-4040-843f-c944d7b30153" />
+    <UnitTestResult executionId="bcd6a4da-a02c-4f2e-b573-8aa2e1671381" testId="8e9ace08-ee6e-df6c-03e5-8f6ec3ab243b" testName="Ameli.Security.Tests.DatabaseInitializerTests.FirstStartCreatesAccountsAndRestartDoesNotNeedPasswordsOrReplaceAccounts" computerName="localhost" duration="00:00:00.9618255" startTime="2026-09-22T15:48:37.7072916-07:00" endTime="2026-09-22T15:48:39.0553899-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bcd6a4da-a02c-4f2e-b573-8aa2e1671381" />
+    <UnitTestResult executionId="2cb0e976-0cc2-4367-84f7-66b378419563" testId="de164bd3-2814-5d68-789b-05680577412c" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_ConcurrentSelfDemotionsKeepOneAdministrator" computerName="localhost" duration="00:00:00.4188871" startTime="2026-09-22T15:48:30.9854055-07:00" endTime="2026-09-22T15:48:31.7753264-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cb0e976-0cc2-4367-84f7-66b378419563" />
+    <UnitTestResult executionId="db8a611b-fec1-4ffa-b8c7-b22e2b2d5759" testId="dff97ba8-f411-9272-bfe1-fae4add8b957" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA005_SuccessResetsConsecutiveFailureCounter" computerName="localhost" duration="00:00:00.8729443" startTime="2026-09-22T15:48:25.5021055-07:00" endTime="2026-09-22T15:48:26.7735230-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db8a611b-fec1-4ffa-b8c7-b22e2b2d5759" />
+    <UnitTestResult executionId="e752d3d5-b405-4bb4-99d0-e826cb7e1ba5" testId="9262002a-746a-c50b-f1c1-e384b42e5fe9" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA001_UnknownWrongAndInactiveHaveSameResponse" computerName="localhost" duration="00:00:00.5022624" startTime="2026-09-22T15:48:28.3855755-07:00" endTime="2026-09-22T15:48:29.2695322-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e752d3d5-b405-4bb4-99d0-e826cb7e1ba5" />
+    <UnitTestResult executionId="c4ad9ae2-7d92-4be9-ba39-42a9bf091ab7" testId="2b4e944f-6a28-8ee8-9c22-3c8c9d01ef37" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA005_FiveConcurrentFailuresLockWithoutLostUpdates" computerName="localhost" duration="00:00:00.8908276" startTime="2026-09-22T15:48:36.0565216-07:00" endTime="2026-09-22T15:48:37.3381208-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c4ad9ae2-7d92-4be9-ba39-42a9bf091ab7" />
+    <UnitTestResult executionId="54f0e7ef-39a5-4933-afd4-f4eab82fa607" testId="42c1ea31-d17a-933f-463a-ebae565c2559" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA001_EmptyFieldsAreRejectedByApi" computerName="localhost" duration="00:00:00.0278072" startTime="2026-09-22T15:48:23.8268099-07:00" endTime="2026-09-22T15:48:24.2276192-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54f0e7ef-39a5-4933-afd4-f4eab82fa607" />
+    <UnitTestResult executionId="fdb1628c-06b4-41b8-ae56-42baa9ab9552" testId="04fc6986-9c59-17a2-b2f4-8cf588b39d4f" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA002_LinkIsSingleUseAndRevokesExistingTokens" computerName="localhost" duration="00:00:00.8238202" startTime="2026-09-22T15:48:22.0797839-07:00" endTime="2026-09-22T15:48:23.2802481-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdb1628c-06b4-41b8-ae56-42baa9ab9552" />
+    <UnitTestResult executionId="6a7b6c63-28ce-4ffd-9705-3bc5b5dad6c1" testId="3cb029c7-1ef0-8985-2ea9-a5f04125fe8c" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_SessionRevocationCannotTargetAnotherUser" computerName="localhost" duration="00:00:00.3005084" startTime="2026-09-22T15:48:27.6974401-07:00" endTime="2026-09-22T15:48:28.3853805-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a7b6c63-28ce-4ffd-9705-3bc5b5dad6c1" />
+    <UnitTestResult executionId="8b0c11a0-7299-49a1-b25f-0caef9bcd263" testId="5157cc69-22e3-6e2e-e565-8a0bbededf92" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;admin@ameli.test&quot;, role: &quot;Administrador&quot;)" computerName="localhost" duration="00:00:00.2582181" startTime="2026-09-22T15:48:20.3431712-07:00" endTime="2026-09-22T15:48:21.0125823-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b0c11a0-7299-49a1-b25f-0caef9bcd263" />
+    <UnitTestResult executionId="31ef4f17-a0f2-4632-886f-0b26a4c9989c" testId="395e1855-9290-61a7-053b-9b87d569838f" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA002_ResetExpiresAtFifteenMinutes" computerName="localhost" duration="00:00:00.0191284" startTime="2026-09-22T15:48:27.2954733-07:00" endTime="2026-09-22T15:48:27.6902207-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31ef4f17-a0f2-4632-886f-0b26a4c9989c" />
+    <UnitTestResult executionId="af223b01-a52b-43ba-985b-01b3490091d6" testId="4c597da4-38f9-3667-fcb7-d55a10c352ba" testName="Ameli.Security.Tests.DevelopmentSetupTests.ExplicitSigningKeyIsPreserved" computerName="localhost" duration="00:00:00.0009907" startTime="2026-09-22T15:48:37.3956209-07:00" endTime="2026-09-22T15:48:37.3973570-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="af223b01-a52b-43ba-985b-01b3490091d6" />
+    <UnitTestResult executionId="b6cb46bf-6acd-497b-8c88-8e610c1312ba" testId="8bb03d47-d91f-0960-5831-78bd1c7228c9" testName="Ameli.Security.Tests.DatabaseInitializerTests.InvalidDemoPasswordDoesNotLeavePartialAccounts" computerName="localhost" duration="00:00:00.1488269" startTime="2026-09-22T15:48:39.0555601-07:00" endTime="2026-09-22T15:48:39.6807817-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b6cb46bf-6acd-497b-8c88-8e610c1312ba" />
+    <UnitTestResult executionId="8beb94b5-46db-45f5-a776-48031630d367" testId="8f19eb0b-e499-2825-e0e0-3fa2a8251d60" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA002_RecoveryDoesNotDiscloseExistence" computerName="localhost" duration="00:00:00.0325961" startTime="2026-09-22T15:48:25.0896610-07:00" endTime="2026-09-22T15:48:25.5016702-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8beb94b5-46db-45f5-a776-48031630d367" />
+    <UnitTestResult executionId="eaae7d98-55be-4361-8c6a-0984c6b9b213" testId="e6da1083-97e9-1d25-97d5-d220c92619a8" testName="Ameli.Security.Tests.DevelopmentSetupTests.DevelopmentKeyIsRandomAndPersistsAcrossRestarts" computerName="localhost" duration="00:00:00.0003684" startTime="2026-09-22T15:48:37.3995590-07:00" endTime="2026-09-22T15:48:37.3999028-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eaae7d98-55be-4361-8c6a-0984c6b9b213" />
+    <UnitTestResult executionId="3da92b3c-5939-4a21-8ef5-39bf116375ee" testId="2f86af40-f4eb-6761-4ebb-3021f9b8ffaa" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA005_AdminUnlockRequiresEvidenceAndIsAudited" computerName="localhost" duration="00:00:00.9258641" startTime="2026-09-22T15:48:33.7044171-07:00" endTime="2026-09-22T15:48:35.0002647-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3da92b3c-5939-4a21-8ef5-39bf116375ee" />
+    <UnitTestResult executionId="e6979302-6620-4eee-927c-8a8408feea4e" testId="722cb3d4-1723-fef9-4a0c-658a0694dbbb" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;cliente@ameli.test&quot;, role: &quot;Cliente&quot;)" computerName="localhost" duration="00:00:00.1476250" startTime="2026-09-22T15:48:21.5556571-07:00" endTime="2026-09-22T15:48:22.0789507-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6979302-6620-4eee-927c-8a8408feea4e" />
+    <UnitTestResult executionId="33447984-55c3-4079-b591-bc2653288433" testId="06bc2d2d-aa0b-2020-309a-6885e80ff333" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_ExpiredAndTamperedJwtAreRejected" computerName="localhost" duration="00:00:00.1425003" startTime="2026-09-22T15:48:35.0004364-07:00" endTime="2026-09-22T15:48:35.5360801-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="33447984-55c3-4079-b591-bc2653288433" />
+    <UnitTestResult executionId="57f4c6e9-5b51-49b1-92f5-533f2c2ac7a1" testId="5463fa1b-5029-9dca-ea73-e1286a017b2f" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_LastAdministratorCannotBeDemotedOrDisabled" computerName="localhost" duration="00:00:00.1391298" startTime="2026-09-22T15:48:35.5363168-07:00" endTime="2026-09-22T15:48:36.0563441-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57f4c6e9-5b51-49b1-92f5-533f2c2ac7a1" />
+    <UnitTestResult executionId="54bc4148-e1f2-4ae9-831c-526e9252fd8e" testId="089b04e3-0998-53ba-9924-480ee81b89a4" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_IdleJwtIsRejectedBeforeSideEffects" computerName="localhost" duration="00:00:00.1497225" startTime="2026-09-22T15:48:26.7737713-07:00" endTime="2026-09-22T15:48:27.2952488-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54bc4148-e1f2-4ae9-831c-526e9252fd8e" />
+    <UnitTestResult executionId="90c565aa-e67b-41f8-bf1d-edeb1cba9357" testId="842b21ab-cf29-f640-ff94-5292eb16a35a" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_PasswordChangeLogoutAndDeactivationRevokeSessions" computerName="localhost" duration="00:00:01.0951173" startTime="2026-09-22T15:48:32.2187025-07:00" endTime="2026-09-22T15:48:33.7042354-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90c565aa-e67b-41f8-bf1d-edeb1cba9357" />
+    <UnitTestResult executionId="176ae046-e4db-4628-94a2-99ad4b5133e7" testId="17d8e4be-25a7-9049-3bdc-aba4c6bd9f97" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_NonAdminCannotReadOrWriteAdminApi(email: &quot;cliente@ameli.test&quot;)" computerName="localhost" duration="00:00:00.1592947" startTime="2026-09-22T15:48:29.2697357-07:00" endTime="2026-09-22T15:48:29.8483188-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="176ae046-e4db-4628-94a2-99ad4b5133e7" />
+    <UnitTestResult executionId="947c1487-c82d-4316-b57a-702e80fe62d1" testId="7b45831b-9f54-6473-3226-c0ae4d2e86d7" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA006_ActivityRenewsIdleDeadlineButPollingAndRefreshDoNot" computerName="localhost" duration="00:00:00.1635755" startTime="2026-09-22T15:48:23.2805826-07:00" endTime="2026-09-22T15:48:23.8265930-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="947c1487-c82d-4316-b57a-702e80fe62d1" />
+    <UnitTestResult executionId="fcc24683-55f0-44f9-8c6a-bd98250a38dc" testId="1dad5296-4399-c1c4-c89f-d23d75874d32" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_RoleChangeIsAuditedAndImmediatelyRevokesOldJwt" computerName="localhost" duration="00:00:01.0688899" startTime="2026-09-22T15:48:18.4364738-07:00" endTime="2026-09-22T15:48:20.3258960-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fcc24683-55f0-44f9-8c6a-bd98250a38dc" />
+    <UnitTestResult executionId="6209c171-b878-48c2-ad2c-800bad84cfa8" testId="b18feb77-4fa5-063f-5375-ab1e9364b189" testName="Ameli.Security.Tests.DevelopmentSetupTests.ProductionDoesNotCreateOrLoadADevelopmentKey" computerName="localhost" duration="00:00:00.0026034" startTime="2026-09-22T15:48:37.3974929-07:00" endTime="2026-09-22T15:48:37.3994824-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6209c171-b878-48c2-ad2c-800bad84cfa8" />
+    <UnitTestResult executionId="9085c4b7-3a5d-48ad-b98d-799d357214a5" testId="d8bf31ba-c461-f322-f86f-c6acc1be71bf" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;logistica@ameli.test&quot;, role: &quot;Logística&quot;)" computerName="localhost" duration="00:00:00.1425974" startTime="2026-09-22T15:48:21.0135914-07:00" endTime="2026-09-22T15:48:21.5542366-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9085c4b7-3a5d-48ad-b98d-799d357214a5" />
+    <UnitTestResult executionId="88eac327-bf94-43f6-b005-4f2017dfe087" testId="8f1c3a60-1236-9a80-35e7-cc36ca51b98b" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_RejectsUnknownInactiveAndIncompatibleRoles" computerName="localhost" duration="00:00:00.1644509" startTime="2026-09-22T15:48:30.4155575-07:00" endTime="2026-09-22T15:48:30.9850225-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88eac327-bf94-43f6-b005-4f2017dfe087" />
+    <UnitTestResult executionId="59133744-b6e2-4fd1-82fb-7f9524ba9fa2" testId="23fc965c-2f68-5ce6-b540-856d3f673bcb" testName="Ameli.Security.Tests.SecurityStoriesTests.SYA003_NonAdminCannotReadOrWriteAdminApi(email: &quot;logistica@ameli.test&quot;)" computerName="localhost" duration="00:00:00.1661842" startTime="2026-09-22T15:48:29.8487304-07:00" endTime="2026-09-22T15:48:30.4153523-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="59133744-b6e2-4fd1-82fb-7f9524ba9fa2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Ameli.Security.Tests.DatabaseInitializerTests.InvalidDemoPasswordDoesNotLeavePartialAccounts" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="8bb03d47-d91f-0960-5831-78bd1c7228c9">
+      <Execution id="b6cb46bf-6acd-497b-8c88-8e610c1312ba" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DatabaseInitializerTests" name="InvalidDemoPasswordDoesNotLeavePartialAccounts" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA001_UnknownWrongAndInactiveHaveSameResponse" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="9262002a-746a-c50b-f1c1-e384b42e5fe9">
+      <Execution id="e752d3d5-b405-4bb4-99d0-e826cb7e1ba5" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA001_UnknownWrongAndInactiveHaveSameResponse" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA005_FiveConcurrentFailuresLockWithoutLostUpdates" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="2b4e944f-6a28-8ee8-9c22-3c8c9d01ef37">
+      <Execution id="c4ad9ae2-7d92-4be9-ba39-42a9bf091ab7" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA005_FiveConcurrentFailuresLockWithoutLostUpdates" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_ExpiredAndTamperedJwtAreRejected" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="06bc2d2d-aa0b-2020-309a-6885e80ff333">
+      <Execution id="33447984-55c3-4079-b591-bc2653288433" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_ExpiredAndTamperedJwtAreRejected" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.DevelopmentKeyIsRandomAndPersistsAcrossRestarts" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="e6da1083-97e9-1d25-97d5-d220c92619a8">
+      <Execution id="eaae7d98-55be-4361-8c6a-0984c6b9b213" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="DevelopmentKeyIsRandomAndPersistsAcrossRestarts" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA002_AccountAndOriginLimitsDoNotSendExtraLinks" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="aab450a9-f017-84ab-4b4c-61488eebf1bf">
+      <Execution id="826e0c9a-5748-447d-b005-73a41c8ee4e0" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA002_AccountAndOriginLimitsDoNotSendExtraLinks" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA002_ResetExpiresAtFifteenMinutes" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="395e1855-9290-61a7-053b-9b87d569838f">
+      <Execution id="31ef4f17-a0f2-4632-886f-0b26a4c9989c" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA002_ResetExpiresAtFifteenMinutes" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DatabaseInitializerTests.FirstStartCreatesAccountsAndRestartDoesNotNeedPasswordsOrReplaceAccounts" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="8e9ace08-ee6e-df6c-03e5-8f6ec3ab243b">
+      <Execution id="bcd6a4da-a02c-4f2e-b573-8aa2e1671381" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DatabaseInitializerTests" name="FirstStartCreatesAccountsAndRestartDoesNotNeedPasswordsOrReplaceAccounts" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA005_AdminUnlockRequiresEvidenceAndIsAudited" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="2f86af40-f4eb-6761-4ebb-3021f9b8ffaa">
+      <Execution id="3da92b3c-5939-4a21-8ef5-39bf116375ee" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA005_AdminUnlockRequiresEvidenceAndIsAudited" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.ProductionDoesNotCreateOrLoadADevelopmentKey" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="b18feb77-4fa5-063f-5375-ab1e9364b189">
+      <Execution id="6209c171-b878-48c2-ad2c-800bad84cfa8" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="ProductionDoesNotCreateOrLoadADevelopmentKey" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_SessionRevocationCannotTargetAnotherUser" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="3cb029c7-1ef0-8985-2ea9-a5f04125fe8c">
+      <Execution id="6a7b6c63-28ce-4ffd-9705-3bc5b5dad6c1" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_SessionRevocationCannotTargetAnotherUser" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;cliente@ameli.test&quot;, role: &quot;Cliente&quot;)" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="722cb3d4-1723-fef9-4a0c-658a0694dbbb">
+      <Execution id="e6979302-6620-4eee-927c-8a8408feea4e" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA001_Login_EmitsValidJwtForEachRole" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_PasswordChangeLogoutAndDeactivationRevokeSessions" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="842b21ab-cf29-f640-ff94-5292eb16a35a">
+      <Execution id="90c565aa-e67b-41f8-bf1d-edeb1cba9357" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_PasswordChangeLogoutAndDeactivationRevokeSessions" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;admin@ameli.test&quot;, role: &quot;Administrador&quot;)" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="5157cc69-22e3-6e2e-e565-8a0bbededf92">
+      <Execution id="8b0c11a0-7299-49a1-b25f-0caef9bcd263" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA001_Login_EmitsValidJwtForEachRole" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA002_LinkIsSingleUseAndRevokesExistingTokens" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="04fc6986-9c59-17a2-b2f4-8cf588b39d4f">
+      <Execution id="fdb1628c-06b4-41b8-ae56-42baa9ab9552" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA002_LinkIsSingleUseAndRevokesExistingTokens" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA002_RecoveryDoesNotDiscloseExistence" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="8f19eb0b-e499-2825-e0e0-3fa2a8251d60">
+      <Execution id="8beb94b5-46db-45f5-a776-48031630d367" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA002_RecoveryDoesNotDiscloseExistence" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_LastAdministratorCannotBeDemotedOrDisabled" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="5463fa1b-5029-9dca-ea73-e1286a017b2f">
+      <Execution id="57f4c6e9-5b51-49b1-92f5-533f2c2ac7a1" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_LastAdministratorCannotBeDemotedOrDisabled" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_IdleJwtIsRejectedBeforeSideEffects" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="089b04e3-0998-53ba-9924-480ee81b89a4">
+      <Execution id="54bc4148-e1f2-4ae9-831c-526e9252fd8e" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_IdleJwtIsRejectedBeforeSideEffects" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_NonAdminCannotReadOrWriteAdminApi(email: &quot;cliente@ameli.test&quot;)" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="17d8e4be-25a7-9049-3bdc-aba4c6bd9f97">
+      <Execution id="176ae046-e4db-4628-94a2-99ad4b5133e7" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_NonAdminCannotReadOrWriteAdminApi" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.ExplicitSigningKeyIsPreserved" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="4c597da4-38f9-3667-fcb7-d55a10c352ba">
+      <Execution id="af223b01-a52b-43ba-985b-01b3490091d6" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="ExplicitSigningKeyIsPreserved" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_ActivityRenewsIdleDeadlineButPollingAndRefreshDoNot" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="7b45831b-9f54-6473-3226-c0ae4d2e86d7">
+      <Execution id="947c1487-c82d-4316-b57a-702e80fe62d1" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_ActivityRenewsIdleDeadlineButPollingAndRefreshDoNot" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_ConcurrentSelfDemotionsKeepOneAdministrator" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="de164bd3-2814-5d68-789b-05680577412c">
+      <Execution id="2cb0e976-0cc2-4367-84f7-66b378419563" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_ConcurrentSelfDemotionsKeepOneAdministrator" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA006_AdministratorCanRevokeAllSessionsWithReason" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="25e1f376-6365-c305-4ce9-809de0fdb968">
+      <Execution id="bee74869-cdc2-4040-843f-c944d7b30153" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA006_AdministratorCanRevokeAllSessionsWithReason" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA001_EmptyFieldsAreRejectedByApi" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="42c1ea31-d17a-933f-463a-ebae565c2559">
+      <Execution id="54f0e7ef-39a5-4933-afd4-f4eab82fa607" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA001_EmptyFieldsAreRejectedByApi" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA005_SuccessResetsConsecutiveFailureCounter" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="dff97ba8-f411-9272-bfe1-fae4add8b957">
+      <Execution id="db8a611b-fec1-4ffa-b8c7-b22e2b2d5759" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA005_SuccessResetsConsecutiveFailureCounter" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_NonAdminCannotReadOrWriteAdminApi(email: &quot;logistica@ameli.test&quot;)" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="23fc965c-2f68-5ce6-b540-856d3f673bcb">
+      <Execution id="59133744-b6e2-4fd1-82fb-7f9524ba9fa2" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_NonAdminCannotReadOrWriteAdminApi" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_RejectsUnknownInactiveAndIncompatibleRoles" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="8f1c3a60-1236-9a80-35e7-cc36ca51b98b">
+      <Execution id="88eac327-bf94-43f6-b005-4f2017dfe087" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_RejectsUnknownInactiveAndIncompatibleRoles" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA003_RoleChangeIsAuditedAndImmediatelyRevokesOldJwt" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="1dad5296-4399-c1c4-c89f-d23d75874d32">
+      <Execution id="fcc24683-55f0-44f9-8c6a-bd98250a38dc" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA003_RoleChangeIsAuditedAndImmediatelyRevokesOldJwt" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.SecurityStoriesTests.SYA001_Login_EmitsValidJwtForEachRole(email: &quot;logistica@ameli.test&quot;, role: &quot;Logística&quot;)" storage="/workspace/scratch/c13cfd49ff3e/vs-update/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="d8bf31ba-c461-f322-f86f-c6acc1be71bf">
+      <Execution id="9085c4b7-3a5d-48ad-b98d-799d357214a5" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.SecurityStoriesTests" name="SYA001_Login_EmitsValidJwtForEachRole" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="aab450a9-f017-84ab-4b4c-61488eebf1bf" executionId="826e0c9a-5748-447d-b005-73a41c8ee4e0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="25e1f376-6365-c305-4ce9-809de0fdb968" executionId="bee74869-cdc2-4040-843f-c944d7b30153" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e9ace08-ee6e-df6c-03e5-8f6ec3ab243b" executionId="bcd6a4da-a02c-4f2e-b573-8aa2e1671381" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="de164bd3-2814-5d68-789b-05680577412c" executionId="2cb0e976-0cc2-4367-84f7-66b378419563" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dff97ba8-f411-9272-bfe1-fae4add8b957" executionId="db8a611b-fec1-4ffa-b8c7-b22e2b2d5759" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9262002a-746a-c50b-f1c1-e384b42e5fe9" executionId="e752d3d5-b405-4bb4-99d0-e826cb7e1ba5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2b4e944f-6a28-8ee8-9c22-3c8c9d01ef37" executionId="c4ad9ae2-7d92-4be9-ba39-42a9bf091ab7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42c1ea31-d17a-933f-463a-ebae565c2559" executionId="54f0e7ef-39a5-4933-afd4-f4eab82fa607" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="04fc6986-9c59-17a2-b2f4-8cf588b39d4f" executionId="fdb1628c-06b4-41b8-ae56-42baa9ab9552" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3cb029c7-1ef0-8985-2ea9-a5f04125fe8c" executionId="6a7b6c63-28ce-4ffd-9705-3bc5b5dad6c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5157cc69-22e3-6e2e-e565-8a0bbededf92" executionId="8b0c11a0-7299-49a1-b25f-0caef9bcd263" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="395e1855-9290-61a7-053b-9b87d569838f" executionId="31ef4f17-a0f2-4632-886f-0b26a4c9989c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c597da4-38f9-3667-fcb7-d55a10c352ba" executionId="af223b01-a52b-43ba-985b-01b3490091d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8bb03d47-d91f-0960-5831-78bd1c7228c9" executionId="b6cb46bf-6acd-497b-8c88-8e610c1312ba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f19eb0b-e499-2825-e0e0-3fa2a8251d60" executionId="8beb94b5-46db-45f5-a776-48031630d367" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e6da1083-97e9-1d25-97d5-d220c92619a8" executionId="eaae7d98-55be-4361-8c6a-0984c6b9b213" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2f86af40-f4eb-6761-4ebb-3021f9b8ffaa" executionId="3da92b3c-5939-4a21-8ef5-39bf116375ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="722cb3d4-1723-fef9-4a0c-658a0694dbbb" executionId="e6979302-6620-4eee-927c-8a8408feea4e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06bc2d2d-aa0b-2020-309a-6885e80ff333" executionId="33447984-55c3-4079-b591-bc2653288433" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5463fa1b-5029-9dca-ea73-e1286a017b2f" executionId="57f4c6e9-5b51-49b1-92f5-533f2c2ac7a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="089b04e3-0998-53ba-9924-480ee81b89a4" executionId="54bc4148-e1f2-4ae9-831c-526e9252fd8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="842b21ab-cf29-f640-ff94-5292eb16a35a" executionId="90c565aa-e67b-41f8-bf1d-edeb1cba9357" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17d8e4be-25a7-9049-3bdc-aba4c6bd9f97" executionId="176ae046-e4db-4628-94a2-99ad4b5133e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b45831b-9f54-6473-3226-c0ae4d2e86d7" executionId="947c1487-c82d-4316-b57a-702e80fe62d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1dad5296-4399-c1c4-c89f-d23d75874d32" executionId="fcc24683-55f0-44f9-8c6a-bd98250a38dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b18feb77-4fa5-063f-5375-ab1e9364b189" executionId="6209c171-b878-48c2-ad2c-800bad84cfa8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d8bf31ba-c461-f322-f86f-c6acc1be71bf" executionId="9085c4b7-3a5d-48ad-b98d-799d357214a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f1c3a60-1236-9a80-35e7-cc36ca51b98b" executionId="88eac327-bf94-43f6-b005-4f2017dfe087" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23fc965c-2f68-5ce6-b540-856d3f673bcb" executionId="59133744-b6e2-4fd1-82fb-7f9524ba9fa2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="29" executed="29" passed="29" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.08]   Discovering: Ameli.Security.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Ameli.Security.Tests
+[xUnit.net 00:00:00.16]   Starting:    Ameli.Security.Tests
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {ae5c2040-06fe-47ee-9e58-4b9dc21b34c2} may be persisted to storage in unencrypted form.
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Testing
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/src/Ameli.Api
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20260922172942_InitialSecurity'.
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Testing
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /workspace/scratch/c13cfd49ff3e/vs-update/Ameli-Seguridad/src/Ameli.Api
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20260922172942_InitialSecurity'.
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[xUnit.net 00:00:23.18]   Finished:    Ameli.Security.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

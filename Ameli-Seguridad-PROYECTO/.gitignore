@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+TestResults/
+App_Data/
+*.user
+*.suo
+*.pfx
+*.pem
+*.eml
+appsettings.Local.json
+.env
+
