@@ -10,6 +10,9 @@ public sealed class AppUser
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = "";
     public string Email { get; set; } = "";
+    public string Phone { get; set; } = "";
+    public Guid Revision { get; set; } = Guid.NewGuid();
+    public DateTimeOffset UpdatedAtUtc { get; set; }
     public string NormalizedEmail { get; set; } = "";
     public string PasswordHash { get; set; } = "";
     public string RoleName { get; set; } = "";
@@ -61,6 +64,21 @@ public sealed class SecurityEvent
     public string Origin { get; set; } = "";
     public string CorrelationId { get; set; } = "";
     public string Detail { get; set; } = "";
+    public string ActorName { get; set; } = "";
+    public string ActorEmail { get; set; } = "";
+    public string Module { get; set; } = "Seguridad";
+    public string Entity { get; set; } = "users";
+    public string EntityId { get; set; } = "";
+    public Guid? SessionId { get; set; }
+    public string BeforeJson { get; set; } = "";
+    public string AfterJson { get; set; } = "";
+    public int? FailedAttempts { get; set; }
+    public DateTimeOffset? LockoutStartedAtUtc { get; set; }
+    public DateTimeOffset? LockedUntilUtc { get; set; }
+    public int IntegrityVersion { get; set; }
+    public bool IsLegacy { get; set; }
+    public string PreviousHash { get; set; } = "";
+    public string IntegrityHash { get; set; } = "";
 }
 public sealed class OutgoingEmail
 {
@@ -74,3 +92,14 @@ public sealed class OutgoingEmail
     public int Attempts { get; set; }
 }
 
+
+public sealed class AuditChainHead
+{
+    public int Id { get; set; } = 1;
+    public long LastEventId { get; set; }
+    public long RecordCount { get; set; }
+    public string LastHash { get; set; } = "";
+    public string Signature { get; set; } = "";
+    public string KeyId { get; set; } = "";
+    public DateTimeOffset BaselineAtUtc { get; set; }
+}

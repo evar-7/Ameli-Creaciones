@@ -32,6 +32,8 @@ public sealed class DevelopmentSetupTests : IDisposable
         var restarted = new ConfigurationManager();
         DevelopmentSetup.ConfigureSigningKey(restarted, environment);
         Assert.Equal(key, restarted["Jwt:SigningKey"]);
+        Assert.Equal(first["Audit:IntegrityKey"], restarted["Audit:IntegrityKey"]);
+        Assert.NotEqual(key, first["Audit:IntegrityKey"]);
     }
 
     [Fact]
@@ -46,7 +48,7 @@ public sealed class DevelopmentSetupTests : IDisposable
     [Fact]
     public void ExplicitSigningKeyIsPreserved()
     {
-        var config = new ConfigurationManager { ["Jwt:SigningKey"] = "explicit-key-used-only-for-this-test" };
+        var config = new ConfigurationManager { ["Jwt:SigningKey"] = "explicit-key-used-only-for-this-test", ["Audit:IntegrityKey"] = "explicit-audit-key-used-only-for-this-test" };
         DevelopmentSetup.ConfigureSigningKey(config, new LocalTestEnvironment(directory, Environments.Development));
         Assert.Equal("explicit-key-used-only-for-this-test", config["Jwt:SigningKey"]);
         Assert.False(Directory.Exists(directory));

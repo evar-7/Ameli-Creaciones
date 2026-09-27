@@ -59,6 +59,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         var connection = new SqlConnectionStringBuilder(configured) { InitialCatalog = "AmeliSecurityTests_" + Guid.NewGuid().ToString("N") };
         SetEnvironment("ConnectionStrings__DefaultConnection", connection.ConnectionString);
         SetEnvironment("Jwt__SigningKey", SigningKey);
+        SetEnvironment("Audit__IntegrityKey", Convert.ToBase64String(RandomNumberGenerator.GetBytes(48)));
         Factory = new TestApiFactory(Clock);
         await Db(async db => { await db.Database.MigrateAsync(); });
     }
@@ -69,7 +70,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         Clock.Reset();
         await Db(async db =>
         {
-            await db.Emails.ExecuteDeleteAsync(); await db.Events.ExecuteDeleteAsync();
+            await db.Emails.ExecuteDeleteAsync(); await db.Events.ExecuteDeleteAsync(); await db.AuditHeads.ExecuteDeleteAsync();
             await db.RecoveryAttempts.ExecuteDeleteAsync(); await db.PasswordResets.ExecuteDeleteAsync();
             await db.Sessions.ExecuteDeleteAsync(); await db.Users.ExecuteDeleteAsync();
             await db.Roles.ExecuteUpdateAsync(s => s.SetProperty(r => r.IsActive, true));
@@ -83,7 +84,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         using var scope = Factory.Services.CreateScope();
         var user = new AppUser { Name = email.Split('@')[0], Email = email,
             NormalizedEmail = SecurityService.NormalizeEmail(email), RoleName = role,
-            IsInternal = Roles.IsInternal(role), IsActive = active, CreatedAtUtc = Clock.GetUtcNow() };
+            IsInternal = Roles.IsInternal(role), IsActive = active, CreatedAtUtc = Clock.GetUtcNow(), UpdatedAtUtc = Clock.GetUtcNow(), Phone = "88888888" };
         user.PasswordHash = scope.ServiceProvider.GetRequiredService<IPasswordHasher<AppUser>>().HashPassword(user, Password);
         var db = scope.ServiceProvider.GetRequiredService<SecurityDbContext>();
         db.Users.Add(user); await db.SaveChangesAsync(); return user.Id;

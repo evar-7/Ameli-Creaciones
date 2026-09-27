@@ -47,11 +47,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             else context.Response.Redirect("/ingresar?estado=expirada");
             return Task.CompletedTask;
         },
-        OnRedirectToAccessDenied = context =>
+        OnRedirectToAccessDenied = async context =>
         {
+            await context.HttpContext.RequestServices.GetRequiredService<SecurityApiClient>().SendAsync<object>(HttpMethod.Post,"auth/access-denied",new WebAccessDeniedRequest(context.Request.Path.Value??"/"),context.HttpContext.RequestAborted);
             if (context.Request.Path.StartsWithSegments("/account")) context.Response.StatusCode = 403;
             else context.Response.Redirect("/sin-acceso");
-            return Task.CompletedTask;
         }
     };
 });
@@ -69,7 +69,7 @@ app.Use(async (ctx, next) =>
     catch (ApiFault ex)
     {
         ctx.Response.StatusCode = ex.Status;
-        await ctx.Response.WriteAsJsonAsync(new ApiError(ex.Code, ex.Message));
+        await ctx.Response.WriteAsJsonAsync(ex.Error);
     }
     catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
     {
@@ -94,5 +94,6 @@ app.UseAntiforgery();
 app.MapGet("/", (HttpContext context) => Results.Redirect(context.User.Identity?.IsAuthenticated == true
     ? Roles.Home(context.User.FindFirstValue(ClaimTypes.Role) ?? Roles.Client) : "/ingresar"));
 app.MapAccountEndpoints();
+app.MapManagementEndpoints();
 app.MapRazorComponents<App>();
 app.Run();

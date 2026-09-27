@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using Ameli.Api.Domain;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,8 @@ public sealed class SmtpEmailDelivery(IConfiguration config, IWebHostEnvironment
 {
     public async Task SendAsync(string to, string subject, string body, CancellationToken ct)
     {
-        using var message = new MailMessage(config["Email:From"] ?? "acceso@ameli.example", to, subject, body);
-        using var smtp = new SmtpClient();
+        var from = new MailAddress(config["Email:From"] ?? "acceso@ameli.example");
+        var recipient = new MailAddress(to);
         var mode = config["Email:Mode"] ?? "Smtp";
         if (mode == "Pickup")
         {
@@ -23,17 +24,22 @@ public sealed class SmtpEmailDelivery(IConfiguration config, IWebHostEnvironment
                 throw new InvalidOperationException("Pickup solo se permite en desarrollo o pruebas.");
             var directory = Path.GetFullPath(config["Email:PickupDirectory"] ?? Path.Combine(environment.ContentRootPath, "App_Data", "mail"));
             Directory.CreateDirectory(directory);
-            smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-            smtp.PickupDirectoryLocation = directory;
+            var file = Path.Combine(directory, $"{DateTime.UtcNow:yyyyMMddHHmmssfff}-{Guid.NewGuid():N}.eml");
+            var safeSubject = subject.Replace('\r', ' ').Replace('\n', ' ');
+            var text = $"From: {from.Address}\r\nTo: {recipient.Address}\r\nDate: {DateTimeOffset.UtcNow:R}\r\nSubject: {safeSubject}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n{body}\r\n";
+            await File.WriteAllTextAsync(file, text, new UTF8Encoding(false), ct);
+            return;
         }
-        else
+
+        using var message = new MailMessage(from, recipient) { Subject = subject, Body = body, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
+        using var smtp = new SmtpClient
         {
-            smtp.Host = config["Email:Host"] ?? throw new InvalidOperationException("Configura Email:Host.");
-            smtp.Port = config.GetValue("Email:Port", 587);
-            smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential(config["Email:Username"], config["Email:Password"]);
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-        }
+            Host = config["Email:Host"] ?? throw new InvalidOperationException("Configura Email:Host."),
+            Port = config.GetValue("Email:Port", 587),
+            EnableSsl = true,
+            Credentials = new NetworkCredential(config["Email:Username"], config["Email:Password"]),
+            DeliveryMethod = SmtpDeliveryMethod.Network
+        };
         await smtp.SendMailAsync(message, ct);
     }
 }

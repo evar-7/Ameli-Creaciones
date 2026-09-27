@@ -13,6 +13,8 @@ public sealed class AuthController(SecurityService security) : ControllerBase
     private Actor Actor => new(Guid.Parse(User.FindFirstValue("sub")!), Guid.Parse(User.FindFirstValue("sid")!));
     private RequestOrigin Origin => HttpOrigin.Create(HttpContext);
 
+    [HttpPost("access-denied"),Authorize,EnableRateLimiting("auth")]
+    public async Task<IActionResult> Denied(WebAccessDeniedRequest r,CancellationToken ct){await security.WebDeniedAsync(Actor,r.Path,Origin,ct);return NoContent();}
     [HttpPost("login"), AllowAnonymous, EnableRateLimiting("auth")]
     public Task<TokenResponse> Login(LoginRequest request, CancellationToken ct) => security.LoginAsync(request, Origin, ct);
     [HttpPost("forgot-password"), AllowAnonymous, EnableRateLimiting("recovery")]

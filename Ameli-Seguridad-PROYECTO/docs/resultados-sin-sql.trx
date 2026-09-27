@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0ced1d59-97ee-4132-873d-0868a0bc500d" name="@0ea46f90e339 2026-09-27 12:58:08" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T12:58:08.2397479+09:00" queuing="2026-09-27T12:58:08.2397479+09:00" start="2026-09-27T12:58:07.6411928+09:00" finish="2026-09-27T12:58:08.2771442+09:00" />
+  <TestSettings name="default" id="b6043655-86c2-4490-84a4-5e8c148b69db">
+    <Deployment runDeploymentRoot="_0ea46f90e339_2026-09-27_12_58_08" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b5c94c21-c863-414a-b1aa-8d1440e5ca22" testId="eae3502b-a541-524e-4983-603cf305d295" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;LockoutStartedAtUtc&quot;)" computerName="0ea46f90e339" duration="00:00:00.0239753" startTime="2026-09-27T12:58:08.1636326+09:00" endTime="2026-09-27T12:58:08.1782144+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5c94c21-c863-414a-b1aa-8d1440e5ca22" />
+    <UnitTestResult executionId="a37eee3c-44f7-4f07-8538-ede294eb4b6d" testId="4c597da4-38f9-3667-fcb7-d55a10c352ba" testName="Ameli.Security.Tests.DevelopmentSetupTests.ExplicitSigningKeyIsPreserved" computerName="0ea46f90e339" duration="00:00:00.0027443" startTime="2026-09-27T12:58:08.2095203+09:00" endTime="2026-09-27T12:58:08.2099508+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a37eee3c-44f7-4f07-8538-ede294eb4b6d" />
+    <UnitTestResult executionId="e7ca6e32-4e1c-490a-bd75-f6e9ba7673a3" testId="baa3f1a1-3240-f9c4-e20b-4d9934514137" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;Action&quot;)" computerName="0ea46f90e339" duration="00:00:00.0000312" startTime="2026-09-27T12:58:08.2078622+09:00" endTime="2026-09-27T12:58:08.2079082+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7ca6e32-4e1c-490a-bd75-f6e9ba7673a3" />
+    <UnitTestResult executionId="2d43ab55-c732-4fa3-afbb-aa23db02357a" testId="d953f6b8-6f62-daf3-2fa2-b03ea6fe699a" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;SessionId&quot;)" computerName="0ea46f90e339" duration="00:00:00.0001184" startTime="2026-09-27T12:58:08.1799037+09:00" endTime="2026-09-27T12:58:08.1799375+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d43ab55-c732-4fa3-afbb-aa23db02357a" />
+    <UnitTestResult executionId="457c6e2c-c003-4030-bb51-89d958c0bc82" testId="f5db678e-6e36-822b-39d5-5aa14e9e8261" testName="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;1234-678&quot;, valid: False)" computerName="0ea46f90e339" duration="00:00:00.0078324" startTime="2026-09-27T12:58:08.1398343+09:00" endTime="2026-09-27T12:58:08.1529337+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="457c6e2c-c003-4030-bb51-89d958c0bc82" />
+    <UnitTestResult executionId="0da10762-6452-4a79-b216-82509ba86cc8" testId="27ffc9a8-53ec-e649-4cf2-2355ab03e1a3" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;AfterJson&quot;)" computerName="0ea46f90e339" duration="00:00:00.0000297" startTime="2026-09-27T12:58:08.2079909+09:00" endTime="2026-09-27T12:58:08.2080259+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0da10762-6452-4a79-b216-82509ba86cc8" />
+    <UnitTestResult executionId="01202669-eaf0-4621-ba3a-9401a88bf52d" testId="df875029-fc10-6e1f-649e-13c0203d2a41" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;SubjectUserId&quot;)" computerName="0ea46f90e339" duration="00:00:00.0013388" startTime="2026-09-27T12:58:08.1783412+09:00" endTime="2026-09-27T12:58:08.1795313+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="01202669-eaf0-4621-ba3a-9401a88bf52d" />
+    <UnitTestResult executionId="0dbd8e6d-7a80-42de-83bd-6e8dff0b9028" testId="0c6fb9df-84f8-73cf-6798-6045eb1eaf91" testName="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;123&quot;, valid: False)" computerName="0ea46f90e339" duration="00:00:00.0007453" startTime="2026-09-27T12:58:08.1622082+09:00" endTime="2026-09-27T12:58:08.1622727+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0dbd8e6d-7a80-42de-83bd-6e8dff0b9028" />
+    <UnitTestResult executionId="d46dafd3-9d5b-4e9b-beba-49861fb02644" testId="2ff22274-b9ee-bd34-3942-27c1fc58effd" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;ActorName&quot;)" computerName="0ea46f90e339" duration="00:00:00.0000511" startTime="2026-09-27T12:58:08.1797949+09:00" endTime="2026-09-27T12:58:08.1798336+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d46dafd3-9d5b-4e9b-beba-49861fb02644" />
+    <UnitTestResult executionId="bb819aa5-6988-4ae2-b4e8-e4fa60688c13" testId="71b96df2-2116-00d5-326c-d3c4ed6a6575" testName="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;01234567&quot;, valid: True)" computerName="0ea46f90e339" duration="00:00:00.0000263" startTime="2026-09-27T12:58:08.1629035+09:00" endTime="2026-09-27T12:58:08.1629400+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb819aa5-6988-4ae2-b4e8-e4fa60688c13" />
+    <UnitTestResult executionId="65db9695-f7fb-48d8-8281-94055cdaf50b" testId="adee4b6d-5c21-13d7-17fc-47c07408c567" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;Id&quot;)" computerName="0ea46f90e339" duration="00:00:00.0000439" startTime="2026-09-27T12:58:08.2074710+09:00" endTime="2026-09-27T12:58:08.2075316+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="65db9695-f7fb-48d8-8281-94055cdaf50b" />
+    <UnitTestResult executionId="1c667571-d614-417f-9782-d280de7b7fe4" testId="cc2377e3-8c5b-894a-8035-ee4c15d1056c" testName="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;PreviousHash&quot;)" computerName="0ea46f90e339" duration="00:00:00.0001219" startTime="2026-09-27T12:58:08.1796074+09:00" endTime="2026-09-27T12:58:08.1797025+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c667571-d614-417f-9782-d280de7b7fe4" />
+    <UnitTestResult executionId="808d146d-36b4-4566-abf8-a81cfe45a314" testId="e6da1083-97e9-1d25-97d5-d220c92619a8" testName="Ameli.Security.Tests.DevelopmentSetupTests.DevelopmentKeyIsRandomAndPersistsAcrossRestarts" computerName="0ea46f90e339" duration="00:00:00.0020527" startTime="2026-09-27T12:58:08.2105078+09:00" endTime="2026-09-27T12:58:08.2105942+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="808d146d-36b4-4566-abf8-a81cfe45a314" />
+    <UnitTestResult executionId="b42b2f96-b405-4b5c-9126-91503731ab76" testId="a30dc325-30e5-309e-6c8d-9ac265bf0328" testName="Ameli.Security.Tests.AuditContractTests.DateRangeAndRequiredStateAreValidated" computerName="0ea46f90e339" duration="00:00:00.0018997" startTime="2026-09-27T12:58:08.2083293+09:00" endTime="2026-09-27T12:58:08.2083858+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b42b2f96-b405-4b5c-9126-91503731ab76" />
+    <UnitTestResult executionId="6ca595bd-8da9-4289-ac73-cdecb4603a63" testId="b18feb77-4fa5-063f-5375-ab1e9364b189" testName="Ameli.Security.Tests.DevelopmentSetupTests.ProductionDoesNotCreateOrLoadADevelopmentKey" computerName="0ea46f90e339" duration="00:00:00.0033462" startTime="2026-09-27T12:58:08.2102417+09:00" endTime="2026-09-27T12:58:08.2103421+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ca595bd-8da9-4289-ac73-cdecb4603a63" />
+    <UnitTestResult executionId="9f67988d-a9b9-4ad5-ba1b-9507e82590ee" testId="8e5923b1-9aa5-d47f-cc5c-ef240235f7f5" testName="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;１２３４５６７８&quot;, valid: False)" computerName="0ea46f90e339" duration="00:00:00.0000511" startTime="2026-09-27T12:58:08.1627865+09:00" endTime="2026-09-27T12:58:08.1628223+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f67988d-a9b9-4ad5-ba1b-9507e82590ee" />
+    <UnitTestResult executionId="42ea02c1-29aa-45f3-96c2-3971fc5fb2b3" testId="b0e7e884-9995-8f24-74ad-e63981cb75b9" testName="Ameli.Security.Tests.AuditContractTests.HeadSignatureProtectsTailAndCount" computerName="0ea46f90e339" duration="00:00:00.0006966" startTime="2026-09-27T12:58:08.2084705+09:00" endTime="2026-09-27T12:58:08.2085065+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="42ea02c1-29aa-45f3-96c2-3971fc5fb2b3" />
+    <UnitTestResult executionId="d6aad320-2b4b-4097-9e0d-8d83965616f3" testId="7b26c68d-cead-901b-5a6c-e29ea6deb887" testName="Ameli.Security.Tests.AuditContractTests.KeysAndSignaturesAreValidated" computerName="0ea46f90e339" duration="00:00:00.0026985" startTime="2026-09-27T12:58:08.2081806+09:00" endTime="2026-09-27T12:58:08.2082295+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6aad320-2b4b-4097-9e0d-8d83965616f3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;Id&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="adee4b6d-5c21-13d7-17fc-47c07408c567">
+      <Execution id="65db9695-f7fb-48d8-8281-94055cdaf50b" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;Action&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="baa3f1a1-3240-f9c4-e20b-4d9934514137">
+      <Execution id="e7ca6e32-4e1c-490a-bd75-f6e9ba7673a3" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;SubjectUserId&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="df875029-fc10-6e1f-649e-13c0203d2a41">
+      <Execution id="01202669-eaf0-4621-ba3a-9401a88bf52d" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.KeysAndSignaturesAreValidated" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="7b26c68d-cead-901b-5a6c-e29ea6deb887">
+      <Execution id="d6aad320-2b4b-4097-9e0d-8d83965616f3" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="KeysAndSignaturesAreValidated" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.HeadSignatureProtectsTailAndCount" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="b0e7e884-9995-8f24-74ad-e63981cb75b9">
+      <Execution id="42ea02c1-29aa-45f3-96c2-3971fc5fb2b3" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="HeadSignatureProtectsTailAndCount" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.ExplicitSigningKeyIsPreserved" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="4c597da4-38f9-3667-fcb7-d55a10c352ba">
+      <Execution id="a37eee3c-44f7-4f07-8538-ede294eb4b6d" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="ExplicitSigningKeyIsPreserved" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;LockoutStartedAtUtc&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="eae3502b-a541-524e-4983-603cf305d295">
+      <Execution id="b5c94c21-c863-414a-b1aa-8d1440e5ca22" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;1234-678&quot;, valid: False)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="f5db678e-6e36-822b-39d5-5aa14e9e8261">
+      <Execution id="457c6e2c-c003-4030-bb51-89d958c0bc82" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="PhoneMustHaveEightAsciiDigits" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;01234567&quot;, valid: True)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="71b96df2-2116-00d5-326c-d3c4ed6a6575">
+      <Execution id="bb819aa5-6988-4ae2-b4e8-e4fa60688c13" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="PhoneMustHaveEightAsciiDigits" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;ActorName&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="2ff22274-b9ee-bd34-3942-27c1fc58effd">
+      <Execution id="d46dafd3-9d5b-4e9b-beba-49861fb02644" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;PreviousHash&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="cc2377e3-8c5b-894a-8035-ee4c15d1056c">
+      <Execution id="1c667571-d614-417f-9782-d280de7b7fe4" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;１２３４５６７８&quot;, valid: False)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="8e5923b1-9aa5-d47f-cc5c-ef240235f7f5">
+      <Execution id="9f67988d-a9b9-4ad5-ba1b-9507e82590ee" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="PhoneMustHaveEightAsciiDigits" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.PhoneMustHaveEightAsciiDigits(phone: &quot;123&quot;, valid: False)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="0c6fb9df-84f8-73cf-6798-6045eb1eaf91">
+      <Execution id="0dbd8e6d-7a80-42de-83bd-6e8dff0b9028" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="PhoneMustHaveEightAsciiDigits" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.DevelopmentKeyIsRandomAndPersistsAcrossRestarts" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="e6da1083-97e9-1d25-97d5-d220c92619a8">
+      <Execution id="808d146d-36b4-4566-abf8-a81cfe45a314" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="DevelopmentKeyIsRandomAndPersistsAcrossRestarts" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.DevelopmentSetupTests.ProductionDoesNotCreateOrLoadADevelopmentKey" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="b18feb77-4fa5-063f-5375-ab1e9364b189">
+      <Execution id="6ca595bd-8da9-4289-ac73-cdecb4603a63" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.DevelopmentSetupTests" name="ProductionDoesNotCreateOrLoadADevelopmentKey" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;AfterJson&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="27ffc9a8-53ec-e649-4cf2-2355ab03e1a3">
+      <Execution id="0da10762-6452-4a79-b216-82509ba86cc8" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.SignedAuditDetectsChangedMetadata(property: &quot;SessionId&quot;)" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="d953f6b8-6f62-daf3-2fa2-b03ea6fe699a">
+      <Execution id="2d43ab55-c732-4fa3-afbb-aa23db02357a" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="SignedAuditDetectsChangedMetadata" />
+    </UnitTest>
+    <UnitTest name="Ameli.Security.Tests.AuditContractTests.DateRangeAndRequiredStateAreValidated" storage="/workspace/scratch/c13cfd49ff3e/entrega/work/ameli-seguridad/tests/ameli.security.tests/bin/debug/net10.0/ameli.security.tests.dll" id="a30dc325-30e5-309e-6c8d-9ac265bf0328">
+      <Execution id="b42b2f96-b405-4b5c-9126-91503731ab76" />
+      <TestMethod codeBase="/workspace/scratch/c13cfd49ff3e/entrega/work/Ameli-Seguridad/tests/Ameli.Security.Tests/bin/Debug/net10.0/Ameli.Security.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Ameli.Security.Tests.AuditContractTests" name="DateRangeAndRequiredStateAreValidated" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="eae3502b-a541-524e-4983-603cf305d295" executionId="b5c94c21-c863-414a-b1aa-8d1440e5ca22" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c597da4-38f9-3667-fcb7-d55a10c352ba" executionId="a37eee3c-44f7-4f07-8538-ede294eb4b6d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="baa3f1a1-3240-f9c4-e20b-4d9934514137" executionId="e7ca6e32-4e1c-490a-bd75-f6e9ba7673a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d953f6b8-6f62-daf3-2fa2-b03ea6fe699a" executionId="2d43ab55-c732-4fa3-afbb-aa23db02357a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f5db678e-6e36-822b-39d5-5aa14e9e8261" executionId="457c6e2c-c003-4030-bb51-89d958c0bc82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="27ffc9a8-53ec-e649-4cf2-2355ab03e1a3" executionId="0da10762-6452-4a79-b216-82509ba86cc8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df875029-fc10-6e1f-649e-13c0203d2a41" executionId="01202669-eaf0-4621-ba3a-9401a88bf52d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0c6fb9df-84f8-73cf-6798-6045eb1eaf91" executionId="0dbd8e6d-7a80-42de-83bd-6e8dff0b9028" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2ff22274-b9ee-bd34-3942-27c1fc58effd" executionId="d46dafd3-9d5b-4e9b-beba-49861fb02644" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="71b96df2-2116-00d5-326c-d3c4ed6a6575" executionId="bb819aa5-6988-4ae2-b4e8-e4fa60688c13" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="adee4b6d-5c21-13d7-17fc-47c07408c567" executionId="65db9695-f7fb-48d8-8281-94055cdaf50b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cc2377e3-8c5b-894a-8035-ee4c15d1056c" executionId="1c667571-d614-417f-9782-d280de7b7fe4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e6da1083-97e9-1d25-97d5-d220c92619a8" executionId="808d146d-36b4-4566-abf8-a81cfe45a314" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a30dc325-30e5-309e-6c8d-9ac265bf0328" executionId="b42b2f96-b405-4b5c-9126-91503731ab76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b18feb77-4fa5-063f-5375-ab1e9364b189" executionId="6ca595bd-8da9-4289-ac73-cdecb4603a63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e5923b1-9aa5-d47f-cc5c-ef240235f7f5" executionId="9f67988d-a9b9-4ad5-ba1b-9507e82590ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0e7e884-9995-8f24-74ad-e63981cb75b9" executionId="42ea02c1-29aa-45f3-96c2-3971fc5fb2b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b26c68d-cead-901b-5a6c-e29ea6deb887" executionId="d6aad320-2b4b-4097-9e0d-8d83965616f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="18" executed="18" passed="18" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Ameli.Security.Tests
+[xUnit.net 00:00:00.12]   Discovered:  Ameli.Security.Tests
+[xUnit.net 00:00:00.14]   Starting:    Ameli.Security.Tests
+[xUnit.net 00:00:00.23]   Finished:    Ameli.Security.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

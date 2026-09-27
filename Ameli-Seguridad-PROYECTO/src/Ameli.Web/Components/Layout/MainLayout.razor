@@ -26,7 +26,11 @@
                 <NavLink class="enlace-menu" ActiveClass="activo" href="@Roles.Home(Role)" Match="NavLinkMatch.All"><span aria-hidden="true">⌂</span> Mi inicio</NavLink>
                 <NavLink class="enlace-menu" ActiveClass="activo" href="/mi-seguridad"><span aria-hidden="true">⌾</span> Mi seguridad</NavLink>
                 @if (Role == Roles.Administrator)
-                { <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/accesos"><span aria-hidden="true">♙</span> Usuarios y accesos</NavLink> }
+                {
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/usuarios">♙ Cuentas internas</NavLink>
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/auditoria">≡ Auditoría</NavLink>
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/accesos">⌾ Seguridad de cuentas</NavLink>
+                }
             }
             else
             {

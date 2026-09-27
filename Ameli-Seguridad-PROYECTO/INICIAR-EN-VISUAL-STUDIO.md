@@ -1,5 +1,7 @@
 # Abrir y ejecutar desde Visual Studio
 
+Esta versión se configura con las ventanas de Visual Studio. No necesitas PowerShell, CMD ni ejecutar archivos `.ps1`.
+
 ## 1. Abrir la solución
 
 Descomprime el ZIP en una carpeta y abre **Ameli.Seguridad.sln** con Visual Studio 2026 (18.0 o posterior). Espera a que termine la restauración de paquetes.
@@ -78,3 +80,5 @@ Se guardan como `.eml` en **src/Ameli.Api/App_Data/mail**, aproximadamente dentr
 - **Certificado no confiable:** revisa y acepta el certificado local de desarrollo desde el aviso de Visual Studio.
 
 El arranque automático de base y cuentas se habilita solo en **Development**. Producción conserva la configuración explícita de SQL, JWT, correo y migraciones descrita en la documentación técnica.
+
+Referencias oficiales: [Secretos de usuario en Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-10.0), [Varios proyectos de inicio](https://learn.microsoft.com/en-us/visualstudio/ide/how-to-set-multiple-startup-projects?view=visualstudio).

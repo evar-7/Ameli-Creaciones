@@ -2,3 +2,5 @@
 @attribute [Authorize(Roles = Roles.Administrator)]
 <PageTitle>Administración | Ameli</PageTitle>
 <Welcome Role="@Roles.Administrator" Title="Administración" />
+
+<div class="management-toolbar"><a class="boton primario" href="/administracion/usuarios">Cuentas internas</a><a class="boton secundario" href="/administracion/auditoria">Consultar auditoría</a></div>

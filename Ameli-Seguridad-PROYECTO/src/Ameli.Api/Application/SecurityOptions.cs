@@ -24,5 +24,9 @@ public sealed class SecurityFault(string code, string message, int status = 400)
 {
     public string Code { get; } = code;
     public int Status { get; } = status;
+    public Dictionary<string, string[]>? Errors { get; init; }
+    public Guid? ExistingId { get; init; }
+    public Ameli.Contracts.InternalAccountView? Current { get; init; }
+    public Ameli.Contracts.ApiError ToError() => new(Code, Message, Errors, ExistingId, Current);
 }
 

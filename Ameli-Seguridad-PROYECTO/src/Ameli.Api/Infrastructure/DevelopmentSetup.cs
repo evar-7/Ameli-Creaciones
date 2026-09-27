@@ -8,10 +8,15 @@ public static class DevelopmentSetup
 {
     public static void ConfigureSigningKey(ConfigurationManager config, IHostEnvironment environment)
     {
-        if (!environment.IsDevelopment() || !string.IsNullOrWhiteSpace(config["Jwt:SigningKey"])) return;
+        ConfigureKey(config, environment, "Jwt:SigningKey", "development-jwt.key");
+        ConfigureKey(config, environment, "Audit:IntegrityKey", "audit-integrity.key");
+    }
+    private static void ConfigureKey(ConfigurationManager config, IHostEnvironment environment, string setting, string filename)
+    {
+        if (!environment.IsDevelopment() || !string.IsNullOrWhiteSpace(config[setting])) return;
         var directory = Path.Combine(environment.ContentRootPath, "App_Data");
         Directory.CreateDirectory(directory);
-        var path = Path.Combine(directory, "development-jwt.key");
+        var path = Path.Combine(directory, filename);
         var fileOptions = new FileStreamOptions
         { Mode = FileMode.OpenOrCreate, Access = FileAccess.ReadWrite, Share = FileShare.None };
         if (!OperatingSystem.IsWindows()) fileOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
@@ -30,6 +35,6 @@ public static class DevelopmentSetup
             if (Convert.FromBase64String(key).Length < 32)
                 throw new InvalidOperationException("La clave local de desarrollo está dañada. Configura Jwt:SigningKey en los secretos del proyecto.");
         }
-        config.AddInMemoryCollection(new Dictionary<string, string?> { ["Jwt:SigningKey"] = key });
+        config.AddInMemoryCollection(new Dictionary<string, string?> { [setting] = key });
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ameli.Api.Infrastructure;
 
-public sealed class SecurityDbContext(DbContextOptions<SecurityDbContext> options) : DbContext(options)
+public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext> options, AuditIntegrity? integrity = null) : DbContext(options)
 {
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<AppRole> Roles => Set<AppRole>();
@@ -14,6 +14,8 @@ public sealed class SecurityDbContext(DbContextOptions<SecurityDbContext> option
     public DbSet<SecurityEvent> Events => Set<SecurityEvent>();
     public DbSet<OutgoingEmail> Emails => Set<OutgoingEmail>();
 
+    public DbSet<AuditChainHead> AuditHeads => Set<AuditChainHead>();
+    public bool AuditRecorded { get; private set; }
     protected override void OnModelCreating(ModelBuilder b)
     {
         b.Entity<AppRole>(e =>
@@ -26,6 +28,9 @@ public sealed class SecurityDbContext(DbContextOptions<SecurityDbContext> option
             e.ToTable("users"); e.HasKey(x => x.Id);
             e.Property(x => x.Name).HasMaxLength(160);
             e.Property(x => x.Email).HasMaxLength(254);
+            e.Property(x => x.Phone).HasMaxLength(8);
+            e.Property(x => x.Revision).IsConcurrencyToken();
+            e.HasIndex(x => new { x.IsInternal, x.IsActive, x.Name });
             e.Property(x => x.NormalizedEmail).HasMaxLength(254);
             e.Property(x => x.PasswordHash).HasMaxLength(512);
             e.Property(x => x.RoleName).HasMaxLength(30);
@@ -65,8 +70,19 @@ public sealed class SecurityDbContext(DbContextOptions<SecurityDbContext> option
             e.Property(x => x.ActorRole).HasMaxLength(30);
             e.Property(x => x.Origin).HasMaxLength(80);
             e.Property(x => x.CorrelationId).HasMaxLength(100);
-            e.Property(x => x.Detail).HasMaxLength(1500);
+            e.Property(x => x.Detail).HasMaxLength(6000);
+            e.Property(x => x.ActorName).HasMaxLength(160); e.Property(x => x.ActorEmail).HasMaxLength(254);
+            e.Property(x => x.Module).HasMaxLength(80); e.Property(x => x.Entity).HasMaxLength(80);
+            e.Property(x => x.EntityId).HasMaxLength(100);
+            e.Property(x => x.BeforeJson).HasMaxLength(4000); e.Property(x => x.AfterJson).HasMaxLength(4000);
+            e.Property(x => x.PreviousHash).HasMaxLength(64).IsUnicode(false); e.Property(x => x.IntegrityHash).HasMaxLength(64).IsUnicode(false);
+            e.HasIndex(x => new { x.Module, x.OccurredAtUtc }); e.HasIndex(x => new { x.ActorUserId, x.OccurredAtUtc });
             e.HasIndex(x => x.OccurredAtUtc);
+        });
+        b.Entity<AuditChainHead>(e => {
+            e.ToTable("audit_chain_head"); e.HasKey(x => x.Id); e.Property(x => x.Id).ValueGeneratedNever();
+            e.Property(x => x.LastHash).HasMaxLength(64).IsUnicode(false); e.Property(x => x.Signature).HasMaxLength(64).IsUnicode(false);
+            e.Property(x => x.KeyId).HasMaxLength(16).IsUnicode(false);
         });
         b.Entity<OutgoingEmail>(e =>
         {

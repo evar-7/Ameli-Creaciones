@@ -29,23 +29,7 @@
     <dialog class="access-dialog" id="access-@user.Id" aria-labelledby="title-@user.Id">
         <div class="dialog-heading"><h2 id="title-@user.Id">Acceso de @user.Name</h2><button type="button" data-close-dialog aria-label="Cerrar">×</button></div>
         <p>@user.Email</p>
-        @if (Roles.IsInternal(user.Role) && user.IsActive)
-        {
-            <form method="post" action="/account/users/role" class="formulario-apilado dialog-section">
-                <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" />
-                <label for="role-@user.Id">Rol y permisos<select id="role-@user.Id" name="role" required>
-                    <option value="@Roles.Administrator" selected="@(user.Role == Roles.Administrator)">Administrador</option>
-                    <option value="@Roles.Logistics" selected="@(user.Role == Roles.Logistics)">Logística</option>
-                </select></label>
-                <p class="help-text">Al cambiar el rol se cerrarán sus sesiones anteriores.</p><button class="boton primario" type="submit">Guardar rol</button>
-            </form>
-        }
-        <form method="post" action="/account/users/status" class="formulario-apilado dialog-section">
-            <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" /><input type="hidden" name="isActive" value="@(!user.IsActive ? "true" : "false")" />
-            <h3>@(user.IsActive ? "Desactivar cuenta" : "Reactivar cuenta")</h3>
-            <label for="reason-@user.Id">Motivo<textarea id="reason-@user.Id" name="reason" required minlength="5" maxlength="500" rows="2"></textarea></label>
-            <button class="boton secundario" type="submit">@(user.IsActive ? "Desactivar cuenta" : "Reactivar cuenta")</button>
-        </form>
+        <p><a class="boton primario" href="/administracion/usuarios/@user.Id">Editar datos, rol o estado</a></p>
         <form method="post" action="/account/users/revoke-sessions" class="formulario-apilado dialog-section">
             <AntiforgeryToken /><input type="hidden" name="userId" value="@user.Id" /><h3>Cerrar todas sus sesiones</h3>
             <label for="revoke-reason-@user.Id">Motivo<input id="revoke-reason-@user.Id" name="reason" required minlength="5" maxlength="500" /></label>

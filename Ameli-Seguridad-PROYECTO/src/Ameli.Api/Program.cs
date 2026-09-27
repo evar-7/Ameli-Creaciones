@@ -38,6 +38,7 @@ builder.Services.Configure<PasswordHasherOptions>(o => o.IterationCount = 210_00
 builder.Services.AddSingleton<DummyPassword>();
 builder.Services.AddScoped<SqlSecurityTransaction>();
 builder.Services.AddScoped<SecurityService>();
+builder.Services.AddSingleton<AuditIntegrity>();
 builder.Services.AddScoped<TokenIssuer>();
 builder.Services.AddScoped<IEmailDelivery, SmtpEmailDelivery>();
 builder.Services.AddHostedService<EmailOutboxWorker>();
@@ -74,7 +75,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers(o=>o.Filters.Add<AuditValidationFilter>()).ConfigureApiBehaviorOptions(o=>o.InvalidModelStateResponseFactory=c=>
+    new Microsoft.AspNetCore.Mvc.BadRequestObjectResult(new ApiError("validation","Hay campos obligatorios incompletos o valores inválidos.",
+        c.ModelState.Where(x=>x.Value?.Errors.Count>0).ToDictionary(x=>x.Key,x=>x.Value!.Errors.Select(e=>string.IsNullOrEmpty(e.ErrorMessage)?"Valor inválido.":e.ErrorMessage).ToArray()))));
 builder.Services.AddOpenApi();
 builder.Services.AddRateLimiter(o =>
 {
@@ -102,31 +105,38 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
     try { await next(); }
     catch (SecurityFault ex)
-    { context.Response.StatusCode = ex.Status; await context.Response.WriteAsJsonAsync(new ApiError(ex.Code, ex.Message)); }
+    { context.Response.StatusCode = ex.Status; await context.Response.WriteAsJsonAsync(ex.ToError()); }
     catch (Exception ex) when (ex is not OperationCanceledException)
     {
         app.Logger.LogError(ex, "Falló una solicitud de seguridad. Correlación {Id}.", context.TraceIdentifier);
         context.Response.StatusCode = 500;
         await context.Response.WriteAsJsonAsync(new ApiError("server_error", "No se pudo completar la operación. Intenta nuevamente."));
     }
+    finally
+    {
+        if(context.Response.StatusCode is >=400 and <500)
+        {
+            var db=context.RequestServices.GetRequiredService<SecurityDbContext>();
+            if(!db.AuditRecorded)
+            {
+                db.ChangeTracker.Clear();var origin=HttpOrigin.Create(context);
+                var id=Guid.TryParse(context.User.FindFirstValue("sub"),out var uid)?(Guid?)uid:null;
+                var user=id.HasValue?await db.Users.AsNoTracking().SingleOrDefaultAsync(u=>u.Id==id):null;
+                var path=context.Request.Path.Value??"";
+                var action=context.Response.StatusCode is 401 or 403?"http_access_denied":path.Contains("internal-accounts")?"internal_request_rejected":path.EndsWith("/role")?"role_change":path.EndsWith("/export")?"audit_export":"request_rejected";
+                if(path.EndsWith("/login"))action="login";
+                else if(path.Contains("password"))action=path.EndsWith("reset-password")?"password_reset":path.EndsWith("change-password")?"password_change":"password_recovery";
+                db.Events.Add(new SecurityEvent { OccurredAtUtc=DateTimeOffset.UtcNow,Action=action,Outcome=action=="login"?"Fallido":"Rechazado",Origin=origin.Ip,CorrelationId=origin.CorrelationId,
+                    ActorUserId=id,ActorName=user?.Name??"",ActorEmail=user?.Email??"",ActorRole=user?.RoleName??"",SessionId=Guid.TryParse(context.User.FindFirstValue("sid"),out var sid)?sid:null,
+                    SubjectUserId=context.Items["AuditSubjectId"] as Guid? ?? id,Entity="route",Detail=$"HTTP {context.Response.StatusCode}; {path}" });
+                await db.SaveChangesAsync(CancellationToken.None);
+            }
+        }
+    }
 });
 app.UseRouting();
 app.UseRateLimiter();
 app.UseAuthentication();
-app.Use(async (context, next) =>
-{
-    await next();
-    if (context.Response.StatusCode is 401 or 403)
-    {
-        var db = context.RequestServices.GetRequiredService<SecurityDbContext>();
-        var origin = HttpOrigin.Create(context);
-        db.Events.Add(new SecurityEvent { OccurredAtUtc = DateTimeOffset.UtcNow,
-            Action = "http_access_denied", Outcome = "Rechazado", Origin = origin.Ip, CorrelationId = origin.CorrelationId,
-            ActorUserId = Guid.TryParse(context.User.FindFirstValue("sub"), out var id) ? id : null,
-            ActorRole = context.User.FindFirstValue("role") ?? "", Detail = $"HTTP {context.Response.StatusCode}; {context.Request.Path}" });
-        await db.SaveChangesAsync(context.RequestAborted);
-    }
-});
 app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/health", async (SecurityDbContext db, CancellationToken ct) => await db.Database.CanConnectAsync(ct) ? Results.Ok(new { status = "ok" }) : Results.StatusCode(503));

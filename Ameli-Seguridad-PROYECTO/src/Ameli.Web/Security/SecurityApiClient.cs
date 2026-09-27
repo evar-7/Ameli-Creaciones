@@ -67,8 +67,9 @@ public sealed class SecurityApiClient(IHttpClientFactory clients, ApiSessionStor
             ApiError? error = null;
             try { error = await response.Content.ReadFromJsonAsync<ApiError>(ct); } catch (JsonException) { }
             throw new ApiFault((int)response.StatusCode, error?.Code ?? "invalid_request",
-                error?.Message ?? ((int)response.StatusCode == 401 ? "Sesión expirada." : "Revisa los campos e intenta nuevamente."));
+                error?.Message ?? ((int)response.StatusCode == 401 ? "Sesión expirada." : "Revisa los campos e intenta nuevamente."), error);
         }
+        if(typeof(T)==typeof(byte[]))return (T)(object)await response.Content.ReadAsByteArrayAsync(ct);
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent) return default!;
         return await response.Content.ReadFromJsonAsync<T>(ct) ?? throw new ApiFault(502, "empty_response", "No se recibió una respuesta válida.");
     }

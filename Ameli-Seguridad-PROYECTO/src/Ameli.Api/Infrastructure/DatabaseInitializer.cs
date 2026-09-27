@@ -13,6 +13,7 @@ public static class DatabaseInitializer
         using var scope = services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<SecurityDbContext>();
         await db.Database.MigrateAsync();
+        await db.InitializeAuditAsync();
         await using var tx = await scope.ServiceProvider.GetRequiredService<SqlSecurityTransaction>()
             .BeginAsync(["ameli:bootstrap"], CancellationToken.None);
         var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<AppUser>>();
@@ -46,7 +47,7 @@ public static class DatabaseInitializer
             if (!SecurityService.IsStrongPassword(accountPassword))
                 throw new InvalidOperationException("Completa las contraseñas de Bootstrap en Administrar secretos de usuario: 8-64 caracteres, mayúscula, minúscula, número y símbolo. No uses los marcadores de la plantilla.");
             var user = new AppUser { Name = name, Email = accountEmail.Trim(), NormalizedEmail = normalized,
-                RoleName = role, IsInternal = Roles.IsInternal(role), CreatedAtUtc = DateTimeOffset.UtcNow };
+                RoleName = role, IsInternal = Roles.IsInternal(role), CreatedAtUtc = DateTimeOffset.UtcNow, UpdatedAtUtc = DateTimeOffset.UtcNow };
             user.PasswordHash = hasher.HashPassword(user, accountPassword);
             db.Users.Add(user);
         }

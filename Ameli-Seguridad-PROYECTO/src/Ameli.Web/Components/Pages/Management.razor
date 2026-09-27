@@ -1,0 +1,66 @@
+@page "/administracion/usuarios"
+@page "/administracion/usuarios/nueva"
+@page "/administracion/usuarios/{Id:guid}"
+@page "/administracion/auditoria"
+@attribute [Authorize(Roles = Roles.Administrator)]
+@inject IHttpContextAccessor Accessor
+<PageTitle>@Title | Ameli</PageTitle>
+<PageHeading Eyebrow="Administración · Gestión interna y auditoría" Title="@Title" Description="Administra el equipo y consulta las operaciones de Ameli." />
+<div id="management" data-mode="@Mode" data-id="@Id">
+<form id="management-token" class="oculto"><AntiforgeryToken /></form>
+<div id="management-message" class="feedback oculto" role="status" tabindex="-1"></div>
+@if (Mode == "editor")
+{
+    <p><a href="/administracion/usuarios">← Volver a las cuentas</a></p>
+    <section class="panel editor-panel"><form id="account-editor" class="formulario-apilado" novalidate>
+        <input type="hidden" name="Revision" />
+        <div class="editor-grid">
+            <label>Nombre completo<input name="Name" required minlength="2" maxlength="160" autocomplete="name" aria-describedby="error-Name" /><small id="error-Name" class="field-error" data-error="Name"></small></label>
+            <label>Correo corporativo<input name="Email" required type="email" maxlength="254" autocomplete="email" aria-describedby="error-Email" /><small id="error-Email" class="field-error" data-error="Email"></small></label>
+            <label>Teléfono<input name="Phone" required inputmode="numeric" pattern="[0-9]{8}" maxlength="8" autocomplete="tel" aria-describedby="error-Phone" /><small>Exactamente 8 dígitos.</small><small id="error-Phone" class="field-error" data-error="Phone"></small></label>
+            <label>Rol<select name="Role" required aria-describedby="error-Role"><option value="">Seleccionar rol</option><option value="Administrador">Administrador</option><option value="Logística">Logística</option></select><small id="error-Role" class="field-error" data-error="Role"></small></label>
+            <label>Estado<select name="IsActive" aria-describedby="error-IsActive"><option value="true">Activo</option><option value="false">Inactivo</option></select><small id="error-IsActive" class="field-error" data-error="IsActive"></small></label>
+            <label>@(Id.HasValue?"Nueva contraseña (opcional)":"Contraseña inicial")<div class="campo-clave"><input id="admin-new-password" name="Password" type="password" required="@(!Id.HasValue)" minlength="8" maxlength="64" autocomplete="new-password" aria-describedby="password-rules error-Password" placeholder="@(Id.HasValue?"Dejar en blanco para conservarla":"")" /><button type="button" data-ver-clave aria-controls="admin-new-password" aria-label="Mostrar contraseña">Ver</button></div><small id="error-Password" class="field-error" data-error="Password"></small></label>
+            <label>@(Id.HasValue?"Confirmar nueva contraseña":"Confirmar contraseña")<div class="campo-clave"><input id="admin-confirm-password" name="ConfirmPassword" type="password" required="@(!Id.HasValue)" minlength="8" maxlength="64" autocomplete="new-password" aria-describedby="password-rules error-ConfirmPassword" placeholder="@(Id.HasValue?"Repite la nueva contraseña":"")" /><button type="button" data-ver-clave aria-controls="admin-confirm-password" aria-label="Mostrar contraseña">Ver</button></div><small id="error-ConfirmPassword" class="field-error" data-error="ConfirmPassword"></small></label>
+        </div>
+        @if(Id.HasValue){<label>Motivo del cambio de estado<textarea name="Reason" maxlength="500" rows="2" aria-describedby="error-Reason"></textarea><small>Obligatorio al activar o desactivar.</small><small id="error-Reason" class="field-error" data-error="Reason"></small></label><p class="help-text" id="password-rules">Para conservar la contraseña actual, deja ambos campos de contraseña vacíos. Si asignas una nueva, debe tener de 8 a 64 caracteres, con mayúscula, minúscula, número y símbolo. Cambiar contraseña, rol, correo o estado cierra las sesiones afectadas.</p>}
+        else {<p class="help-text" id="password-rules">La contraseña la asigna el administrador. Debe tener de 8 a 64 caracteres, con mayúscula, minúscula, número y símbolo. Se almacena únicamente como hash; nunca en texto ni Base64.</p>}
+        <div class="form-actions"><button type="submit" class="boton primario" id="save-account">@(Id.HasValue?"Guardar cambios":"Crear cuenta")</button><a class="boton secundario" href="/administracion/usuarios">Cancelar</a></div>
+        <section id="account-conflict" class="conflict-box oculto"><h2>La cuenta cambió mientras la editabas</h2><p>Tus campos siguen en el formulario. Revisa esta versión antes de cargarla y aplicar tus cambios.</p><pre id="current-account"></pre><button type="button" class="boton secundario" id="load-current">Cargar versión vigente</button></section>
+    </form></section>
+    <dialog id="state-confirm" class="access-dialog"><h2>¿Está seguro?</h2><p>Se cambiará el estado de esta cuenta. Al desactivarla se cerrarán sus sesiones y no podrá ingresar.</p><div class="form-actions"><button class="boton secundario" type="button" data-cancel-dialog>Cancelar</button><button class="boton primario" type="button" id="confirm-state">Confirmar cambio</button></div></dialog>
+}
+else
+{
+    @if(Mode=="accounts"){<div class="management-toolbar"><span>Solo cuentas internas · Ordenadas por nombre</span><a class="boton primario" href="/administracion/usuarios/nueva">+ Nueva cuenta</a></div>}
+    <form id="management-filters" class="panel management-filters">
+    @if(Mode=="accounts")
+    {
+        <label>Nombre o correo<input name="search" type="search" maxlength="160" placeholder="Buscar en el equipo" /></label>
+        <label>Estado<select name="isActive"><option value="">Todos</option><option value="true">Activo</option><option value="false">Inactivo</option></select></label>
+    }
+    else
+    {
+        <label>Desde (UTC)<input name="from" type="date" /></label><label>Hasta (UTC)<input name="to" type="date" /></label>
+        <label>Usuario<input name="user" maxlength="254" placeholder="Nombre, correo o ID" /></label>
+        <label>Rol<select name="role"><option value="">Todos</option><option>Administrador</option><option>Logística</option><option>Cliente</option></select></label>
+        <label>Módulo<input name="module" maxlength="80" list="modules" placeholder="Todos" /></label><datalist id="modules"><option value="Seguridad"></option><option value="Gestión interna"></option><option value="Auditoría"></option><option value="Inventario"></option></datalist>
+        <label>Acción<input name="action" maxlength="80" placeholder="Ej.: login" list="actions" /></label>
+        <datalist id="actions"><option value="login"></option><option value="account_locked"></option><option value="password_recovery"></option><option value="password_reset"></option><option value="internal_account_create"></option><option value="internal_account_update"></option><option value="role_change"></option><option value="http_access_denied"></option><option value="audit_export"></option></datalist>
+        <label>Resultado<select name="outcome"><option value="">Todos</option><option>Exitoso</option><option>Fallido</option><option>Rechazado</option><option>Aceptado</option><option>Limitado</option></select></label>
+        <label>IP de origen<input name="ip" maxlength="80" placeholder="Dirección exacta" /></label>
+    }
+        <div class="form-actions"><button class="boton primario" type="submit">Consultar</button><button class="boton secundario" type="button" id="clear-filters">Limpiar filtros</button></div>
+    </form>
+    @if(Mode=="audit"){<div class="management-toolbar"><span>Solo lectura · Más recientes primero · Fechas UTC</span><div class="form-actions"><button class="boton secundario" type="button" id="verify-audit">Verificar integridad</button><button class="boton primario" type="button" id="export-audit">Exportar registros</button></div></div>}
+    <section class="panel" id="management-results" aria-live="polite"><p class="estado-vacio">Cargando registros…</p></section>
+    @if(Mode=="audit"){<dialog class="access-dialog" id="export-confirm"><h2>Confirmar exportación</h2><p>Se exportarán todos los resultados de estos filtros, hasta 10 000 registros por archivo.</p><pre id="export-filters"></pre><p>El ZIP incluye los eventos y un manifiesto con huella de integridad. La exportación quedará registrada.</p><div class="form-actions"><button type="button" class="boton secundario" data-cancel-dialog>Cancelar</button><button type="button" class="boton primario" id="confirm-export">Confirmar y descargar</button></div></dialog>}
+}
+<noscript><div class="feedback error">Activa JavaScript para consultar y gestionar estas cuentas.</div></noscript>
+</div>
+@code {
+    [Parameter] public Guid? Id { get; set; }
+    private string Path => Accessor.HttpContext?.Request.Path.Value ?? "";
+    private string Mode => Path.EndsWith("auditoria")?"audit":Id.HasValue||Path.EndsWith("nueva")?"editor":"accounts";
+    private string Title => Mode=="audit"?"Auditoría":Mode=="accounts"?"Cuentas internas":Id.HasValue?"Editar cuenta interna":"Nueva cuenta interna";
+}

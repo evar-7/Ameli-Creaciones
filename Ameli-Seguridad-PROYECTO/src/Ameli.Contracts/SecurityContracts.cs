@@ -74,4 +74,4 @@ public sealed record SessionStatus(UserView User, SessionView Session);
 public sealed record TokenResponse(string AccessToken, string RefreshToken,
     DateTimeOffset AccessTokenExpiresAtUtc, SessionStatus Status);
 public sealed record ApiMessage(string Message);
-public sealed record ApiError(string Code, string Message);
+public sealed record ApiError(string Code, string Message, Dictionary<string, string[]>? Errors = null, Guid? ExistingId = null, InternalAccountView? Current = null);

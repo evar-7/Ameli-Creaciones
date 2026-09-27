@@ -15,9 +15,9 @@ public sealed class DummyPassword(IPasswordHasher<AppUser> hasher)
     public string Hash { get; } = hasher.HashPassword(new AppUser(), TokenIssuer.RandomToken());
 }
 
-public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction transactions,
+public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTransaction transactions,
     IPasswordHasher<AppUser> passwords, DummyPassword dummy, TokenIssuer tokens,
-    IDataProtectionProvider protection, IOptions<SecurityOptions> options, TimeProvider clock)
+    IDataProtectionProvider protection, IOptions<SecurityOptions> options, TimeProvider clock, AuditIntegrity signer, ILogger<SecurityService> logger)
 {
     private readonly SecurityOptions settings = options.Value;
     private readonly IDataProtector emailProtector = protection.CreateProtector("Ameli.EmailOutbox.v1");
@@ -37,7 +37,7 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         if (userId is null)
         {
             passwords.VerifyHashedPassword(dummy.User, dummy.Hash, request.Password);
-            Audit("login", "Fallido", origin);
+            Audit("login", "Fallido", origin, detail: "Credenciales no aceptadas");
             await db.SaveChangesAsync(ct);
             throw new SecurityFault("invalid_login", LoginMessage, 401);
         }
@@ -58,7 +58,8 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
                 await RevokeAllAsync(user, ct);
                 QueueEmail(user.Email, "Bloqueo temporal de tu cuenta Ameli",
                     $"Detectamos cinco intentos fallidos. Tu acceso está bloqueado durante {settings.LockoutMinutes} minutos. Si no fuiste tú, puedes recuperar tu contraseña desde el sitio oficial.");
-                Audit("account_locked", "Exitoso", origin, user, detail: $"Hasta UTC: {user.LockedUntilUtc:O}");
+                var e = Audit("account_locked", "Exitoso", origin, user, detail: "Umbral de intentos alcanzado");
+                e.FailedAttempts = user.FailedAccessCount; e.LockoutStartedAtUtc = Now; e.LockedUntilUtc = user.LockedUntilUtc;
             }
             throw await FailAsync(tx, "login", "invalid_login", LoginMessage, origin, user, ct, 401);
         }
@@ -75,7 +76,7 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         };
         db.Sessions.Add(session);
         var response = RotateTokens(user, session);
-        Audit("login", "Exitoso", origin, user, detail: $"Sesión: {session.Id}");
+        Audit("login", "Exitoso", origin, user).SessionId = session.Id;
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct);
         return response;
     }
@@ -95,7 +96,7 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         db.RecoveryAttempts.Add(new RecoveryAttempt { AccountKey = key, Origin = origin.Ip, CreatedAtUtc = Now });
         var user = userId.HasValue ? await db.Users.SingleAsync(x => x.Id == userId, ct) : null;
         if (accountAttempts >= settings.RecoveryAccountLimit || originAttempts >= settings.RecoveryOriginLimit)
-            Audit("password_recovery", "Limitado", origin);
+            Audit("password_recovery", "Limitado", origin, user);
         else if (user is { IsActive: true } && await IsRoleActiveAsync(user.RoleName, ct))
         {
             // Requesting a newer link invalidates older links without changing the password.
@@ -108,7 +109,7 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
             QueueEmail(user.Email, "Recupera tu acceso a Ameli", $"Abre este enlace para elegir una contraseña. Caduca en {settings.ResetMinutes} minutos y solo se puede usar una vez.\n\n{url}\n\nSi no solicitaste el cambio, ignora este correo.");
             Audit("password_recovery", "Aceptado", origin, user);
         }
-        else Audit("password_recovery", "Aceptado", origin);
+        else Audit("password_recovery", "Fallido", origin, user, detail: "Recuperación no disponible");
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct);
     }
 
@@ -126,7 +127,6 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request, RequestOrigin origin, CancellationToken ct)
     {
-        ValidateNewPassword(request.Password, request.ConfirmPassword);
         await using var tx = await transactions.BeginAsync([SqlSecurityTransaction.User(request.UserId)], ct);
         var hash = TokenIssuer.Hash(request.Token);
         var reset = await db.PasswordResets.SingleOrDefaultAsync(x => x.UserId == request.UserId && x.TokenHash == hash, ct);
@@ -134,6 +134,8 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         if (user is not { IsActive: true } || reset is null || reset.UsedAtUtc is not null || reset.ExpiresAtUtc <= Now
             || !await IsRoleActiveAsync(user.RoleName, ct))
             throw await FailAsync(tx, "password_reset", "invalid_reset", "El enlace no es válido, ya fue utilizado o expiró. Solicita uno nuevo.", origin, user, ct);
+        try { ValidateNewPassword(request.Password, request.ConfirmPassword); }
+        catch (SecurityFault fault) { throw await FailAsync(tx, "password_reset", fault.Code, fault.Message, origin, user, ct); }
         user.PasswordHash = passwords.HashPassword(user, request.Password);
         user.FailedAccessCount = 0; user.LockedUntilUtc = null;
         foreach (var pending in await db.PasswordResets.Where(x => x.UserId == user.Id && x.UsedAtUtc == null).ToListAsync(ct))
@@ -199,9 +201,10 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
     }
     public async Task ChangePasswordAsync(Actor actor, ChangePasswordRequest request, RequestOrigin origin, CancellationToken ct)
     {
-        ValidateNewPassword(request.Password, request.ConfirmPassword);
         await using var tx = await transactions.BeginAsync([SqlSecurityTransaction.User(actor.UserId)], ct);
         var (user, _) = await RequireActorAsync(actor, ct);
+        try { ValidateNewPassword(request.Password, request.ConfirmPassword); }
+        catch (SecurityFault fault) { throw await FailAsync(tx, "password_change", fault.Code, fault.Message, origin, user, ct); }
         if (passwords.VerifyHashedPassword(user, user.PasswordHash, request.CurrentPassword) == PasswordVerificationResult.Failed)
             throw await FailAsync(tx, "password_change", "invalid_password", "No se pudo cambiar la contraseña. Revisa la contraseña actual.", origin, user, ct);
         user.PasswordHash = passwords.HashPassword(user, request.Password);
@@ -217,7 +220,7 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         await using var tx = await transactions.BeginAsync([SqlSecurityTransaction.User(actor.UserId)], ct);
         var (admin, _) = await RequireActorAsync(actor, ct);
         if (admin.RoleName != Roles.Administrator) throw new SecurityFault("forbidden", "Acceso denegado.", 403);
-        var users = db.Users.AsNoTracking().AsQueryable();
+        var users = db.Users.AsNoTracking().Where(x => x.IsInternal);
         if (!string.IsNullOrWhiteSpace(query)) users = users.Where(x => x.Name.Contains(query) || x.Email.Contains(query));
         var results = await users.OrderBy(x => x.Name).Take(200).ToListAsync(ct);
         await tx.CommitAsync(ct);
@@ -268,9 +271,12 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
         if (target is null) throw await FailAsync(tx, action, "not_found", "Cuenta no encontrada.", origin, admin, ct, 404);
         try
         {
+            var before = Snapshot(target);
             var detail = await change(target);
+            target.Revision = Guid.NewGuid(); target.UpdatedAtUtc = Now;
             currentSession.LastActivityAtUtc = Now;
-            Audit(action, "Exitoso", origin, admin, target.Id, detail, actorRole);
+            var e = Audit(action, "Exitoso", origin, admin, target.Id, detail, actorRole);
+            e.BeforeJson = before; e.AfterJson = Snapshot(target); e.SessionId = actor.SessionId;
         }
         catch (SecurityFault fault)
         {
@@ -321,17 +327,18 @@ public sealed class SecurityService(SecurityDbContext db, SqlSecurityTransaction
     }
     private void QueueEmail(string recipient, string subject, string body) => db.Emails.Add(new OutgoingEmail
     { Recipient = recipient, Subject = subject, ProtectedBody = emailProtector.Protect(body), CreatedAtUtc = Now, NextAttemptAtUtc = Now });
-    private void Audit(string action, string outcome, RequestOrigin origin, AppUser? actor = null, Guid? subjectId = null, string detail = "", string? actorRole = null) =>
-        db.Events.Add(new SecurityEvent
-        {
-            OccurredAtUtc = Now, ActorUserId = actor?.Id, SubjectUserId = subjectId ?? actor?.Id,
-            ActorRole = actorRole ?? actor?.RoleName ?? "", Action = action, Outcome = outcome,
-            Origin = origin.Ip, CorrelationId = origin.CorrelationId, Detail = detail
-        });
+    private SecurityEvent Audit(string action, string outcome, RequestOrigin origin, AppUser? actor = null, Guid? subjectId = null, string detail = "", string? actorRole = null)
+    {
+        var e = new SecurityEvent { OccurredAtUtc = Now, ActorUserId = actor?.Id, SubjectUserId = subjectId ?? actor?.Id,
+            ActorName = actor?.Name ?? "", ActorEmail = actor?.Email ?? "", ActorRole = actorRole ?? actor?.RoleName ?? "",
+            Action = action, Outcome = outcome, Origin = origin.Ip, CorrelationId = origin.CorrelationId, Detail = detail,
+            EntityId = (subjectId ?? actor?.Id)?.ToString() ?? "" };
+        db.Events.Add(e); return e;
+    }
     private async Task<SecurityFault> FailAsync(IDbContextTransaction tx, string action, string code, string message,
         RequestOrigin origin, AppUser? user, CancellationToken ct, int status = 400)
     {
-        Audit(action, "Rechazado", origin, user, detail: code);
+        Audit(action, action == "login" ? "Fallido" : "Rechazado", origin, user, detail: action == "login" ? "Credenciales no aceptadas" : code);
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct);
         return new SecurityFault(code, message, status);
     }
