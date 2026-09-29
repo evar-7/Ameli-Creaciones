@@ -36,7 +36,7 @@ public sealed class TestApiFactory(TestClock clock) : WebApplicationFactory<Prog
             services.RemoveAll<IDataProtectionProvider>();
             services.AddSingleton<IDataProtectionProvider>(new EphemeralDataProtectionProvider());
             foreach (var descriptor in services.Where(d => d.ImplementationType == typeof(EmailOutboxWorker)).ToArray())
-                services.Remove(descriptor); // Tests inspect the encrypted outbox; never send mail.
+                services.Remove(descriptor); // Tests inspect the encrypted outbox; never send mail
         });
     }
 }
@@ -72,7 +72,8 @@ public sealed class SecurityFixture : IAsyncLifetime
         {
             await db.Emails.ExecuteDeleteAsync(); await db.Events.ExecuteDeleteAsync(); await db.AuditHeads.ExecuteDeleteAsync();
             await db.RecoveryAttempts.ExecuteDeleteAsync(); await db.PasswordResets.ExecuteDeleteAsync();
-            await db.Sessions.ExecuteDeleteAsync(); await db.Users.ExecuteDeleteAsync();
+            await db.Sessions.ExecuteDeleteAsync(); await db.BaseProducts.ExecuteDeleteAsync(); await db.Suppliers.ExecuteDeleteAsync(); await db.Categories.ExecuteDeleteAsync();
+            await db.Users.ExecuteDeleteAsync();
             await db.Roles.ExecuteUpdateAsync(s => s.SetProperty(r => r.IsActive, true));
         });
         Admin = await AddUser("admin@ameli.test", Roles.Administrator);

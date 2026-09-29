@@ -95,5 +95,6 @@ app.MapGet("/", (HttpContext context) => Results.Redirect(context.User.Identity?
     ? Roles.Home(context.User.FindFirstValue(ClaimTypes.Role) ?? Roles.Client) : "/ingresar"));
 app.MapAccountEndpoints();
 app.MapManagementEndpoints();
+app.MapCatalogEndpoints();
 app.MapRazorComponents<App>();
 app.Run();

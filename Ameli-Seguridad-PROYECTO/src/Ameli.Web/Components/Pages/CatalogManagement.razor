@@ -1,0 +1,111 @@
+@page "/administracion/catalogos/{Section}"
+@attribute [Authorize(Roles = Roles.Administrator)]
+
+<PageTitle>@Title | Ameli</PageTitle>
+<PageHeading Eyebrow="Administración · Catálogos base" Title="@Title" Description="@Description" />
+<div id="catalog-management" data-kind="@Kind" data-title="@Title">
+    <form id="catalog-token" class="oculto"><AntiforgeryToken /></form>
+    <div id="catalog-message" class="feedback oculto" role="status" tabindex="-1"></div>
+
+    <section class="panel editor-panel catalog-editor-panel">
+        <div class="management-toolbar"><span>@Intro</span></div>
+        <form id="catalog-editor" class="formulario-apilado" novalidate>
+            @if (IsCategory)
+            {
+                <div class="editor-grid catalog-editor-grid simple">
+                    <label>Nombre de la categoría<input name="Name" required minlength="2" maxlength="120" placeholder="Ej.: Accesorios" aria-describedby="error-Name" /><small id="error-Name" class="field-error" data-error="Name"></small></label>
+                    <label>Estado<select name="IsActive" aria-describedby="error-IsActive"><option value="true">Activo</option><option value="false">Inactivo</option></select><small id="error-IsActive" class="field-error" data-error="IsActive"></small></label>
+                </div>
+                <label>Descripción<textarea name="Description" rows="3" maxlength="500" placeholder="Describe el uso o alcance de la categoría" aria-describedby="error-Description"></textarea><small id="error-Description" class="field-error" data-error="Description"></small></label>
+            }
+            else if (IsSupplier)
+            {
+                <div class="editor-grid catalog-editor-grid">
+                    <label>Proveedor<input name="Name" required minlength="2" maxlength="160" placeholder="Ej.: Taller Lavanda" aria-describedby="error-Name" /><small id="error-Name" class="field-error" data-error="Name"></small></label>
+                    <label>Persona de contacto<input name="ContactName" maxlength="160" placeholder="Nombre de contacto" aria-describedby="error-ContactName" /><small id="error-ContactName" class="field-error" data-error="ContactName"></small></label>
+                    <label>Correo<input name="Email" type="email" required maxlength="254" placeholder="proveedor@ejemplo.test" aria-describedby="error-Email" /><small id="error-Email" class="field-error" data-error="Email"></small></label>
+                    <label>Teléfono<input name="Phone" required inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="88888888" aria-describedby="error-Phone" /><small id="error-Phone" class="field-error" data-error="Phone"></small></label>
+                    <label>Estado<select name="IsActive" aria-describedby="error-IsActive"><option value="true">Activo</option><option value="false">Inactivo</option></select><small id="error-IsActive" class="field-error" data-error="IsActive"></small></label>
+                </div>
+                <label>Notas<textarea name="Notes" rows="3" maxlength="500" placeholder="Detalles relevantes de compra o entrega" aria-describedby="error-Notes"></textarea><small id="error-Notes" class="field-error" data-error="Notes"></small></label>
+            }
+            else
+            {
+                <div class="editor-grid catalog-editor-grid products">
+                    <label>Producto base<input name="Name" required minlength="2" maxlength="160" placeholder="Ej.: Arnés confort lavanda" aria-describedby="error-Name" /><small id="error-Name" class="field-error" data-error="Name"></small></label>
+                    <label>Categoría<select name="CategoryId" required data-lookup="categories" aria-describedby="error-CategoryId"><option value="">Seleccionar categoría</option></select><small id="error-CategoryId" class="field-error" data-error="CategoryId"></small></label>
+                    <label>Proveedor<select name="SupplierId" required data-lookup="suppliers" aria-describedby="error-SupplierId"><option value="">Seleccionar proveedor</option></select><small id="error-SupplierId" class="field-error" data-error="SupplierId"></small></label>
+                    <label>Tipo<select name="Species" required aria-describedby="error-Species"><option value="">Seleccionar tipo</option><option>Perro</option><option>Gato</option><option>Todos</option></select><small id="error-Species" class="field-error" data-error="Species"></small></label>
+                    <label>Material<input name="Material" maxlength="80" placeholder="Algodón, cuero, lona…" aria-describedby="error-Material" /><small id="error-Material" class="field-error" data-error="Material"></small></label>
+                    <label>Ícono visual<input name="Icon" maxlength="8" placeholder="🦮" aria-describedby="error-Icon" /><small>Usa un emoji corto para la tarjeta.</small><small id="error-Icon" class="field-error" data-error="Icon"></small></label>
+                    <label>Precio<input name="UnitPrice" type="number" min="0" step="0.01" required placeholder="12900" aria-describedby="error-UnitPrice" /><small id="error-UnitPrice" class="field-error" data-error="UnitPrice"></small></label>
+                    <label>Existencias<input name="StockQuantity" type="number" min="0" step="1" required placeholder="18" aria-describedby="error-StockQuantity" /><small id="error-StockQuantity" class="field-error" data-error="StockQuantity"></small></label>
+                    <label>Estado<select name="IsActive" aria-describedby="error-IsActive"><option value="true">Activo</option><option value="false">Inactivo</option></select><small id="error-IsActive" class="field-error" data-error="IsActive"></small></label>
+                </div>
+                <label>Descripción<textarea name="Description" rows="3" maxlength="1000" placeholder="Describe el producto base, su uso o personalización" aria-describedby="error-Description"></textarea><small id="error-Description" class="field-error" data-error="Description"></small></label>
+            }
+            <div class="form-actions"><button type="submit" class="boton primario">Registrar</button></div>
+        </form>
+    </section>
+
+    <section class="management-toolbar"><span>@FilterHint</span></section>
+    <form id="catalog-filters" class="panel management-filters @(IsProduct ? "catalog-filter-panel" : string.Empty)">
+        @if (IsCategory)
+        {
+            <label>Nombre o descripción<input name="search" type="search" maxlength="120" placeholder="Buscar categoría" /></label>
+            <label>Estado<select name="isActive"><option value="">Todos</option><option value="true">Activo</option><option value="false">Inactivo</option></select></label>
+        }
+        else if (IsSupplier)
+        {
+            <label>Proveedor, contacto o correo<input name="search" type="search" maxlength="160" placeholder="Buscar proveedor" /></label>
+            <label>Estado<select name="isActive"><option value="">Todos</option><option value="true">Activo</option><option value="false">Inactivo</option></select></label>
+        }
+        else
+        {
+            <label class="buscador grande"><span>⌕</span><input name="search" type="search" maxlength="160" placeholder="Buscar productos, materiales, categorías o proveedores" /></label>
+            <select name="categoryId" data-lookup="categories"><option value="">Todas las categorías</option></select>
+            <select name="supplierId" data-lookup="suppliers"><option value="">Todos los proveedores</option></select>
+            <select name="species"><option value="">Todos los tipos</option><option>Perro</option><option>Gato</option><option>Todos</option></select>
+            <select name="isActive"><option value="">Todos los estados</option><option value="true">Activo</option><option value="false">Inactivo</option></select>
+        }
+        <div class="form-actions"><button type="submit" class="boton primario">Filtrar</button><button id="clear-catalog-filters" type="button" class="boton secundario">Limpiar</button></div>
+    </form>
+    <section id="catalog-results" class="panel"></section>
+</div>
+
+@code {
+    [Parameter] public string Section { get; set; } = "productos";
+    private string Kind => Section.Trim().ToLowerInvariant() switch
+    {
+        "categorias" => "categories",
+        "proveedores" => "suppliers",
+        _ => "products"
+    };
+    private bool IsCategory => Kind == "categories";
+    private bool IsSupplier => Kind == "suppliers";
+    private bool IsProduct => Kind == "products";
+    private string Title => Kind switch
+    {
+        "categories" => "Categorías base",
+        "suppliers" => "Proveedores base",
+        _ => "Productos base"
+    };
+    private string Description => Kind switch
+    {
+        "categories" => "Registra y consulta las categorías utilizadas por el catálogo de productos.",
+        "suppliers" => "Administra los proveedores que abastecen los productos base de Ameli.",
+        _ => "Registra y filtra los productos base reutilizando la plantilla visual del catálogo público."
+    };
+    private string Intro => Kind switch
+    {
+        "categories" => "Crea nuevas categorías para organizar el catálogo base.",
+        "suppliers" => "Registra proveedores con sus datos de contacto y estado.",
+        _ => "Registra productos base con categoría, proveedor, tipo, precio e inventario mostrado."
+    };
+    private string FilterHint => Kind switch
+    {
+        "categories" => "Filtra por nombre o estado.",
+        "suppliers" => "Filtra por proveedor, contacto, correo o estado.",
+        _ => "Usa los filtros del catálogo para encontrar productos base rápidamente."
+    };
+}

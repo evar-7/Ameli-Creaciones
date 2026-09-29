@@ -8,6 +8,9 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
 {
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<AppRole> Roles => Set<AppRole>();
+    public DbSet<ProductCategory> Categories => Set<ProductCategory>();
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
+    public DbSet<BaseProduct> BaseProducts => Set<BaseProduct>();
     public DbSet<AuthSession> Sessions => Set<AuthSession>();
     public DbSet<PasswordReset> PasswordResets => Set<PasswordReset>();
     public DbSet<RecoveryAttempt> RecoveryAttempts => Set<RecoveryAttempt>();
@@ -36,6 +39,45 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
             e.Property(x => x.RoleName).HasMaxLength(30);
             e.HasIndex(x => x.NormalizedEmail).IsUnique();
             e.HasOne<AppRole>().WithMany().HasForeignKey(x => x.RoleName).OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<ProductCategory>(e =>
+        {
+            e.ToTable("product_categories"); e.HasKey(x => x.Id);
+            e.Property(x => x.Name).HasMaxLength(120);
+            e.Property(x => x.NormalizedName).HasMaxLength(120).IsUnicode(false);
+            e.Property(x => x.Description).HasMaxLength(500);
+            e.HasIndex(x => x.NormalizedName).IsUnique();
+            e.HasIndex(x => new { x.IsActive, x.Name });
+        });
+        b.Entity<Supplier>(e =>
+        {
+            e.ToTable("suppliers"); e.HasKey(x => x.Id);
+            e.Property(x => x.Name).HasMaxLength(160);
+            e.Property(x => x.NormalizedName).HasMaxLength(160).IsUnicode(false);
+            e.Property(x => x.ContactName).HasMaxLength(160);
+            e.Property(x => x.Email).HasMaxLength(254);
+            e.Property(x => x.NormalizedEmail).HasMaxLength(254).IsUnicode(false);
+            e.Property(x => x.Phone).HasMaxLength(8);
+            e.Property(x => x.Notes).HasMaxLength(500);
+            e.HasIndex(x => x.NormalizedName).IsUnique();
+            e.HasIndex(x => x.NormalizedEmail).IsUnique();
+            e.HasIndex(x => new { x.IsActive, x.Name });
+        });
+        b.Entity<BaseProduct>(e =>
+        {
+            e.ToTable("base_products"); e.HasKey(x => x.Id);
+            e.Property(x => x.Name).HasMaxLength(160);
+            e.Property(x => x.NormalizedName).HasMaxLength(160).IsUnicode(false);
+            e.Property(x => x.Description).HasMaxLength(1000);
+            e.Property(x => x.Species).HasMaxLength(10);
+            e.Property(x => x.Material).HasMaxLength(80);
+            e.Property(x => x.Icon).HasMaxLength(8);
+            e.Property(x => x.UnitPrice).HasPrecision(18, 2);
+            e.HasIndex(x => x.NormalizedName).IsUnique();
+            e.HasIndex(x => new { x.CategoryId, x.SupplierId, x.IsActive });
+            e.HasIndex(x => new { x.Species, x.IsActive, x.Name });
+            e.HasOne<ProductCategory>().WithMany().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<Supplier>().WithMany().HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
         });
         b.Entity<AuthSession>(e =>
         {
