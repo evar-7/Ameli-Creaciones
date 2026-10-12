@@ -25,9 +25,7 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
     public const string RecoveryMessage = "Si la cuenta puede recuperar el acceso, recibirás instrucciones en tu correo.";
     private DateTimeOffset Now => clock.GetUtcNow();
     public static string NormalizeEmail(string email) => email.Trim().ToUpperInvariant();
-    public static bool IsStrongPassword(string password) => password.Length is >= 8 and <= 64
-        && password.Any(char.IsUpper) && password.Any(char.IsLower)
-        && password.Any(char.IsDigit) && password.Any(c => !char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c));
+    public static bool IsStrongPassword(string password) => PasswordPolicy.UnmetRequirements(password).Length == 0;
 
     public async Task<TokenResponse> LoginAsync(LoginRequest request, RequestOrigin origin, CancellationToken ct)
     {
@@ -43,12 +41,15 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
         }
         await using var tx = await transactions.BeginAsync([SqlSecurityTransaction.User(userId.Value)], ct);
         var user = await db.Users.SingleAsync(x => x.Id == userId, ct);
-        var verified = passwords.VerifyHashedPassword(user, user.PasswordHash, request.Password);
-        if (!user.IsActive || !await IsRoleActiveAsync(user.RoleName, ct) || user.LockedUntilUtc > Now)
+        if (!user.IsActive || !await IsRoleActiveAsync(user.RoleName, ct))
             throw await FailAsync(tx, "login", "invalid_login", LoginMessage, origin, user, ct, 401);
+        if (user.LockedUntilUtc > Now)
+            throw await FailAsync(tx, "login", "account_locked", "Tu cuenta está bloqueada temporalmente.",
+                origin, user, ct, 423, lockedUntilUtc: user.LockedUntilUtc);
 
         if (user.LockedUntilUtc is not null && user.LockedUntilUtc <= Now)
         { user.LockedUntilUtc = null; user.FailedAccessCount = 0; }
+        var verified = passwords.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (verified == PasswordVerificationResult.Failed)
         {
             user.FailedAccessCount++;
@@ -57,9 +58,11 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
                 user.LockedUntilUtc = Now.AddMinutes(settings.LockoutMinutes);
                 await RevokeAllAsync(user, ct);
                 QueueEmail(user.Email, "Bloqueo temporal de tu cuenta Ameli",
-                    $"Detectamos cinco intentos fallidos. Tu acceso está bloqueado durante {settings.LockoutMinutes} minutos. Si no fuiste tú, puedes recuperar tu contraseña desde el sitio oficial.");
+                    $"Detectamos {settings.FailedAttempts} intentos fallidos. Tu acceso está bloqueado durante {settings.LockoutMinutes} minutos. Si no fuiste tú, puedes recuperar tu contraseña desde el sitio oficial.");
                 var e = Audit("account_locked", "Exitoso", origin, user, detail: "Umbral de intentos alcanzado");
                 e.FailedAttempts = user.FailedAccessCount; e.LockoutStartedAtUtc = Now; e.LockedUntilUtc = user.LockedUntilUtc;
+                throw await FailAsync(tx, "login", "account_locked", "Tu cuenta está bloqueada temporalmente.",
+                    origin, user, ct, 423, lockedUntilUtc: user.LockedUntilUtc);
             }
             throw await FailAsync(tx, "login", "invalid_login", LoginMessage, origin, user, ct, 401);
         }
@@ -134,9 +137,9 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
         if (user is not { IsActive: true } || reset is null || reset.UsedAtUtc is not null || reset.ExpiresAtUtc <= Now
             || !await IsRoleActiveAsync(user.RoleName, ct))
             throw await FailAsync(tx, "password_reset", "invalid_reset", "El enlace no es válido, ya fue utilizado o expiró. Solicita uno nuevo.", origin, user, ct);
-        try { ValidateNewPassword(request.Password, request.ConfirmPassword); }
-        catch (SecurityFault fault) { throw await FailAsync(tx, "password_reset", fault.Code, fault.Message, origin, user, ct); }
-        user.PasswordHash = passwords.HashPassword(user, request.Password);
+        try { ValidateNewPassword(request.Password ?? "", request.ConfirmPassword ?? ""); }
+        catch (SecurityFault fault) { throw await FailAsync(tx, "password_reset", fault.Code, fault.Message, origin, user, ct, errors: fault.Errors); }
+        user.PasswordHash = passwords.HashPassword(user, request.Password!);
         user.FailedAccessCount = 0; user.LockedUntilUtc = null;
         foreach (var pending in await db.PasswordResets.Where(x => x.UserId == user.Id && x.UsedAtUtc == null).ToListAsync(ct))
             pending.UsedAtUtc = Now;
@@ -322,8 +325,12 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
     private static UserView User(AppUser u) => new(u.Id, u.Name, u.Email, u.RoleName, u.IsActive, u.LockedUntilUtc, u.LastLoginUtc);
     private static void ValidateNewPassword(string password, string confirmation)
     {
-        if (password != confirmation || !IsStrongPassword(password))
-            throw new SecurityFault("password_policy", "Usa de 8 a 64 caracteres, mayúscula, minúscula, número y símbolo. Las contraseñas deben coincidir.");
+        var unmet = PasswordPolicy.UnmetRequirements(password);
+        var errors = new Dictionary<string, string[]>();
+        if (unmet.Length > 0) errors["Password"] = unmet;
+        if (password != confirmation) errors["ConfirmPassword"] = ["Las contraseñas deben coincidir."];
+        if (errors.Count > 0)
+            throw new SecurityFault("password_policy", "Revisa los requisitos de la nueva contraseña.") { Errors = errors };
     }
     private void QueueEmail(string recipient, string subject, string body) => db.Emails.Add(new OutgoingEmail
     { Recipient = recipient, Subject = subject, ProtectedBody = emailProtector.Protect(body), CreatedAtUtc = Now, NextAttemptAtUtc = Now });
@@ -336,10 +343,11 @@ public sealed partial class SecurityService(SecurityDbContext db, SqlSecurityTra
         db.Events.Add(e); return e;
     }
     private async Task<SecurityFault> FailAsync(IDbContextTransaction tx, string action, string code, string message,
-        RequestOrigin origin, AppUser? user, CancellationToken ct, int status = 400)
+        RequestOrigin origin, AppUser? user, CancellationToken ct, int status = 400, Dictionary<string, string[]>? errors = null,
+        DateTimeOffset? lockedUntilUtc = null)
     {
         Audit(action, action == "login" ? "Fallido" : "Rechazado", origin, user, detail: action == "login" ? "Credenciales no aceptadas" : code);
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct);
-        return new SecurityFault(code, message, status);
+        return new SecurityFault(code, message, status) { Errors = errors, LockedUntilUtc = lockedUntilUtc };
     }
 }

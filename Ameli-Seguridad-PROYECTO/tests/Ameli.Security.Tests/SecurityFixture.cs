@@ -60,6 +60,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         SetEnvironment("ConnectionStrings__DefaultConnection", connection.ConnectionString);
         SetEnvironment("Jwt__SigningKey", SigningKey);
         SetEnvironment("Audit__IntegrityKey", Convert.ToBase64String(RandomNumberGenerator.GetBytes(48)));
+        SetEnvironment("Email__Mode", "Pickup");
         Factory = new TestApiFactory(Clock);
         await Db(async db => { await db.Database.MigrateAsync(); });
     }

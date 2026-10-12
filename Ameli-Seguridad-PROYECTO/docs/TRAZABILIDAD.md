@@ -10,7 +10,7 @@ Fuente: hoja «Módulo de seguridad y auditoría» de `G2_SC603_K_Requerimientos
 | SYA-001 / 4 · Inactiva o bloqueada | Estado, rol activo y bloqueo antes de emitir tokens. | `UnknownWrongAndInactiveHaveSameResponse`, `FiveConcurrentFailuresLockWithoutLostUpdates`. |
 | SYA-002 / 1 · Solicitud válida | Cola de correo protegida, enlace aleatorio 15 min y respuesta común. | `RecoveryDoesNotDiscloseExistence`, `LinkIsSingleUseAndRevokesExistingTokens`; flujo `.eml`. |
 | SYA-002 / 2 · Expirado o usado | Validación al abrir la página y al cambiar; consumo en transacción. | `ResetExpiresAtFifteenMinutes`, `LinkIsSingleUseAndRevokesExistingTokens` con consumo concurrente. |
-| SYA-002 / 3 · Contraseña inválida | Política 8–64, mayúscula/minúscula/dígito/símbolo y confirmación en ambos lados. | Contraseña débil en `LinkIsSingleUseAndRevokesExistingTokens`; HTML/JavaScript de formulario. |
+| SYA-002 / 3 · Contraseña inválida | Política 8–64, mayúscula/minúscula/dígito/símbolo y confirmación; errores por requisito, sin cambio del hash ni consumo del enlace. | `InvalidPasswordShowsEachUnmetRuleWithoutChangingPassword`, `PasswordPolicyExplainsIndividualMissingRequirements`; HTML/JavaScript de formulario. |
 | SYA-002 / 4 · Exceso de solicitudes | Límites persistentes por cuenta e IP; no se envían correos extra y se audita. | `AccountAndOriginLimitsDoNotSendExtraLinks`. |
 | SYA-003 / 1 · Rol asignado | Cuenta interna activa, rol permitido, revocación y antes/después en evento. | `RoleChangeIsAuditedAndImmediatelyRevokesOldJwt`. |
 | SYA-003 / 2 · Acceso de Logística | Autorización del servidor para ruta/página/API y navegación por rol. | `NonAdminCannotReadOrWriteAdminApi`; HTTP a página administrativa. Los futuros módulos deberán aplicar la misma política. |

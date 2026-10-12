@@ -21,7 +21,7 @@ Conserva la conexión que ya te funciona. Las cuentas existentes mantienen ID, c
 
 ## Cuentas internas
 
-- **Nueva cuenta:** nombre, correo único, teléfono de 8 dígitos, Administrador o Logística y estado. Las cuentas activas reciben un enlace para elegir contraseña, válido 15 minutos. En Development aparece como `.eml` en `src/Ameli.Api/App_Data/mail`; no se envía un correo real salvo que configures SMTP.
+- **Nueva cuenta:** nombre, correo único, teléfono de 8 dígitos, Administrador o Logística, estado y contraseña inicial asignada por administración. Las cuentas activas reciben un aviso sin contraseña. Si la olvidan, pueden usar la recuperación de acceso; en Development `Pickup` guarda el correo como `.eml`, y `Smtp` lo envía de verdad al correo registrado cuando configures un remitente.
 - **Consultar:** filtra por nombre/correo y estado; limpiar filtros y cambiar de página no recarga toda la vista.
 - **Editar:** los errores conservan los datos escritos. Un correo duplicado permite abrir la cuenta interna existente. Los datos de clientes no se muestran en este módulo.
 - **Activar/desactivar:** cambia Estado, escribe un motivo, guarda y confirma «¿Está seguro?». Cancelar el diálogo no envía el cambio. La desactivación conserva historial y cierra sesiones.

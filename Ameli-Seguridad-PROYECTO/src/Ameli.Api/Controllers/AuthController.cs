@@ -16,7 +16,11 @@ public sealed class AuthController(SecurityService security) : ControllerBase
     [HttpPost("access-denied"),Authorize,EnableRateLimiting("auth")]
     public async Task<IActionResult> Denied(WebAccessDeniedRequest r,CancellationToken ct){await security.WebDeniedAsync(Actor,r.Path,Origin,ct);return NoContent();}
     [HttpPost("login"), AllowAnonymous, EnableRateLimiting("auth")]
-    public Task<TokenResponse> Login(LoginRequest request, CancellationToken ct) => security.LoginAsync(request, Origin, ct);
+    public async Task<ActionResult<TokenResponse>> Login(LoginRequest request, CancellationToken ct)
+    {
+        try { return Ok(await security.LoginAsync(request, Origin, ct)); }
+        catch (SecurityFault fault) { return StatusCode(fault.Status, fault.ToError()); }
+    }
     [HttpPost("forgot-password"), AllowAnonymous, EnableRateLimiting("recovery")]
     public async Task<IActionResult> Forgot(ForgotPasswordRequest request, CancellationToken ct)
     { await security.ForgotPasswordAsync(request, Origin, ct); return Accepted(new ApiMessage(SecurityService.RecoveryMessage)); }

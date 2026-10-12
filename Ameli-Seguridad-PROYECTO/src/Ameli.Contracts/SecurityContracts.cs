@@ -30,8 +30,9 @@ public sealed class ResetPasswordRequest
 {
     public Guid UserId { get; set; }
     [Required, MaxLength(128)] public string Token { get; set; } = "";
-    [Required, StringLength(64, MinimumLength = 8)] public string Password { get; set; } = "";
-    [Required, Compare(nameof(Password))] public string ConfirmPassword { get; set; } = "";
+    // The service checks every rule and returns all unmet requirements together.
+    public string? Password { get; set; } = "";
+    public string? ConfirmPassword { get; set; } = "";
 }
 public sealed class ValidateResetRequest
 {
@@ -74,4 +75,5 @@ public sealed record SessionStatus(UserView User, SessionView Session);
 public sealed record TokenResponse(string AccessToken, string RefreshToken,
     DateTimeOffset AccessTokenExpiresAtUtc, SessionStatus Status);
 public sealed record ApiMessage(string Message);
-public sealed record ApiError(string Code, string Message, Dictionary<string, string[]>? Errors = null, Guid? ExistingId = null, InternalAccountView? Current = null);
+public sealed record ApiError(string Code, string Message, Dictionary<string, string[]>? Errors = null, Guid? ExistingId = null,
+    InternalAccountView? Current = null, DateTimeOffset? LockedUntilUtc = null);

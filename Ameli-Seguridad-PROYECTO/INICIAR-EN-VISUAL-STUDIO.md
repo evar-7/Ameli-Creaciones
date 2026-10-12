@@ -69,7 +69,7 @@ Después de la primera inicialización correcta puedes eliminar las entradas `Bo
 
 ## Correos para probar recuperación
 
-Se guardan como `.eml` en **src/Ameli.Api/App_Data/mail**, aproximadamente dentro de cinco segundos. Abre el mensaje con tu cliente de correo o con un editor para seguir el enlace. Para enviar correos reales, configura SMTP según `docs/CONFIGURACION.md`.
+Por defecto se guardan como `.eml` en **src/Ameli.Api/App_Data/mail**, aproximadamente dentro de cinco segundos. Abre el mensaje con tu cliente de correo o con un editor para seguir el enlace. Para **recibir el enlace en una cuenta de correo real**, sigue [SYA-002-RECUPERACION.md](SYA-002-RECUPERACION.md): configura el SMTP en los secretos de **Ameli.Api** y utiliza una dirección que ya pertenezca a un usuario activo. La API se reinicia después de guardar los secretos. El formulario de recuperación está en **https://localhost:7240/recuperar**.
 
 ## Si aparece un error
 

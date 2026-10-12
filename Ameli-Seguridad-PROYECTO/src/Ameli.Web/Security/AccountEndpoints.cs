@@ -41,7 +41,12 @@ public static class AccountEndpoints
                     new AuthenticationProperties { IsPersistent = false, AllowRefresh = false, ExpiresUtc = tokens.Status.Session.AbsoluteExpiresAtUtc });
                 return Results.Redirect(Roles.Home(user.Role));
             }
-            catch (ApiFault ex) { return Results.Redirect(ex.Status == 429 ? "/ingresar?error=limite" : "/ingresar?error=credenciales"); }
+            catch (ApiFault ex)
+            {
+                if (ex.Code == "account_locked" && ex.Error.LockedUntilUtc is { } until)
+                    return Results.Redirect($"/ingresar?error=bloqueada&hasta={until.ToUnixTimeMilliseconds()}");
+                return Results.Redirect(ex.Status == 429 ? "/ingresar?error=limite" : "/ingresar?error=credenciales");
+            }
         }).AllowAnonymous();
         group.MapPost("/forgot-password", async (HttpContext ctx, SecurityApiClient api) =>
         {
@@ -55,12 +60,26 @@ public static class AccountEndpoints
         group.MapPost("/reset-password", async (HttpContext ctx, SecurityApiClient api) =>
         {
             var form = await ctx.Request.ReadFormAsync();
+            var wantsJson = ctx.Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase);
             var request = new ResetPasswordRequest { UserId = Guid.TryParse(form["userId"], out var id) ? id : Guid.Empty,
                 Token = form["token"].ToString(), Password = form["password"].ToString(), ConfirmPassword = form["confirmPassword"].ToString() };
             var back = $"/restablecer?userId={request.UserId}&token={Uri.EscapeDataString(request.Token)}";
-            if (!Valid(request)) return Results.Redirect(back + "&error=politica");
-            try { await api.AnonymousAsync<ApiMessage>("auth/reset-password", request, ctx.RequestAborted); return Results.Redirect("/ingresar?estado=restablecida"); }
-            catch (ApiFault ex) { return Results.Redirect(back + (ex.Code == "password_policy" ? "&error=politica" : "&error=enlace")); }
+            if (!Valid(request))
+            {
+                if (wantsJson) return (IResult)Results.BadRequest(new ApiError("invalid_reset", "El enlace no es válido. Solicita uno nuevo."));
+                return Results.Redirect(back + "&error=enlace");
+            }
+            try
+            {
+                await api.AnonymousAsync<ApiMessage>("auth/reset-password", request, ctx.RequestAborted);
+                if (wantsJson) return (IResult)Results.Ok(new ApiMessage("Contraseña actualizada."));
+                return Results.Redirect("/ingresar?estado=restablecida");
+            }
+            catch (ApiFault ex)
+            {
+                if (wantsJson) return Results.Json(ex.Error, statusCode: ex.Status);
+                return Results.Redirect(back + (ex.Code == "password_policy" ? "&error=politica" : "&error=enlace"));
+            }
         }).AllowAnonymous();
         group.MapGet("/session", async (HttpContext ctx, SecurityApiClient api) =>
             Results.Ok(await api.SendAsync<SessionStatus>(HttpMethod.Get, "auth/session", ct: ctx.RequestAborted))).RequireAuthorization();

@@ -7,7 +7,11 @@
         <div class="auth-heading"><span class="auth-step">BIENVENIDO A AMELI</span><h2>Bienvenido de nuevo</h2><p>Ingresa con tu correo y contraseña.</p></div>
         <form method="post" action="/account/login" class="formulario-apilado auth-form">
             <AntiforgeryToken />
-            @if (!string.IsNullOrEmpty(Error)) { <div class="feedback error" role="alert">@ErrorText</div> }
+            @if (Error == "bloqueada" && LockedUntilEpochMs is > 0)
+            {
+                <div class="feedback error" role="alert" id="lockout-message">Tu cuenta está bloqueada temporalmente. Tiempo restante: <span id="lockout-remaining" data-lockout-until="@LockedUntilEpochMs">@Remaining</span> (min:seg).</div>
+            }
+            else if (!string.IsNullOrEmpty(Error)) { <div class="feedback error" role="alert">@ErrorText</div> }
             @if (!string.IsNullOrEmpty(State)) { <div class="feedback info" role="status">@StateText</div> }
             <label for="login-email">Correo electrónico<input id="login-email" name="email" type="email" required maxlength="254" autocomplete="username" placeholder="nombre@correo.com" /></label>
             <label for="login-password">Contraseña<div class="campo-clave"><input id="login-password" name="password" type="password" required maxlength="128" autocomplete="current-password" placeholder="Tu contraseña" /><button type="button" data-ver-clave aria-controls="login-password" aria-label="Mostrar contraseña">Ver</button></div></label>
@@ -21,6 +25,15 @@
 @code {
     [SupplyParameterFromQuery(Name = "error")] public string? Error { get; set; }
     [SupplyParameterFromQuery(Name = "estado")] public string? State { get; set; }
+    [SupplyParameterFromQuery(Name = "hasta")] public long? LockedUntilEpochMs { get; set; }
+    private string Remaining
+    {
+        get
+        {
+            var seconds = Math.Max(0, (long)Math.Ceiling((LockedUntilEpochMs.GetValueOrDefault() - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) / 1000.0));
+            return $"{seconds / 60}:{seconds % 60:00}";
+        }
+    }
     private string ErrorText => Error switch { "campos" => "Completa un correo válido y tu contraseña.", "limite" => "Demasiados intentos. Espera un momento antes de continuar.", _ => "No se pudo iniciar sesión. Revisa tus credenciales o intenta más tarde." };
     private string StateText => State switch { "restablecida" => "Contraseña actualizada. Ingresa con tu nueva contraseña.", "cerrada" => "Cerraste la sesión correctamente.", _ => "Sesión expirada o revocada. Inicia sesión nuevamente." };
 }

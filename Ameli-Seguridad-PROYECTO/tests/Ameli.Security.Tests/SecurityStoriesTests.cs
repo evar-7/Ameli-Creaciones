@@ -70,6 +70,42 @@ public sealed class SecurityStoriesTests(SecurityFixture f) : IClassFixture<Secu
     }
 
     [Fact]
+    public async Task SYA005_LoginApiExplainsLockoutAndDoesNotExtendIt()
+    {
+        using var http = f.Http();
+        async Task<HttpResponseMessage> Attempt(string password) => await http.PostAsJsonAsync(
+            "/api/v1/auth/login", new LoginRequest { Email = "cliente@ameli.test", Password = password });
+
+        for (var i = 0; i < 4; i++)
+        {
+            using var failure = await Attempt("incorrecta");
+            Assert.Equal(HttpStatusCode.Unauthorized, failure.StatusCode);
+            Assert.Equal("invalid_login", (await failure.Content.ReadFromJsonAsync<ApiError>())!.Code);
+        }
+        using var fifth = await Attempt("incorrecta");
+        Assert.Equal((HttpStatusCode)423, fifth.StatusCode);
+        var lockout = (await fifth.Content.ReadFromJsonAsync<ApiError>())!;
+        Assert.Equal("account_locked", lockout.Code);
+        Assert.Equal(f.Clock.GetUtcNow().AddMinutes(15), lockout.LockedUntilUtc);
+        Assert.Equal("cliente@ameli.test", await f.Db(db => db.Emails.Where(e => e.Subject == "Bloqueo temporal de tu cuenta Ameli")
+            .Select(e => e.Recipient).SingleAsync()));
+
+        f.Clock.Advance(TimeSpan.FromMinutes(7));
+        using var blocked = await Attempt(Password);
+        Assert.Equal((HttpStatusCode)423, blocked.StatusCode);
+        Assert.Equal(lockout.LockedUntilUtc, (await blocked.Content.ReadFromJsonAsync<ApiError>())!.LockedUntilUtc);
+        Assert.Equal(5, await f.Db(db => db.Users.Where(u => u.Id == f.Client).Select(u => u.FailedAccessCount).SingleAsync()));
+        Assert.Equal(1, await f.Db(db => db.Emails.CountAsync(e => e.Subject == "Bloqueo temporal de tu cuenta Ameli")));
+
+        f.Clock.Advance(TimeSpan.FromMinutes(8));
+        using var success = await Attempt(Password);
+        Assert.Equal(HttpStatusCode.OK, success.StatusCode);
+        var user = await f.Db(db => db.Users.AsNoTracking().SingleAsync(u => u.Id == f.Client));
+        Assert.Equal(0, user.FailedAccessCount);
+        Assert.Null(user.LockedUntilUtc);
+    }
+
+    [Fact]
     public async Task SYA005_SuccessResetsConsecutiveFailureCounter()
     {
         for (var i = 0; i < 4; i++) await Assert.ThrowsAsync<SecurityFault>(() => f.Login(password: "incorrecta"));
@@ -102,6 +138,7 @@ public sealed class SecurityStoriesTests(SecurityFixture f) : IClassFixture<Secu
         Assert.Equal(HttpStatusCode.Accepted, known.StatusCode); Assert.Equal(known.StatusCode, unknown.StatusCode);
         Assert.Equal(await known.Content.ReadAsStringAsync(), await unknown.Content.ReadAsStringAsync());
         Assert.Equal(1, await f.Db(db => db.PasswordResets.CountAsync()));
+        Assert.Equal("cliente@ameli.test", await f.Db(db => db.Emails.Select(e => e.Recipient).SingleAsync()));
     }
 
     [Fact]
@@ -132,6 +169,32 @@ public sealed class SecurityStoriesTests(SecurityFixture f) : IClassFixture<Secu
         f.Clock.Advance(TimeSpan.FromMinutes(15));
         await Assert.ThrowsAsync<SecurityFault>(() => f.WithService(s => s.ValidateResetAsync(new() { UserId = f.Client, Token = token }, default)));
         Assert.Equal("invalid_reset", (await Assert.ThrowsAsync<SecurityFault>(() => f.ResetPassword(token))).Code);
+        var replacement = await f.RequestReset();
+        await f.WithService(s => s.ValidateResetAsync(new() { UserId = f.Client, Token = replacement }, default));
+        Assert.Equal("invalid_reset", (await Assert.ThrowsAsync<SecurityFault>(() => f.ResetPassword(token))).Code);
+    }
+
+    [Fact]
+    public async Task SYA002_InvalidPasswordShowsEachUnmetRuleWithoutChangingPassword()
+    {
+        var token = await f.RequestReset();
+        var originalHash = await f.Db(db => db.Users.Where(u => u.Id == f.Client).Select(u => u.PasswordHash).SingleAsync());
+        using var http = f.Http();
+        var response = await http.PostAsJsonAsync("/api/v1/auth/reset-password", new ResetPasswordRequest
+        { UserId = f.Client, Token = token, Password = "abcdefg", ConfirmPassword = "different" });
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var error = (await response.Content.ReadFromJsonAsync<ApiError>())!;
+        Assert.Equal("password_policy", error.Code);
+        var fieldErrors = error.Errors!.ToDictionary(x => x.Key.ToLowerInvariant(), x => x.Value);
+        Assert.Contains(fieldErrors["password"], x => x.Contains("8 y 64"));
+        Assert.Contains(fieldErrors["password"], x => x.Contains("mayúscula"));
+        Assert.Contains(fieldErrors["password"], x => x.Contains("número"));
+        Assert.Contains(fieldErrors["password"], x => x.Contains("símbolo"));
+        Assert.Contains(fieldErrors["confirmpassword"], x => x.Contains("coincidir"));
+        Assert.Equal(originalHash, await f.Db(db => db.Users.Where(u => u.Id == f.Client).Select(u => u.PasswordHash).SingleAsync()));
+        await f.WithService(s => s.ValidateResetAsync(new() { UserId = f.Client, Token = token }, default));
+        await f.ResetPassword(token);
+        await f.Login(password: NewPassword);
     }
 
     [Fact]

@@ -15,6 +15,10 @@
 .auth-form .feedback { margin-bottom: 0; }
 .narrow-panel { max-width: 630px; margin: 0 auto; }
 .help-text { font-size: .79rem; margin: 0; line-height: 1.5; }
+.password-rules { margin: -3px 0 4px; padding-left: 21px; font-size: .82rem; line-height: 1.7; }
+.password-rules li { color: #842e3a; }
+.password-rules li.is-met { color: #285c39; }
+.password-rules li.is-met::marker { content: '✓  '; }
 .sessions-panel { margin-top: 24px; }
 .seccion-titulo { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 15px; }
 .seccion-titulo h2 { margin: 0; }

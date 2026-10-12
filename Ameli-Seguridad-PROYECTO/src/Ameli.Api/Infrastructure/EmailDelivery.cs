@@ -11,6 +11,31 @@ public interface IEmailDelivery
 {
     Task SendAsync(string to, string subject, string body, CancellationToken ct);
 }
+public static class EmailConfiguration
+{
+    public static void Validate(IConfiguration config, bool isLocalEnvironment)
+    {
+        var mode = config["Email:Mode"] ?? "Smtp";
+        if (mode.Equals("Pickup", StringComparison.OrdinalIgnoreCase))
+        {
+            if (!isLocalEnvironment)
+                throw new InvalidOperationException("Email:Mode=Pickup solo se permite en desarrollo o pruebas.");
+            return;
+        }
+        if (!mode.Equals("Smtp", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Email:Mode debe ser Smtp o Pickup.");
+        var from = config["Email:From"];
+        if (!MailAddress.TryCreate(from ?? "", out var address) || address is null ||
+            address.Address.EndsWith(".example", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Configura Email:From con un remitente real autorizado por el proveedor SMTP.");
+        if (string.IsNullOrWhiteSpace(config["Email:Host"]) ||
+            string.IsNullOrWhiteSpace(config["Email:Username"]) ||
+            string.IsNullOrWhiteSpace(config["Email:Password"]))
+            throw new InvalidOperationException("Configura Email:Host, Email:Username y Email:Password en los secretos de Ameli.Api para enviar correos reales.");
+        if (!int.TryParse(config["Email:Port"], out var port) || port is < 1 or > 65535)
+            throw new InvalidOperationException("Email:Port debe ser un puerto SMTP válido compatible con STARTTLS.");
+    }
+}
 public sealed class SmtpEmailDelivery(IConfiguration config, IWebHostEnvironment environment) : IEmailDelivery
 {
     public async Task SendAsync(string to, string subject, string body, CancellationToken ct)
@@ -18,7 +43,7 @@ public sealed class SmtpEmailDelivery(IConfiguration config, IWebHostEnvironment
         var from = new MailAddress(config["Email:From"] ?? "acceso@ameli.example");
         var recipient = new MailAddress(to);
         var mode = config["Email:Mode"] ?? "Smtp";
-        if (mode == "Pickup")
+        if (mode.Equals("Pickup", StringComparison.OrdinalIgnoreCase))
         {
             if (!environment.IsDevelopment() && !environment.IsEnvironment("Testing"))
                 throw new InvalidOperationException("Pickup solo se permite en desarrollo o pruebas.");
@@ -37,8 +62,10 @@ public sealed class SmtpEmailDelivery(IConfiguration config, IWebHostEnvironment
             Host = config["Email:Host"] ?? throw new InvalidOperationException("Configura Email:Host."),
             Port = config.GetValue("Email:Port", 587),
             EnableSsl = true,
+            UseDefaultCredentials = false,
             Credentials = new NetworkCredential(config["Email:Username"], config["Email:Password"]),
-            DeliveryMethod = SmtpDeliveryMethod.Network
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            Timeout = 20_000
         };
         await smtp.SendMailAsync(message, ct);
     }

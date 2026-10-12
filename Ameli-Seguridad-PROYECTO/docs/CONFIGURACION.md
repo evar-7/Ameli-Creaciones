@@ -44,6 +44,8 @@ En User Secrets durante pruebas controladas, o en la configuración protegida de
 
 El adaptador usa SMTP con STARTTLS; configura un proveedor compatible con ese método y con autenticación de aplicación. Los proveedores que exigen OAuth necesitan otro adaptador `IEmailDelivery`. El puerto 465 con TLS implícito no es el transporte de este adaptador.
 
+La API valida al arrancar que `Smtp` tenga un remitente real, host, puerto, usuario y secreto; `acceso@ameli.example` es solo un marcador y no se puede usar como remitente real. En Development, los secretos de **Ameli.Api** pueden sobrescribir el modo `Pickup` predeterminado con `Email:Mode=Smtp`. El correo de destino siempre es el asociado a la cuenta que coincide con la dirección escrita en `/recuperar`. Consulta [SYA-002-RECUPERACION.md](../SYA-002-RECUPERACION.md) para una prueba paso a paso sin consola.
+
 `Pickup` escribe `.eml` en `App_Data/mail` solo en `Development` o `Testing`. Nunca publiques esa carpeta. Los enlaces y los mensajes son datos de seguridad y deben quedar accesibles únicamente al operador de desarrollo.
 
 La cola reintenta entregas fallidas hasta cinco intentos. Consulta `email_outbox` para identificar pendientes o fallidos y `security_events` para la evidencia. Si el servicio se interrumpe después de entregar y antes de confirmar la transacción, un correo puede repetirse; el enlace sigue siendo de un solo uso. No hay un panel de operación de correo en estas historias.
@@ -89,7 +91,7 @@ La arquitectura del documento usa un servidor único. Un despliegue con varias i
 | No conecta con SQL | Instancia iniciada, nombre de servidor, autenticación y permiso para crear la base en la inicialización. |
 | API no arranca por SigningKey | En Development, comprueba permisos de escritura en `App_Data` o una clave explícita inválida en los secretos. En producción, configura `Jwt:SigningKey`. |
 | Web devuelve servicio no disponible | Espera a que la API termine de preparar SQL, comprueba ambos proyectos de inicio y acepta el certificado HTTPS local cuando Visual Studio lo solicite. |
-| No llega el correo durante desarrollo | Abre los `.eml` de `src/Ameli.Api/App_Data/mail`; el modo predeterminado de desarrollo no envía SMTP. |
+| No llega el correo durante desarrollo | Si está en `Pickup`, abre los `.eml` de `src/Ameli.Api/App_Data/mail`. Si está en `Smtp`, revisa la salida de la API, la configuración del proveedor y los intentos de `email_outbox`; usa una dirección realmente registrada, no `@ameli.test`. |
 | Se cerró al cambiar un rol/contraseña/estado | Es el comportamiento de revocación requerido; vuelve a autenticarte. |
 | Pruebas no conectan en Linux | Define `AMELI_TEST_SQL` con una instancia SQL Server; LocalDB solo está disponible en Windows. |
 

@@ -6,7 +6,7 @@ Empieza por [ACTUALIZAR-GESTION-AUDITORIA.md](ACTUALIZAR-GESTION-AUDITORIA.md). 
 
 Pantallas: `/administracion/usuarios`, `/administracion/usuarios/nueva`, `/administracion/usuarios/{id}` y `/administracion/auditoria`. CRUD de cuentas internas con desactivación lógica, concurrencia, filtros y auditoría firmada. La API mantiene las reglas y permisos; la web usa HTML5, CSS y JavaScript sobre Blazor SSR.
 
-Estado de verificación: [VERIFICACION-GESTION.md](docs/VERIFICACION-GESTION.md). Las pruebas de integración nuevas están preparadas, pendientes de ejecución con SQL Server.
+Estado de verificación: [VERIFICACION-GESTION.md](docs/VERIFICACION-GESTION.md) y [VERIFICACION-SYA002.md](docs/VERIFICACION-SYA002.md). Las pruebas de integración de estas ampliaciones están preparadas, pendientes de ejecución con SQL Server.
 
 ---
 
@@ -48,9 +48,17 @@ La API escucha en `https://localhost:7241`; el documento OpenAPI de desarrollo e
 
 No se incluyen contraseñas predeterminadas. Usa `Bootstrap:CreateDemoUsers=false` para crear únicamente el administrador. Los siguientes arranques conservan las cuentas, roles y contraseñas existentes. Después de inicializar puedes quitar `Bootstrap:AdminPassword` y `Bootstrap:DemoPassword` de los secretos. Cambiar esos valores no restablece contraseñas existentes; utiliza la recuperación.
 
-### Probar recuperación sin contratar correo
+### Recuperación por correo electrónico
 
-En desarrollo, los correos se generan como archivos **`.eml` legibles en UTF-8 en `src/Ameli.Api/App_Data/mail`**, normalmente dentro de cinco segundos. El cuerpo queda en texto directo (`Content-Transfer-Encoding: 8bit`), sin envolverse en Base64. Abre el mensaje y sigue el enlace de recuperación. También aparecen allí las alertas por bloqueo y las confirmaciones de cambio de contraseña. No se envían mensajes reales en este modo. Para entrega real, configura SMTP según [CONFIGURACION.md](docs/CONFIGURACION.md).
+Para enviar el enlace **de verdad al correo registrado**, configura un remitente SMTP autorizado en los secretos de **Ameli.Api** y sigue [SYA-002-RECUPERACION.md](SYA-002-RECUPERACION.md). Escribe en `/recuperar` la dirección asociada a una cuenta activa; la respuesta pública es la misma cuando no existe. La API crea un enlace de un solo uso por 15 minutos. El formulario de nueva contraseña indica las reglas incumplidas sin cambiar la contraseña al fallar.
+
+Para pruebas sin SMTP, el modo de desarrollo predeterminado sigue siendo `Pickup`:
+
+En `Pickup`, los correos se generan como archivos **`.eml` legibles en UTF-8 en `src/Ameli.Api/App_Data/mail`**, normalmente dentro de cinco segundos. El cuerpo queda en texto directo (`Content-Transfer-Encoding: 8bit`), sin envolverse en Base64. Abre el mensaje y sigue el enlace de recuperación. También aparecen allí las alertas por bloqueo y las confirmaciones de cambio de contraseña. Este modo no envía mensajes reales.
+
+### Bloqueo por intentos fallidos (SYA-005)
+
+Los primeros cuatro fallos muestran un error normal. El quinto bloquea la cuenta durante 15 minutos y muestra en `/ingresar` un contador del tiempo restante (minutos:segundos); también se envía una alerta al correo registrado con el transporte configurado arriba. Los intentos durante el bloqueo no lo extienden ni generan otra alerta. Una contraseña correcta antes del quinto fallo reinicia el contador; después de vencer el bloqueo, un ingreso correcto también lo reinicia. El inicio de sesión devuelve los fallos previstos como respuestas HTTP controladas para que Visual Studio no se detenga en la excepción `SecurityFault` al equivocarse con la contraseña. Para probar, ejecuta de nuevo **Ameli.Api** y **Ameli.Web** con esta versión del código, y usa una cuenta cuyo correo esté registrado. Los límites de solicitudes por IP (`auth`) son independientes del bloqueo de la cuenta.
 
 ## 3. Historias implementadas
 
