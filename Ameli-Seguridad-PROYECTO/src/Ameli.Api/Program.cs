@@ -19,7 +19,7 @@ EmailConfiguration.Validate(builder.Configuration, builder.Environment.IsDevelop
 DevelopmentSetup.ConfigureSigningKey(builder.Configuration, builder.Environment);
 builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
-builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = 16 * 1024);
+builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = 8 * 1024 * 1024); // Photos: max 5 MB + JSON encoding.
 var connection = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Configura ConnectionStrings:DefaultConnection.");
 builder.Services.AddDbContext<SecurityDbContext>(o => o.UseSqlServer(connection));
@@ -39,6 +39,7 @@ builder.Services.Configure<PasswordHasherOptions>(o => o.IterationCount = 210_00
 builder.Services.AddSingleton<DummyPassword>();
 builder.Services.AddScoped<SqlSecurityTransaction>();
 builder.Services.AddScoped<SecurityService>();
+builder.Services.AddScoped<CustomerIdentityService>();
 builder.Services.AddSingleton<AuditIntegrity>();
 builder.Services.AddScoped<TokenIssuer>();
 builder.Services.AddScoped<IEmailDelivery, SmtpEmailDelivery>();

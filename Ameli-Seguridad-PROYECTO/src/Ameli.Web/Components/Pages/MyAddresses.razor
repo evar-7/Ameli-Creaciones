@@ -1,0 +1,22 @@
+@page "/perfil/direcciones"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Direcciones de entrega | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi perfil" Title="Direcciones de entrega" Description="Registra y elige la dirección que usarás al comprar." />
+<section class="panel identity-panel">
+    <h2>Guardar dirección</h2>
+    <form id="address-form" class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <div class="feedback error oculto" id="address-error" role="alert" tabindex="-1"></div>
+        <div class="identity-grid">
+            <label>Provincia<input name="Province" maxlength="100" required /><small class="field-error" data-error="Province"></small></label>
+            <label>Cantón<input name="Canton" maxlength="100" required /><small class="field-error" data-error="Canton"></small></label>
+            <label>Distrito<input name="District" maxlength="100" required /><small class="field-error" data-error="District"></small></label>
+            <label>Dirección exacta<input name="ExactAddress" maxlength="300" required /><small class="field-error" data-error="ExactAddress"></small></label>
+        </div>
+        <label>Referencia<input name="Reference" maxlength="300" required /><small class="field-error" data-error="Reference"></small></label>
+        <label class="identity-check"><input type="checkbox" name="IsDefault" /> Marcar como predeterminada</label>
+        <button class="boton primario" type="submit">Guardar dirección</button>
+    </form>
+</section>
+<section class="identity-section"><h2>Mis direcciones</h2><div id="address-list" class="address-grid" aria-live="polite"><p>Cargando direcciones…</p></div></section>
+<noscript><div class="feedback error">Activa JavaScript para administrar tus direcciones.</div></noscript>

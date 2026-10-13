@@ -1,0 +1,20 @@
+@page "/registro"
+@attribute [AllowAnonymous]
+<PageTitle>Crear cuenta | Ameli</PageTitle>
+<PageHeading Eyebrow="Clientes" Title="Crea tu cuenta" Description="Registra tus datos para administrar los perfiles de tus mascotas." />
+<section class="panel identity-panel">
+    <form id="customer-registration" class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <div class="feedback error oculto" role="alert" id="registration-error" tabindex="-1"></div>
+        <div class="identity-grid">
+            <label>Nombre<input name="FirstName" autocomplete="given-name" maxlength="80" required /><small class="field-error" data-error="FirstName"></small></label>
+            <label>Apellidos<input name="LastNames" autocomplete="family-name" maxlength="160" required /><small class="field-error" data-error="LastNames"></small></label>
+            <label>Correo electrónico<input name="Email" type="email" autocomplete="email" maxlength="254" required /><small class="field-error" data-error="Email"></small></label>
+            <label>Teléfono (8 dígitos)<input name="Phone" type="tel" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" autocomplete="tel" required /><small class="field-error" data-error="Phone"></small></label>
+            <label>Contraseña<input name="Password" type="password" autocomplete="new-password" maxlength="64" required /><small class="field-error" data-error="Password"></small></label>
+            <label>Confirmar contraseña<input name="ConfirmPassword" type="password" autocomplete="new-password" maxlength="64" required /><small class="field-error" data-error="ConfirmPassword"></small></label>
+        </div>
+        <p class="help-text">La contraseña debe tener 8–64 caracteres, mayúscula, minúscula, número y símbolo.</p>
+        <div class="grupo-botones"><button type="submit" class="boton primario">Crear cuenta</button><a href="/ingresar" class="boton secundario">Ya tengo cuenta</a></div>
+    </form>
+</section>

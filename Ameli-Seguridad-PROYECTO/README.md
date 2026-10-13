@@ -69,6 +69,23 @@ Los primeros cuatro fallos muestran un error normal. El quinto bloquea la cuenta
 | SYA-003 | Solo Administrador puede gestionar accesos. Al crear cuentas internas asigna una contraseña inicial que se guarda como hash. Roles internos Administrador / Logística para cuentas internas activas. Protección del último administrador, auditoría y revocación al cambiar permisos. |
 | SYA-005 | Bloqueo de 15 minutos al quinto fallo consecutivo; correo de alerta; éxito reinicia contador; desbloqueo administrativo con motivo y referencia de verificación de identidad. |
 | SYA-006 | Expiración a los 15 minutos de inactividad, renovación por actividad, JWT de 5 minutos, refresh rotativo, cierre actual o global y revocación inmediata por cambios de acceso. |
+| GID-001 | Alta pública de clientes con nombre, apellidos, correo único entre todos los usuarios, teléfono de 8 dígitos y contraseña segura. |
+| GID-002 | Mascotas vinculadas a un solo cliente, medidas validadas en kg y cm, alergias opcionales e imágenes JPG, PNG o WEBP de hasta 5 MB. |
+| GID-003/004/005 | Lista privada, edición sin versiones duplicadas, fecha de actualización, desactivación y reactivación sin eliminar el perfil. |
+| GID-006 | Preferencias de color, material, prenda y estilo. Se impiden materiales que coincidan con alergias; se permite dejarlas vacías. |
+| GID-007 | Direcciones privadas con campos obligatorios, predeterminada y eliminación confirmada. |
+
+### Registro y perfil de cliente (sprint GID)
+
+En `/registro` se crea una cuenta con rol Cliente; el correo debe ser único incluso respecto a cuentas inactivas e internas. Después se inicia sesión normalmente. En `/cliente` aparecen los accesos a **Mis mascotas** (`/perfil/mascotas`) y **Direcciones de entrega** (`/perfil/direcciones`). Cada operación comprueba el usuario autenticado en la API; las fotos se sirven a través de la web únicamente a su propietario. El formulario mantiene los campos escritos si la validación falla.
+
+En **Editar mascota**, **Guardar cambios** aplica en una sola operación las medidas, alergias, foto seleccionada y estado activo. El botón independiente **Guardar imagen** también permite cambiar solo la foto; **Desactivar perfil** y **Reactivar perfil** permiten cambiar solo el estado con confirmación.
+
+**Unidades y alergias:** Edad en años enteros (0–40), peso en kg (mayor que 0 y hasta 200, dos decimales) y talla en cm (mayor que 0 y hasta 250, dos decimales). Alergias en texto separadas por comas, punto y coma o saltos de línea; en blanco significa “No declaradas”. El cuarto escenario de GID-002 repetía por error el texto de rechazo de imágenes; la implementación considera las alergias opcionales. Al registrar una alergia nueva se retiran las preferencias de materiales incompatibles.
+
+La migración `CustomerIdentity` crea `pet_profiles` y `delivery_addresses`, y agrega nombre/apellidos a `users`. En desarrollo se aplica al arrancar **Ameli.Api** mediante el inicializador existente: conserva la base, las cuentas, la cadena de auditoría y su clave `audit-integrity.key`. No borres `App_Data` ni cambies `Audit:IntegrityKey` al actualizar.
+
+El proyecto actual no tiene entidades de pedidos, checkout ni motor de recomendaciones. Las mascotas inactivas conservan su ficha e historial, y el perfil de estilo y la dirección predeterminada quedan consultables por API para esos módulos futuros. Al implementar pedidos se debe guardar una copia de los datos relevantes de mascota y dirección en cada pedido para que permanezcan visibles después de cambios o eliminaciones.
 
 Consulta la relación de los **20 escenarios del Excel** con el código y las pruebas en [TRAZABILIDAD.md](docs/TRAZABILIDAD.md).
 
@@ -80,7 +97,7 @@ Consulta la relación de los **20 escenarios del Excel** con el código y las pr
 | `src/Ameli.Web` | Blazor con renderizado en servidor, formularios HTML, CSS del prototipo adaptado y seguimiento de actividad. Consume solo la API. |
 | `src/Ameli.Contracts` | DTO, validaciones y nombres de roles compartidos. |
 | `tests/Ameli.Security.Tests` | Pruebas con SQL Server real y servidor HTTP de pruebas ASP.NET Core. |
-| `database/01-security-schema.sql` | Script idempotente generado desde la migración, para revisión o aplicación en SQL Server. |
+| `database/01-security-schema.sql` | Script histórico que solo prepara `__EFMigrationsHistory`; las tablas vigentes se crean con las migraciones de EF Core mediante `Database.MigrateAsync()`. |
 
 La API separa dominio, aplicación y persistencia en carpetas para mantener la solución manejable. JSON utiliza camelCase; tablas y columnas SQL, snake_case. `users.role_name` referencia `roles.name`: cada cuenta tiene un rol, como en las historias. `is_internal` impide convertir clientes en personal mediante esta pantalla.
 

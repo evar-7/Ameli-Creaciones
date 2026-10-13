@@ -1,0 +1,8 @@
+@page "/perfil"
+@page "/perfil/mascotas"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Mis mascotas | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi perfil" Title="Mis mascotas" Description="Consulta y administra los perfiles vinculados a tu cuenta." />
+<form id="identity-token" class="oculto"><AntiforgeryToken /></form>
+<section id="pets-list" class="pets-grid" aria-live="polite"><p>Cargando mascotas…</p></section>
+<noscript><div class="feedback error">Activa JavaScript para administrar tus mascotas.</div></noscript>

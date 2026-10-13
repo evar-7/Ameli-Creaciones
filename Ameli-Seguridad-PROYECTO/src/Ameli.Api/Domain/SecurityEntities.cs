@@ -9,6 +9,8 @@ public sealed class AppUser
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = "";
+    public string FirstName { get; set; } = "";
+    public string LastNames { get; set; } = "";
     public string Email { get; set; } = "";
     public string Phone { get; set; } = "";
     public Guid Revision { get; set; } = Guid.NewGuid();

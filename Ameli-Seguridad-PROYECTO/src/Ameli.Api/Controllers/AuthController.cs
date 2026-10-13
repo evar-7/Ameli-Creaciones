@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace Ameli.Api.Controllers;
 
 [ApiController, Route("api/v1/auth")]
-public sealed class AuthController(SecurityService security) : ControllerBase
+public sealed class AuthController(SecurityService security, CustomerIdentityService customers) : ControllerBase
 {
     private Actor Actor => new(Guid.Parse(User.FindFirstValue("sub")!), Guid.Parse(User.FindFirstValue("sid")!));
     private RequestOrigin Origin => HttpOrigin.Create(HttpContext);
@@ -19,6 +19,12 @@ public sealed class AuthController(SecurityService security) : ControllerBase
     public async Task<ActionResult<TokenResponse>> Login(LoginRequest request, CancellationToken ct)
     {
         try { return Ok(await security.LoginAsync(request, Origin, ct)); }
+        catch (SecurityFault fault) { return StatusCode(fault.Status, fault.ToError()); }
+    }
+    [HttpPost("register"), AllowAnonymous, EnableRateLimiting("recovery")]
+    public async Task<ActionResult<ApiMessage>> Register(CustomerRegistrationRequest request, CancellationToken ct)
+    {
+        try { await customers.RegisterAsync(request, Origin, ct); return StatusCode(201, new ApiMessage("Cuenta creada. Ya puedes iniciar sesión.")); }
         catch (SecurityFault fault) { return StatusCode(fault.Status, fault.ToError()); }
     }
     [HttpPost("forgot-password"), AllowAnonymous, EnableRateLimiting("recovery")]

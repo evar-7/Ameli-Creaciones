@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false);
 builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
 builder.Logging.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
-builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = 16 * 1024);
+builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = 8 * 1024 * 1024);
 builder.Services.AddRazorComponents();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
@@ -96,5 +96,6 @@ app.MapGet("/", (HttpContext context) => Results.Redirect(context.User.Identity?
 app.MapAccountEndpoints();
 app.MapManagementEndpoints();
 app.MapCatalogEndpoints();
+app.MapCustomerEndpoints();
 app.MapRazorComponents<App>();
 app.Run();

@@ -76,6 +76,12 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("failed_access_count");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("first_name");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit")
                         .HasColumnName("is_active");
@@ -87,6 +93,12 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LastLoginUtc")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("last_login_utc");
+
+                    b.Property<string>("LastNames")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("last_names");
 
                     b.Property<DateTimeOffset?>("LockedUntilUtc")
                         .HasColumnType("datetimeoffset")
@@ -377,6 +389,49 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.HasIndex("SentAtUtc", "NextAttemptAtUtc");
 
                     b.ToTable("email_outbox", (string)null);
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.DeliveryAddress", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedOnAdd().HasColumnType("uniqueidentifier").HasColumnName("id");
+                    b.Property<string>("Canton").IsRequired().HasMaxLength(100).HasColumnType("nvarchar(100)").HasColumnName("canton");
+                    b.Property<DateTimeOffset>("CreatedAtUtc").HasColumnType("datetimeoffset").HasColumnName("created_at_utc");
+                    b.Property<string>("District").IsRequired().HasMaxLength(100).HasColumnType("nvarchar(100)").HasColumnName("district");
+                    b.Property<string>("ExactAddress").IsRequired().HasMaxLength(300).HasColumnType("nvarchar(300)").HasColumnName("exact_address");
+                    b.Property<bool>("IsDefault").HasColumnType("bit").HasColumnName("is_default");
+                    b.Property<Guid>("OwnerUserId").HasColumnType("uniqueidentifier").HasColumnName("owner_user_id");
+                    b.Property<string>("Province").IsRequired().HasMaxLength(100).HasColumnType("nvarchar(100)").HasColumnName("province");
+                    b.Property<string>("Reference").IsRequired().HasMaxLength(300).HasColumnType("nvarchar(300)").HasColumnName("reference");
+                    b.HasKey("Id");
+                    b.HasIndex("OwnerUserId", "IsDefault");
+                    b.ToTable("delivery_addresses", (string)null);
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PetProfile", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedOnAdd().HasColumnType("uniqueidentifier").HasColumnName("id");
+                    b.Property<int>("AgeYears").HasColumnType("int").HasColumnName("age_years");
+                    b.Property<string>("Allergies").IsRequired().HasMaxLength(500).HasColumnType("nvarchar(500)").HasColumnName("allergies");
+                    b.Property<string>("Breed").IsRequired().HasMaxLength(100).HasColumnType("nvarchar(100)").HasColumnName("breed");
+                    b.Property<string>("ColorsJson").IsRequired().HasMaxLength(2000).HasColumnType("nvarchar(2000)").HasColumnName("colors_json");
+                    b.Property<DateTimeOffset>("CreatedAtUtc").HasColumnType("datetimeoffset").HasColumnName("created_at_utc");
+                    b.Property<string>("GarmentTypesJson").IsRequired().HasMaxLength(2000).HasColumnType("nvarchar(2000)").HasColumnName("garment_types_json");
+                    b.Property<decimal>("HeightCm").HasPrecision(6, 2).HasColumnType("decimal(6,2)").HasColumnName("height_cm");
+                    b.Property<bool>("IsActive").HasColumnType("bit").HasColumnName("is_active");
+                    b.Property<string>("MaterialsJson").IsRequired().HasMaxLength(2000).HasColumnType("nvarchar(2000)").HasColumnName("materials_json");
+                    b.Property<string>("Name").IsRequired().HasMaxLength(100).HasColumnType("nvarchar(100)").HasColumnName("name");
+                    b.Property<Guid>("OwnerUserId").HasColumnType("uniqueidentifier").HasColumnName("owner_user_id");
+                    b.Property<byte[]>("Photo").HasColumnType("varbinary(max)").HasColumnName("photo");
+                    b.Property<string>("PhotoContentType").HasMaxLength(20).HasColumnType("nvarchar(20)").HasColumnName("photo_content_type");
+                    b.Property<DateTimeOffset?>("PreferencesUpdatedAtUtc").HasColumnType("datetimeoffset").HasColumnName("preferences_updated_at_utc");
+                    b.Property<Guid>("Revision").IsConcurrencyToken().HasColumnType("uniqueidentifier").HasColumnName("revision");
+                    b.Property<string>("Species").IsRequired().HasMaxLength(40).HasColumnType("nvarchar(40)").HasColumnName("species");
+                    b.Property<string>("StylesJson").IsRequired().HasMaxLength(2000).HasColumnType("nvarchar(2000)").HasColumnName("styles_json");
+                    b.Property<DateTimeOffset>("UpdatedAtUtc").HasColumnType("datetimeoffset").HasColumnName("updated_at_utc");
+                    b.Property<decimal>("WeightKg").HasPrecision(7, 2).HasColumnType("decimal(7,2)").HasColumnName("weight_kg");
+                    b.HasKey("Id");
+                    b.HasIndex("OwnerUserId", "IsActive", "Name");
+                    b.ToTable("pet_profiles", (string)null);
                 });
 
             modelBuilder.Entity("Ameli.Api.Domain.PasswordReset", b =>
@@ -755,6 +810,18 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.DeliveryAddress", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.AppUser", null).WithMany().HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict).IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PetProfile", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.AppUser", null).WithMany().HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict).IsRequired();
                 });
 
             modelBuilder.Entity("Ameli.Api.Domain.PasswordReset", b =>

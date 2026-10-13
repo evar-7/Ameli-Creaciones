@@ -1,0 +1,26 @@
+.identity-panel { max-width: 950px; padding: clamp(22px,4vw,36px); }
+.identity-intro { margin-top: 25px; padding: 26px; }
+.identity-section { margin-top: 22px; }
+.identity-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px 22px; }
+.identity-grid label, .identity-panel label { min-width: 0; }
+.identity-panel fieldset { border: 1px solid var(--borde); border-radius: 14px; padding: 16px; }
+.identity-panel legend { font-weight: 700; padding: 0 6px; }
+.identity-check, .choice-grid label { display: flex; align-items: center; gap: 9px; }
+.choice-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+.choice-grid input, .identity-check input { width: auto; accent-color: var(--morado); }
+.identity-panel [aria-invalid="true"] { outline: 2px solid var(--rojo); }
+.identity-panel .field-error { color: var(--rojo); display: block; }
+.pets-grid, .address-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(285px,1fr)); gap: 18px; }
+.pet-card, .address-card { padding: 18px; }
+.pet-card { overflow: hidden; }
+.pet-picture { height: 175px; display: grid; place-items: center; border-radius: 13px; background: var(--morado-suave); overflow: hidden; }
+.pet-picture img { width: 100%; height: 100%; object-fit: cover; }
+.pet-picture span { font-size: 4rem; }
+.pet-details h2, .address-card h3 { margin: 15px 0 8px; }
+.pet-details p, .address-card p { margin: 7px 0; overflow-wrap: anywhere; }
+.pet-card .grupo-botones, .address-card .grupo-botones { margin-top: 15px; }
+.state-active, .state-inactive { display: inline-block; margin-top: 6px; font-weight: 700; }
+.state-active { color: #236b50; } .state-inactive { color: var(--rojo); }
+.identity-empty { grid-column: 1/-1; min-height: 200px; display: grid; place-items: center; }
+.pets-add { grid-column: 1/-1; }
+@media(max-width: 650px) { .identity-grid, .choice-grid { grid-template-columns: 1fr; } }

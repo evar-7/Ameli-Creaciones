@@ -25,6 +25,11 @@
             {
                 <NavLink class="enlace-menu" ActiveClass="activo" href="@Roles.Home(Role)" Match="NavLinkMatch.All"><span aria-hidden="true">⌂</span> Mi inicio</NavLink>
                 <NavLink class="enlace-menu" ActiveClass="activo" href="/mi-seguridad"><span aria-hidden="true">⌾</span> Mi seguridad</NavLink>
+                @if (Role == Roles.Client)
+                {
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/perfil/mascotas">Mis mascotas</NavLink>
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/perfil/direcciones">Direcciones de entrega</NavLink>
+                }
                 @if (Role == Roles.Administrator)
                 {
                     <NavLink class="enlace-menu" ActiveClass="activo" href="/administracion/usuarios">♙ Cuentas internas</NavLink>
@@ -38,6 +43,7 @@
             else
             {
                 <NavLink class="enlace-menu" ActiveClass="activo" href="/ingresar"><span aria-hidden="true">↪</span> Ingresar</NavLink>
+                <NavLink class="enlace-menu" ActiveClass="activo" href="/registro">Crear cuenta</NavLink>
                 <NavLink class="enlace-menu" ActiveClass="activo" href="/recuperar"><span aria-hidden="true">⌾</span> Recuperar acceso</NavLink>
             }
         </nav>

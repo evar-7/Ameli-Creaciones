@@ -16,6 +16,8 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
     public DbSet<RecoveryAttempt> RecoveryAttempts => Set<RecoveryAttempt>();
     public DbSet<SecurityEvent> Events => Set<SecurityEvent>();
     public DbSet<OutgoingEmail> Emails => Set<OutgoingEmail>();
+    public DbSet<PetProfile> Pets => Set<PetProfile>();
+    public DbSet<DeliveryAddress> DeliveryAddresses => Set<DeliveryAddress>();
 
     public DbSet<AuditChainHead> AuditHeads => Set<AuditChainHead>();
     public bool AuditRecorded { get; private set; }
@@ -30,6 +32,8 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
         {
             e.ToTable("users"); e.HasKey(x => x.Id);
             e.Property(x => x.Name).HasMaxLength(160);
+            e.Property(x => x.FirstName).HasMaxLength(80);
+            e.Property(x => x.LastNames).HasMaxLength(160);
             e.Property(x => x.Email).HasMaxLength(254);
             e.Property(x => x.Phone).HasMaxLength(8);
             e.Property(x => x.Revision).IsConcurrencyToken();
@@ -132,6 +136,35 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
             e.Property(x => x.Recipient).HasMaxLength(254);
             e.Property(x => x.Subject).HasMaxLength(200);
             e.HasIndex(x => new { x.SentAtUtc, x.NextAttemptAtUtc });
+        });
+        b.Entity<PetProfile>(e =>
+        {
+            e.ToTable("pet_profiles"); e.HasKey(x => x.Id);
+            e.Property(x => x.Name).HasMaxLength(100);
+            e.Property(x => x.Species).HasMaxLength(40);
+            e.Property(x => x.Breed).HasMaxLength(100);
+            e.Property(x => x.Allergies).HasMaxLength(500);
+            e.Property(x => x.WeightKg).HasPrecision(7, 2);
+            e.Property(x => x.HeightCm).HasPrecision(6, 2);
+            e.Property(x => x.PhotoContentType).HasMaxLength(20);
+            e.Property(x => x.ColorsJson).HasMaxLength(2000);
+            e.Property(x => x.MaterialsJson).HasMaxLength(2000);
+            e.Property(x => x.GarmentTypesJson).HasMaxLength(2000);
+            e.Property(x => x.StylesJson).HasMaxLength(2000);
+            e.Property(x => x.Revision).IsConcurrencyToken();
+            e.HasIndex(x => new { x.OwnerUserId, x.IsActive, x.Name });
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<DeliveryAddress>(e =>
+        {
+            e.ToTable("delivery_addresses"); e.HasKey(x => x.Id);
+            e.Property(x => x.Province).HasMaxLength(100);
+            e.Property(x => x.Canton).HasMaxLength(100);
+            e.Property(x => x.District).HasMaxLength(100);
+            e.Property(x => x.ExactAddress).HasMaxLength(300);
+            e.Property(x => x.Reference).HasMaxLength(300);
+            e.HasIndex(x => new { x.OwnerUserId, x.IsDefault });
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
         });
         foreach (var entity in b.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties())

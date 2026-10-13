@@ -1,0 +1,28 @@
+@page "/perfil/mascotas/{Id:guid}/preferencias"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Preferencias de estilo | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi perfil · Mis mascotas" Title="Preferencias de estilo" Description="Estas elecciones son entradas para las futuras recomendaciones." />
+<p><a href="@($"/perfil/mascotas/{Id}")">← Volver al perfil de la mascota</a></p>
+<section class="panel identity-panel" id="preferences-editor" data-id="@Id">
+    <form id="preferences-form" class="formulario-apilado">
+        <AntiforgeryToken />
+        <div class="feedback error oculto" id="preferences-error" role="alert" tabindex="-1"></div>
+        <fieldset><legend>Colores</legend><div class="choice-grid">
+            @foreach (var v in new[] { "Rojo", "Azul", "Verde", "Amarillo", "Negro", "Blanco", "Rosa", "Morado" }) { <label><input type="checkbox" name="Colors" value="@v" /> @v</label> }
+        </div></fieldset>
+        <fieldset><legend>Materiales</legend><div class="choice-grid">
+            @foreach (var v in new[] { "Algodón", "Lana", "Poliéster", "Cuero", "Lino", "Seda" }) { <label><input type="checkbox" name="Materials" value="@v" /> @v</label> }
+        </div><small class="field-error" data-error="Materials"></small></fieldset>
+        <fieldset><legend>Tipo de prenda</legend><div class="choice-grid">
+            @foreach (var v in new[] { "Camiseta", "Suéter", "Abrigo", "Vestido", "Accesorio" }) { <label><input type="checkbox" name="GarmentTypes" value="@v" /> @v</label> }
+        </div></fieldset>
+        <fieldset><legend>Estilo</legend><div class="choice-grid">
+            @foreach (var v in new[] { "Clásico", "Deportivo", "Elegante", "Casual", "Colorido" }) { <label><input type="checkbox" name="Styles" value="@v" /> @v</label> }
+        </div></fieldset>
+        <p class="help-text">Puedes dejar todo vacío. En ese caso, las recomendaciones darán prioridad a medidas, alergias, tendencias y stock disponible cuando se implemente el motor.</p>
+        <button class="boton primario" type="submit">Guardar preferencias</button>
+    </form>
+</section>
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

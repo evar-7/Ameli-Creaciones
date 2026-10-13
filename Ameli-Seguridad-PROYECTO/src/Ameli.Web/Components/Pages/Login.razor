@@ -17,6 +17,7 @@
             <label for="login-password">Contraseña<div class="campo-clave"><input id="login-password" name="password" type="password" required maxlength="128" autocomplete="current-password" placeholder="Tu contraseña" /><button type="button" data-ver-clave aria-controls="login-password" aria-label="Mostrar contraseña">Ver</button></div></label>
             <div class="fila-entre"><span></span><a class="enlace-boton" href="/recuperar">¿Olvidaste tu contraseña?</a></div>
             <button class="boton primario ancho" type="submit" data-pending="Ingresando…">Ingresar</button>
+            <p>¿Aún no tienes cuenta? <a class="enlace-boton" href="/registro">Crear cuenta de cliente</a></p>
             <p class="mensaje-seguridad">Tu cuenta se bloquea durante 15 minutos después de 5 intentos fallidos.</p>
         </form>
     </section>
@@ -35,5 +36,5 @@
         }
     }
     private string ErrorText => Error switch { "campos" => "Completa un correo válido y tu contraseña.", "limite" => "Demasiados intentos. Espera un momento antes de continuar.", _ => "No se pudo iniciar sesión. Revisa tus credenciales o intenta más tarde." };
-    private string StateText => State switch { "restablecida" => "Contraseña actualizada. Ingresa con tu nueva contraseña.", "cerrada" => "Cerraste la sesión correctamente.", _ => "Sesión expirada o revocada. Inicia sesión nuevamente." };
+    private string StateText => State switch { "registrada" => "Cuenta creada. Ingresa con tu correo y contraseña.", "restablecida" => "Contraseña actualizada. Ingresa con tu nueva contraseña.", "cerrada" => "Cerraste la sesión correctamente.", _ => "Sesión expirada o revocada. Inicia sesión nuevamente." };
 }

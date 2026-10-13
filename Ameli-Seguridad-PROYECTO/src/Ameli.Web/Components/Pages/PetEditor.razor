@@ -1,0 +1,47 @@
+@page "/perfil/mascotas/nueva"
+@page "/perfil/mascotas/{Id:guid}"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>@(Id.HasValue ? "Editar mascota" : "Registrar mascota") | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi perfil · Mis mascotas" Title="@(Id.HasValue ? "Editar mascota" : "Registrar mascota")" Description="Mantén actualizadas sus medidas y alergias." />
+<p><a href="/perfil/mascotas">← Volver a Mis mascotas</a></p>
+<section class="panel identity-panel" id="pet-editor" data-id="@Id">
+    <form id="pet-form" class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <input type="hidden" name="Revision" />
+        <div class="feedback error oculto" id="pet-error" role="alert" tabindex="-1"></div>
+        <div class="identity-grid">
+            <label>Nombre<input name="Name" maxlength="100" required /><small class="field-error" data-error="Name"></small></label>
+            <label>Especie<input name="Species" maxlength="40" required placeholder="Perro, gato…" /><small class="field-error" data-error="Species"></small></label>
+            <label>Raza<input name="Breed" maxlength="100" required /><small class="field-error" data-error="Breed"></small></label>
+            <label>Edad (años)<input name="AgeYears" type="text" inputmode="numeric" required placeholder="0–40" /><small class="field-error" data-error="AgeYears"></small></label>
+            <label>Peso (kg)<input name="WeightKg" type="text" inputmode="decimal" required placeholder="Ej.: 5.50" /><small class="field-error" data-error="WeightKg"></small></label>
+            <label>Talla (cm)<input name="HeightCm" type="text" inputmode="decimal" required placeholder="Ej.: 35" /><small class="field-error" data-error="HeightCm"></small></label>
+        </div>
+        <label>Alergias conocidas (opcional)<textarea name="Allergies" maxlength="500" rows="3" placeholder="Separa los materiales por comas; deja vacío si no conoces alergias."></textarea><small class="field-error" data-error="Allergies"></small></label>
+        @if (Id.HasValue)
+        {
+            <label>Actualizar foto (opcional)<input type="file" name="Photo" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" /><small>JPG, PNG o WEBP; hasta 5 MB.</small><small class="field-error" data-error="Photo"></small></label>
+            <label class="identity-check"><input type="checkbox" name="IsActive" /> Perfil activo</label>
+        }
+        <button type="submit" class="boton primario">@(Id.HasValue ? "Guardar cambios" : "Guardar mascota")</button>
+    </form>
+</section>
+@if (Id.HasValue)
+{
+    <section class="panel identity-panel identity-section" id="pet-photo-section" data-id="@Id">
+        <h2>Foto de la mascota</h2><p>JPG, PNG o WEBP de hasta 5 MB.</p>
+        <form id="pet-photo-form" class="formulario-apilado" enctype="multipart/form-data">
+            <AntiforgeryToken />
+            <label>Imagen<input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required /><small class="field-error" data-error="Photo"></small></label>
+            <button type="submit" class="boton secundario">Guardar imagen</button>
+        </form>
+    </section>
+    <section class="panel identity-panel identity-section">
+        <a class="boton secundario" href="@($"/perfil/mascotas/{Id}/preferencias")">Preferencias de estilo</a>
+        <button type="button" id="pet-state" class="boton secundario">Cambiar estado</button>
+        <p id="pet-state-label" class="help-text"></p>
+    </section>
+}
+@code {
+    [Parameter] public Guid? Id { get; set; }
+}

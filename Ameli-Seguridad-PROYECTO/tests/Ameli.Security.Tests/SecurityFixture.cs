@@ -71,6 +71,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         Clock.Reset();
         await Db(async db =>
         {
+            await db.Pets.ExecuteDeleteAsync(); await db.DeliveryAddresses.ExecuteDeleteAsync();
             await db.Emails.ExecuteDeleteAsync(); await db.Events.ExecuteDeleteAsync(); await db.AuditHeads.ExecuteDeleteAsync();
             await db.RecoveryAttempts.ExecuteDeleteAsync(); await db.PasswordResets.ExecuteDeleteAsync();
             await db.Sessions.ExecuteDeleteAsync(); await db.BaseProducts.ExecuteDeleteAsync(); await db.Suppliers.ExecuteDeleteAsync(); await db.Categories.ExecuteDeleteAsync();
