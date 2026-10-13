@@ -11,6 +11,7 @@ public sealed class PetProfile
     public decimal WeightKg { get; set; }
     public decimal HeightCm { get; set; }
     public string Allergies { get; set; } = "";
+    public bool AllergiesDeclared { get; set; }
     public bool IsActive { get; set; } = true;
     public byte[]? Photo { get; set; }
     public string? PhotoContentType { get; set; }

@@ -1,0 +1,6 @@
+@page "/gestion/pedidos"
+@attribute [Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+<PageTitle>Gestión de pedidos | Ameli</PageTitle>
+<PageHeading Eyebrow="Operación" Title="Gestión de pedidos" Description="Actualiza el estado de entrega, transportista y número de guía." />
+<form class="oculto"><AntiforgeryToken /></form>
+<section id="shop-orders" data-staff="true" class="shop-list"><p>Cargando pedidos…</p></section>

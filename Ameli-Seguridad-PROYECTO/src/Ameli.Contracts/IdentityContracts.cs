@@ -21,6 +21,7 @@ public sealed class PetRequest
     public string WeightKg { get; set; } = "";
     public string HeightCm { get; set; } = "";
     public string Allergies { get; set; } = "";
+    public bool? AllergiesDeclared { get; set; }
     public Guid? Revision { get; set; }
     // On edit these fields allow one Save changes operation for biometrics, photo and state.
     public bool? IsActive { get; set; }
@@ -38,7 +39,7 @@ public sealed record PetPhotoPayload(string ContentType, byte[] Content);
 
 public sealed record PetView(Guid Id, string Name, string Species, string Breed, int AgeYears,
     decimal WeightKg, decimal HeightCm, string Allergies, bool IsActive, bool HasPhoto,
-    DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc, Guid Revision);
+    DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc, Guid Revision, bool AllergiesDeclared = false);
 
 public sealed record PetChangeResult(PetView Pet, bool Changed, string Message);
 

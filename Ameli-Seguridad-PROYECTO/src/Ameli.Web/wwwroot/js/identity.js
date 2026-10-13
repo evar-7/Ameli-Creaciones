@@ -93,7 +93,7 @@ function petCard(pet) {
   const details = element("div", undefined, "pet-details");
   details.append(element("h2", pet.name), element("p", `${pet.species} · ${pet.breed}`),
     element("p", `Edad: ${pet.ageYears} años · Peso: ${pet.weightKg} kg · Talla: ${pet.heightCm} cm`),
-    element("p", `Alergias: ${pet.allergies || "No declaradas"}`),
+    element("p", `Alergias: ${pet.allergies || (pet.allergiesDeclared ? "Sin alergias conocidas" : "No declaradas")}`),
     element("p", `Registrada: ${new Date(pet.createdAtUtc).toLocaleDateString("es-CR")}`),
     element("p", `Actualizado: ${new Date(pet.updatedAtUtc).toLocaleDateString("es-CR")}`),
     element("small", pet.isActive ? "Activo" : "Inactivo", pet.isActive ? "state-active" : "state-inactive"));
@@ -126,11 +126,12 @@ async function initPetEditor(section) {
   const load = async () => {
     pet = await identityRequest(`/account/profile/pets/${id}`);
     for (const [name, value] of Object.entries(pet)) {
-      if (name === "isActive") continue;
+      if (name === "isActive" || name === "allergiesDeclared") continue;
       const field = form.elements.namedItem(name[0].toUpperCase() + name.slice(1));
       if (field && value != null) field.value = String(value);
     }
     form.elements.namedItem("IsActive").checked = pet.isActive;
+    form.elements.namedItem("AllergiesDeclared").checked = pet.allergiesDeclared;
     const state = document.getElementById("pet-state");
     state.textContent = pet.isActive ? "Desactivar perfil" : "Reactivar perfil";
     document.getElementById("pet-state-label").textContent = pet.isActive ? "Perfil activo para futuras recomendaciones." : "Perfil inactivo; sus datos siguen visibles.";
@@ -151,6 +152,7 @@ async function initPetEditor(section) {
     const button = form.querySelector('button[type="submit"]'); button.disabled = true;
     try {
       const values = formValues(form);
+      values.AllergiesDeclared = form.elements.namedItem("AllergiesDeclared").checked;
       delete values.Photo;
       if (!id) delete values.Revision;
       else {

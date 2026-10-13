@@ -18,6 +18,8 @@
             <label>Talla (cm)<input name="HeightCm" type="text" inputmode="decimal" required placeholder="Ej.: 35" /><small class="field-error" data-error="HeightCm"></small></label>
         </div>
         <label>Alergias conocidas (opcional)<textarea name="Allergies" maxlength="500" rows="3" placeholder="Separa los materiales por comas; deja vacío si no conoces alergias."></textarea><small class="field-error" data-error="Allergies"></small></label>
+        <label class="identity-check"><input type="checkbox" name="AllergiesDeclared" /> Confirmo las alergias indicadas o que no tiene alergias conocidas.</label>
+        <p class="help-text">Si no conoces esta información, deja la confirmación sin marcar. El chat te pedirá completarla antes de recomendar productos.</p>
         @if (Id.HasValue)
         {
             <label>Actualizar foto (opcional)<input type="file" name="Photo" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" /><small>JPG, PNG o WEBP; hasta 5 MB.</small><small class="field-error" data-error="Photo"></small></label>

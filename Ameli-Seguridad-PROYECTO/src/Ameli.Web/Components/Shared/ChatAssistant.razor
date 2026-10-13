@@ -1,0 +1,34 @@
+@inject IHttpContextAccessor Accessor
+<button type="button" class="chat-launch" id="chat-launch" aria-controls="ameli-chat" aria-expanded="false">Chat Ameli <span aria-hidden="true">✦</span></button>
+<section class="ameli-chat" id="ameli-chat" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden
+    data-client="@Accessor.HttpContext?.User.IsInRole(Roles.Client).ToString().ToLowerInvariant()"
+    data-scope="@(Accessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "visitante")">
+    <header class="chat-header"><div><strong id="chat-title">Asistente Ameli</strong><small>Productos, tallas y tus pedidos</small></div>
+        <div class="chat-controls"><button type="button" id="chat-font" aria-label="Aumentar o restablecer tamaño del texto" title="Tamaño del texto">A+</button>
+            <button type="button" id="chat-close" aria-label="Cerrar chat">×</button></div>
+    </header>
+    <div class="chat-body">
+        <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Mensajes del chat" tabindex="0"></div>
+        <form id="chat-tools" class="chat-tools">
+            <label>¿Qué necesitas?<select name="Intent" id="chat-intent"><option value="auto">Escribir una pregunta</option><option value="catalog">Productos y disponibilidad</option><option value="size">Guía de tallas</option><option value="order">Consultar pedido</option><option value="recommendations">Recomendaciones para mi mascota</option></select></label>
+            <div data-chat-tool="catalog size" hidden><label>Buscar producto por nombre o SKU<input id="chat-product-search" type="search" maxlength="160" /></label><button type="button" id="chat-find-product">Buscar</button>
+                <label>Producto<select name="ProductId" id="chat-product"><option value="">Seleccionar producto</option></select></label></div>
+            <div data-chat-tool="size" class="chat-measures" hidden>
+                <label>Especie<select name="Species"><option value="">Seleccionar</option><option>Perro</option><option>Gato</option></select></label>
+                <label>Raza<input name="Breed" maxlength="100" /></label>
+                <label>Talla / altura (cm)<input name="HeightCm" inputmode="decimal" placeholder="Ej.: 40" maxlength="40" /></label>
+                <label>Peso (kg)<input name="WeightKg" inputmode="decimal" placeholder="Ej.: 8.5" maxlength="40" /></label>
+            </div>
+            <div data-chat-tool="order" hidden><label>Número de pedido<input name="OrderNumber" maxlength="80" placeholder="Cópialo desde Mis pedidos" /></label></div>
+            <div data-chat-tool="recommendations" hidden><label>Mascota<select name="PetId" id="chat-pet"><option value="">Seleccionar mascota</option></select></label><a href="/perfil/mascotas">Completar o registrar un perfil</a></div>
+        </form>
+    </div>
+    <div id="chat-status" class="chat-status" role="status" aria-live="polite"></div>
+    <div class="chat-pending-actions"><button type="button" id="chat-cancel" hidden>Cancelar consulta</button><button type="button" id="chat-retry" hidden>Reintentar</button></div>
+    <form id="chat-send" class="chat-compose"><AntiforgeryToken />
+        <label for="chat-message" class="chat-sr-only">Mensaje al asistente</label>
+        <textarea id="chat-message" name="Message" maxlength="1000" rows="2" placeholder="Pregunta por un producto o elige una función…" aria-describedby="chat-input-help"></textarea>
+        <button type="submit" id="chat-send-button" aria-label="Enviar consulta">Enviar</button>
+    </form>
+    <small id="chat-input-help" class="chat-input-help">Enter para enviar · Shift + Enter para una nueva línea</small>
+</section>

@@ -9,6 +9,12 @@ namespace Ameli.Web.Security;
 public sealed class SecurityApiClient(IHttpClientFactory clients, ApiSessionStore sessions, IHttpContextAccessor accessor)
 {
     public const string SessionKeyClaim = "ameli_session";
+    public async Task<T> PublicAsync<T>(HttpMethod method, string path, object? body = null, CancellationToken ct = default)
+    {
+        using var request = Request(method, path, body);
+        using var response = await clients.CreateClient("Api").SendAsync(request, ct);
+        return await ReadAsync<T>(response, ct);
+    }
     public async Task<T> AnonymousAsync<T>(string path, object body, CancellationToken ct = default)
     {
         using var request = Request(HttpMethod.Post, path, body);

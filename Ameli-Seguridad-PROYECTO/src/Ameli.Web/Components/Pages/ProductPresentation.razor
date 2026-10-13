@@ -1,0 +1,27 @@
+@page "/administracion/productos/{Id:guid}/ficha"
+@attribute [Authorize(Roles = Roles.Administrator)]
+<PageTitle>Ficha y tallas del producto | Ameli</PageTitle>
+<PageHeading Eyebrow="Administración · Catálogo" Title="Ficha y tallas del producto" Description="Publica datos reales para las consultas y recomendaciones del chat." />
+<p><a href="/administracion/catalogos/productos">← Productos base</a></p>
+<section class="panel" id="product-presentation" data-id="@Id">
+    <h2 id="presentation-title">Cargando producto…</h2>
+    <form id="presentation-form" class="formulario-apilado" novalidate><AntiforgeryToken />
+        <div id="presentation-error" class="feedback error oculto" role="alert" tabindex="-1"></div>
+        <div class="identity-grid">
+            <label>SKU<input name="Sku" maxlength="40" required /><small class="field-error" data-error="Sku"></small></label>
+            <label>Materiales<input name="Material" maxlength="80" /><small class="field-error" data-error="Material"></small></label>
+            <label>Precio (CRC)<input name="UnitPrice" type="number" min="0" step="0.01" required /><small class="field-error" data-error="UnitPrice"></small></label>
+            <label>Stock total del producto<input name="StockQuantity" type="number" min="0" step="1" required /><small class="field-error" data-error="StockQuantity"></small></label>
+            <label>Colores (separados por comas)<input name="Colors" maxlength="500" /><small class="field-error" data-error="Colors"></small></label>
+            <label>Tipo de prenda<input name="GarmentType" maxlength="40" placeholder="Ej.: Suéter" /></label>
+            <label>Estilo<input name="Style" maxlength="40" placeholder="Ej.: Clásico" /><small class="field-error" data-error="Style"></small></label>
+        </div>
+        <label>Cuidados<textarea name="CareInstructions" maxlength="1000" rows="3"></textarea><small class="field-error" data-error="CareInstructions"></small></label>
+        <label>Notas de ajuste<textarea name="FitNotes" maxlength="500" rows="2" placeholder="Describe la holgura y las medidas adicionales que requiere esta prenda."></textarea><small class="field-error" data-error="FitNotes"></small></label>
+        <label class="identity-check"><input name="IsActive" type="checkbox" /> Producto activo</label>
+        <h3>Tabla específica del producto</h3><p>Altura a la cruz en cm y peso en kg. Introduce los rangos del fabricante; no se crean tallas por defecto.</p>
+        <div id="presentation-sizes" class="presentation-sizes"></div><small class="field-error" data-error="Sizes"></small>
+        <button type="button" id="presentation-add-size" class="boton secundario">Añadir talla</button><button type="submit" class="boton primario">Guardar ficha</button>
+    </form>
+</section>
+@code { [Parameter] public Guid Id { get; set; } }

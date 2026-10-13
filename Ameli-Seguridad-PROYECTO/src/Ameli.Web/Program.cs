@@ -97,5 +97,6 @@ app.MapAccountEndpoints();
 app.MapManagementEndpoints();
 app.MapCatalogEndpoints();
 app.MapCustomerEndpoints();
+app.MapAssistantEndpoints();
 app.MapRazorComponents<App>();
 app.Run();

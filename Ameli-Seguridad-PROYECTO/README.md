@@ -74,6 +74,11 @@ Los primeros cuatro fallos muestran un error normal. El quinto bloquea la cuenta
 | GID-003/004/005 | Lista privada, edición sin versiones duplicadas, fecha de actualización, desactivación y reactivación sin eliminar el perfil. |
 | GID-006 | Preferencias de color, material, prenda y estilo. Se impiden materiales que coincidan con alergias; se permite dejarlas vacías. |
 | GID-007 | Direcciones privadas con campos obligatorios, predeterminada y eliminación confirmada. |
+| AAC-001 | Consulta privada de pedido propio, estado, actualización, transportista y guía; se exige sesión y no se distinguen pedidos ajenos de inexistentes. |
+| AAC-002 | Tabla específica por producto, unidades cm/kg, campos faltantes identificados, sugerencia solo con una talla compatible y guía visual. |
+| AAC-003 | Catálogo público con SKU, precio, tallas, materiales, cuidados y stock actual; alternativas de la misma categoría para agotados y respuesta limitada al alcance. |
+| AAC-004 | Motor local de recomendaciones por similitud del perfil, filtros de medidas/alergias/stock y tarjetas con talla, motivo y acción para agregar al carrito. |
+| AAC-005 | Chat adaptable, aviso a los 4 segundos, cancelación, deduplicación y borrador local con reintento sin conexión. |
 
 ### Registro y perfil de cliente (sprint GID)
 
@@ -85,7 +90,19 @@ En **Editar mascota**, **Guardar cambios** aplica en una sola operación las med
 
 La migración `CustomerIdentity` crea `pet_profiles` y `delivery_addresses`, y agrega nombre/apellidos a `users`. En desarrollo se aplica al arrancar **Ameli.Api** mediante el inicializador existente: conserva la base, las cuentas, la cadena de auditoría y su clave `audit-integrity.key`. No borres `App_Data` ni cambies `Audit:IntegrityKey` al actualizar.
 
-El proyecto actual no tiene entidades de pedidos, checkout ni motor de recomendaciones. Las mascotas inactivas conservan su ficha e historial, y el perfil de estilo y la dirección predeterminada quedan consultables por API para esos módulos futuros. Al implementar pedidos se debe guardar una copia de los datos relevantes de mascota y dirección en cada pedido para que permanezcan visibles después de cambios o eliminaciones.
+El sprint AAC incorpora carrito, confirmación de pedidos y un motor local de recomendaciones. Al confirmar se guardan copias de los datos de mascota y dirección; los pedidos conservan esas copias después de desactivar perfiles o eliminar direcciones. El inventario se valida de nuevo al agregar y confirmar; las solicitudes repetidas no duplican cantidades ni pedidos. La confirmación no procesa pagos electrónicos.
+
+### Chatbot (sprint AAC)
+
+El botón **Chat Ameli** aparece para visitantes y usuarios autenticados. Elige productos, tallas, recomendaciones o pedidos, o pregunta por el nombre/SKU de un producto. Las funciones privadas solo aceptan la sesión del cliente; no aceptan correo o teléfono como prueba de identidad.
+
+En Administración → Productos base → **Configurar ficha y tallas**, publica los rangos reales por producto, materiales, cuidados, colores, estilo y stock. Los productos existentes reciben un SKU único, pero no se inventa una tabla de tallas: hasta configurarla, el chat informa que no puede calcularla. En el perfil de mascota se debe indicar una alergia o confirmar explícitamente que no tiene alergias conocidas antes de recomendar. Alergias vacías sin confirmación permanecen “No declaradas”.
+
+El motor `ProfileRecommendationEngine` calcula similitud de coseno entre características de estilo y aplica antes los filtros de especie, talla, alergias y disponibilidad. Es un recomendador local basado en contenido; no usa un servicio generativo ni requiere una nueva clave de API. Las tallas y datos comerciales siempre salen de SQL Server. Sin preferencias explícitas usa las medidas, alergias y disponibilidad; no afirma tendencias externas ni inventa datos faltantes.
+
+El cliente puede usar **Mi carrito** y **Mis pedidos**. Administración y Logística usan **Gestión de pedidos** para registrar estados, transportista y guía. El estado “Enviado” requiere transportista y guía. El chat solo muestra el seguimiento del pedido propio, sin incluir la dirección ni el detalle de sus artículos.
+
+Consulta [VERIFICACION-AAC.md](docs/VERIFICACION-AAC.md) para actualización, configuración y escenarios de prueba.
 
 Consulta la relación de los **20 escenarios del Excel** con el código y las pruebas en [TRAZABILIDAD.md](docs/TRAZABILIDAD.md).
 
@@ -97,7 +114,7 @@ Consulta la relación de los **20 escenarios del Excel** con el código y las pr
 | `src/Ameli.Web` | Blazor con renderizado en servidor, formularios HTML, CSS del prototipo adaptado y seguimiento de actividad. Consume solo la API. |
 | `src/Ameli.Contracts` | DTO, validaciones y nombres de roles compartidos. |
 | `tests/Ameli.Security.Tests` | Pruebas con SQL Server real y servidor HTTP de pruebas ASP.NET Core. |
-| `database/01-security-schema.sql` | Script histórico que solo prepara `__EFMigrationsHistory`; las tablas vigentes se crean con las migraciones de EF Core mediante `Database.MigrateAsync()`. |
+| `database/01-security-schema.sql` | Script idempotente de las migraciones vigentes, generado con EF Core; alternativa revisable a `Database.MigrateAsync()`. |
 
 La API separa dominio, aplicación y persistencia en carpetas para mantener la solución manejable. JSON utiliza camelCase; tablas y columnas SQL, snake_case. `users.role_name` referencia `roles.name`: cada cuenta tiene un rol, como en las historias. `is_internal` impide convertir clientes en personal mediante esta pantalla.
 

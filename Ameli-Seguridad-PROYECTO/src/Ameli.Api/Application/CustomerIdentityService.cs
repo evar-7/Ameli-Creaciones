@@ -84,7 +84,7 @@ public sealed class CustomerIdentityService(SecurityDbContext db, SqlSecurityTra
 
     private static PetView View(PetProfile p) => new(p.Id, p.Name, p.Species, p.Breed, p.AgeYears,
         p.WeightKg, p.HeightCm, p.Allergies, p.IsActive, p.PhotoContentType is not null,
-        p.CreatedAtUtc, p.UpdatedAtUtc, p.Revision);
+        p.CreatedAtUtc, p.UpdatedAtUtc, p.Revision, p.AllergiesDeclared);
 
     public async Task<List<PetView>> PetsAsync(Actor actor, CancellationToken ct)
     {
@@ -93,7 +93,7 @@ public sealed class CustomerIdentityService(SecurityDbContext db, SqlSecurityTra
             .OrderByDescending(x => x.IsActive).ThenBy(x => x.Name)
             .Select(x => new PetView(x.Id, x.Name, x.Species, x.Breed, x.AgeYears, x.WeightKg,
                 x.HeightCm, x.Allergies, x.IsActive, x.PhotoContentType != null,
-                x.CreatedAtUtc, x.UpdatedAtUtc, x.Revision)).ToListAsync(ct);
+                x.CreatedAtUtc, x.UpdatedAtUtc, x.Revision, x.AllergiesDeclared)).ToListAsync(ct);
     }
 
     public async Task<PetView> PetAsync(Actor actor, Guid id, CancellationToken ct)
@@ -143,7 +143,8 @@ public sealed class CustomerIdentityService(SecurityDbContext db, SqlSecurityTra
         var owner = await RequireClientAsync(actor, ct);
         var pet = new PetProfile { OwnerUserId = actor.UserId, Name = data.name, Species = data.species,
             Breed = data.breed, AgeYears = data.age, WeightKg = data.weight, HeightCm = data.height,
-            Allergies = data.allergies, CreatedAtUtc = Now, UpdatedAtUtc = Now };
+            Allergies = data.allergies, AllergiesDeclared = data.allergies.Length > 0 || request.AllergiesDeclared == true,
+            CreatedAtUtc = Now, UpdatedAtUtc = Now };
         db.Pets.Add(pet); Audit("pet_create", "pet_profiles", owner, origin, pet.Id);
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct); return View(pet);
     }
@@ -159,15 +160,17 @@ public sealed class CustomerIdentityService(SecurityDbContext db, SqlSecurityTra
         var pet = await OwnedPetAsync(actor, id, ct);
         if (request.Revision != pet.Revision) throw new SecurityFault("stale_pet", "La ficha cambió. Recarga y revisa los datos vigentes.", 409);
         var active = request.IsActive ?? pet.IsActive;
+        var allergiesDeclared = data.allergies.Length > 0 || request.AllergiesDeclared == true;
         var photoChanged = photo is not null && (pet.PhotoContentType != photo.Value.contentType ||
             pet.Photo is null || !pet.Photo.AsSpan().SequenceEqual(photo.Value.bytes));
         if (pet.Name == data.name && pet.Species == data.species && pet.Breed == data.breed &&
             pet.AgeYears == data.age && pet.WeightKg == data.weight && pet.HeightCm == data.height &&
-            pet.Allergies == data.allergies && pet.IsActive == active && !photoChanged)
+            pet.Allergies == data.allergies && pet.AllergiesDeclared == allergiesDeclared && pet.IsActive == active && !photoChanged)
         { await tx.CommitAsync(ct); return new(View(pet), false, "No existen cambios por aplicar"); }
         pet.Name = data.name; pet.Species = data.species; pet.Breed = data.breed;
         pet.AgeYears = data.age; pet.WeightKg = data.weight; pet.HeightCm = data.height; pet.Allergies = data.allergies;
         pet.IsActive = active;
+        pet.AllergiesDeclared = allergiesDeclared;
         if (photoChanged && photo is { } selectedPhoto)
         { pet.Photo = selectedPhoto.bytes; pet.PhotoContentType = selectedPhoto.contentType; }
         // A newly declared allergy overrides any earlier material choice.

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 240" role="img" aria-labelledby="title desc">
+<title id="title">Altura a la cruz y peso</title><desc id="desc">Altura vertical desde el suelo hasta el hombro, en centímetros. Peso en una balanza, en kilogramos.</desc>
+<rect width="420" height="240" rx="16" fill="#f2ebf7"/>
+<path d="M84 152 Q58 129 60 110 Q62 96 74 111 L94 128 L211 128 L222 93 Q211 88 217 71 L239 50 L249 66 L278 72 Q288 85 272 93 L252 99 L245 133 L253 174 L240 185 L222 144 L198 144 L183 185 L166 185 L174 143 L114 143 L109 185 L90 185 Z" fill="#d8c2e9" stroke="#6f4a8e" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="258" cy="77" r="3" fill="#4c2f63"/>
+<path d="M45 188 H287" stroke="#726b78" stroke-width="2"/>
+<path d="M305 128 V188 M299 136 L305 128 L311 136 M299 180 L305 188 L311 180" fill="none" stroke="#bd5260" stroke-width="3"/>
+<path d="M214 128 H303" stroke="#bd5260" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="321" y="151" font-family="Arial,sans-serif" font-size="14" fill="#4c2f63">Altura</text><text x="321" y="173" font-family="Arial,sans-serif" font-size="14" fill="#4c2f63">(cm)</text>
+<text x="26" y="222" font-family="Arial,sans-serif" font-size="14" fill="#4c2f63">Peso: usa una balanza y anota el valor en kg.</text>
+</svg>

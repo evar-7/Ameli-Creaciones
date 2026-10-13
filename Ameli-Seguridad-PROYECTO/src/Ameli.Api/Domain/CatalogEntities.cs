@@ -29,6 +29,12 @@ public sealed class Supplier
 public sealed class BaseProduct
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+    public string Sku { get; set; } = "AML-" + Guid.NewGuid().ToString("N").ToUpperInvariant();
+    public string CareInstructions { get; set; } = "";
+    public string FitNotes { get; set; } = "";
+    public string ColorsJson { get; set; } = "[]";
+    public string GarmentType { get; set; } = "";
+    public string Style { get; set; } = "";
     public string Name { get; set; } = "";
     public string NormalizedName { get; set; } = "";
     public string Description { get; set; } = "";

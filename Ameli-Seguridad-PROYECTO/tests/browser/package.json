@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "scripts": { "test": "node --test assistant.spec.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}

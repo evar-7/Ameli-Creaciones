@@ -1,0 +1,48 @@
+@page "/productos/{Id:guid}"
+@page "/productos/{Id:guid}/guia"
+@attribute [AllowAnonymous]
+@inject SecurityApiClient Api
+@inject IHttpContextAccessor Accessor
+<PageTitle>Producto y guía de tallas | Ameli</PageTitle>
+<p><a href="/productos">← Catálogo</a></p>
+@if (Product is null) { <section class="panel"><p role="alert">@Error</p></section> }
+else
+{
+    <PageHeading Eyebrow="@Product.CategoryName" Title="@Product.Name" Description="@Product.Description" />
+    <div class="shop-product-info">
+        <article class="panel"><h2>Información del producto</h2><p>SKU: @Product.Sku</p><p>Especie: @Product.Species</p>
+            <p>Precio: @Product.UnitPrice.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-CR"))</p><p>@(Product.StockQuantity > 0 ? $"{Product.StockQuantity} disponibles" : "Agotado")</p>
+            <p>Materiales: @(Product.Material.Length > 0 ? Product.Material : "Sin información publicada")</p>
+            <p>Cuidados: @(Product.CareInstructions.Length > 0 ? Product.CareInstructions : "Sin información publicada")</p>
+            <p>Colores: @(Product.Colors.Length > 0 ? string.Join(", ", Product.Colors) : "Sin información publicada")</p>
+            @if (Accessor.HttpContext?.User.IsInRole(Roles.Client) == true && Product.StockQuantity > 0 && Product.Sizes.Count > 0)
+            {
+                <form id="product-add" data-id="@Product.Id" class="formulario-apilado"><AntiforgeryToken /><label>Talla<select name="Size">@foreach (var s in Product.Sizes) { <option>@s.Name</option> }</select></label>
+                    <button class="boton primario" type="submit">Agregar al carrito</button><p id="product-add-result" role="status"></p></form>
+            }
+            else if (Accessor.HttpContext?.User.Identity?.IsAuthenticated != true) { <a class="boton primario" href="/ingresar">Iniciar sesión para agregar</a> }
+        </article>
+        <article class="panel" id="guia-visual"><h2>Guía visual y equivalencias</h2>
+            <img class="measure-diagram" src="/images/measure-guide.svg" alt="Mide la altura desde el suelo hasta la cruz, donde los hombros se unen al cuello. El peso se mide con una balanza en kilogramos." />
+            <p>Mide la altura a la cruz en <strong>cm</strong> y el peso con una balanza en <strong>kg</strong>. La raza orienta la consulta; las medidas reales determinan la talla.</p>
+            @if (Product.Sizes.Count == 0) { <p>Este producto no tiene una tabla de tallas publicada. No se calcula ni garantiza una talla.</p> }
+            else
+            {
+                <div class="tabla-responsive"><table><caption>Tabla específica de @Product.Name</caption><thead><tr><th scope="col">Talla</th><th scope="col">Altura (cm)</th><th scope="col">Peso (kg)</th><th scope="col">Equivalencia</th></tr></thead>
+                    <tbody>@foreach (var s in Product.Sizes) { <tr><td>@s.Name</td><td>@s.MinHeightCm–@s.MaxHeightCm</td><td>@s.MinWeightKg–@s.MaxWeightKg</td><td>@(s.Equivalent.Length > 0 ? s.Equivalent : "Sin equivalencia publicada")</td></tr> }</tbody></table></div>
+            }
+            <p>Ajuste: @(Product.FitNotes.Length > 0 ? Product.FitNotes : "Sin notas de ajuste publicadas. Verifica las medidas adicionales necesarias para la prenda.")</p>
+            <p>Si las medidas coinciden con dos tallas o quedan fuera de la tabla, vuelve a medir y revisa el tipo de ajuste. Una sugerencia no garantiza compatibilidad absoluta.</p>
+        </article>
+    </div>
+}
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private StoreProductView? Product;
+    private string Error = "Producto no encontrado o no disponible.";
+    protected override async Task OnParametersSetAsync()
+    {
+        try { Product = await Api.PublicAsync<StoreProductView>(HttpMethod.Get, $"assistant/products/{Id}"); }
+        catch (Exception ex) when (ex is ApiFault or HttpRequestException or TaskCanceledException) { Product = null; Error = "Producto no encontrado o catálogo no disponible. Vuelve a intentarlo."; }
+    }
+}

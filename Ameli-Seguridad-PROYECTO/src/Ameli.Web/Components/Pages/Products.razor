@@ -1,0 +1,30 @@
+@page "/productos"
+@attribute [AllowAnonymous]
+@inject SecurityApiClient Api
+<PageTitle>Productos | Ameli</PageTitle>
+<PageHeading Eyebrow="Catálogo" Title="Productos para tu mascota" Description="Consulta precios, materiales y disponibilidad. Abre el chat para resolver dudas o calcular una talla." />
+<form method="get" class="panel barra-filtros"><label>Nombre, SKU o material<input name="search" type="search" value="@Search" maxlength="160" /></label><button class="boton primario" type="submit">Buscar</button></form>
+@if (Error is not null) { <div class="feedback error" role="alert">@Error</div> }
+else if (Items.Count == 0) { <section class="panel"><p>No hay productos activos que coincidan con tu búsqueda.</p></section> }
+else
+{
+    <section class="productos-grid">
+        @foreach (var p in Items)
+        {
+            <article class="tarjeta-producto"><div class="imagen-producto"><span aria-hidden="true">@(p.Icon.Length > 0 ? p.Icon : "🎀")</span></div>
+                <div class="contenido-producto"><span class="categoria-producto">@p.CategoryName</span><h2>@p.Name</h2><p>@p.Sku · @p.Material</p>
+                    <p>@p.UnitPrice.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-CR"))</p><p>@(p.StockQuantity > 0 ? $"{p.StockQuantity} disponibles" : "Agotado")</p>
+                    <a class="boton primario" href="@p.ProductUrl">Ver producto</a><a class="boton claro" href="@p.GuideUrl">Guía de tallas</a></div></article>
+        }
+    </section>
+}
+@code {
+    [SupplyParameterFromQuery(Name = "search")] public string? Search { get; set; }
+    private List<StoreProductView> Items = [];
+    private string? Error;
+    protected override async Task OnParametersSetAsync()
+    {
+        try { Items = await Api.PublicAsync<List<StoreProductView>>(HttpMethod.Get, "assistant/products?search=" + Uri.EscapeDataString(Search ?? "")); }
+        catch (Exception ex) when (ex is ApiFault or HttpRequestException or TaskCanceledException) { Error = "No se pudo cargar el catálogo. Intenta de nuevo."; }
+    }
+}

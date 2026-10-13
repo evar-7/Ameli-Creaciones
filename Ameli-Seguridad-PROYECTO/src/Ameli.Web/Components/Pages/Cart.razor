@@ -1,0 +1,10 @@
+@page "/carrito"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Mi carrito | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi compra" Title="Mi carrito" Description="Revisa los productos y elige una dirección antes de confirmar." />
+<section id="shop-cart" class="shop-list"><p>Cargando carrito…</p></section>
+<section class="panel"><form id="shop-checkout" class="formulario-apilado"><AntiforgeryToken />
+    <label>Dirección de entrega<select name="AddressId" id="checkout-address"><option value="">Seleccionar dirección</option></select></label>
+    <a href="/perfil/direcciones">Administrar mis direcciones</a><p>Al confirmar se registra el pedido para tramitarlo con Ameli. Esta versión no procesa cobros electrónicos.</p>
+    <button type="submit" class="boton primario" id="checkout-button">Confirmar pedido</button><p id="checkout-result" role="status"></p>
+</form></section>

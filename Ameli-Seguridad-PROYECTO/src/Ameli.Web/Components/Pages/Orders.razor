@@ -1,0 +1,6 @@
+@page "/mis-pedidos"
+@attribute [Authorize(Roles = Roles.Client)]
+<PageTitle>Mis pedidos | Ameli</PageTitle>
+<PageHeading Eyebrow="Mi cuenta" Title="Mis pedidos" Description="Consulta el estado, la entrega y la información registrada en cada pedido." />
+<form class="oculto"><AntiforgeryToken /></form>
+<section id="shop-orders" class="shop-list"><p>Cargando pedidos…</p></section>

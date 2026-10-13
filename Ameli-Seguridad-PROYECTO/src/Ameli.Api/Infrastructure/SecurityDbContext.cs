@@ -166,6 +166,7 @@ public sealed partial class SecurityDbContext(DbContextOptions<SecurityDbContext
             e.HasIndex(x => new { x.OwnerUserId, x.IsDefault });
             e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
         });
+        ConfigureAssistant(b);
         foreach (var entity in b.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties())
                 property.SetColumnName(System.Text.RegularExpressions.Regex.Replace(property.Name,

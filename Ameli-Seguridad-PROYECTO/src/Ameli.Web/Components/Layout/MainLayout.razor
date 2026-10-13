@@ -21,6 +21,7 @@
     <aside class="menu-lateral" id="menuLateral">
         <div class="menu-rol"><span>Menú de navegación</span><strong>@(Authenticated ? Role : "Visitante")</strong></div>
         <nav aria-label="Navegación principal">
+            <NavLink class="enlace-menu" ActiveClass="activo" href="/productos">Catálogo de productos</NavLink>
             @if (Authenticated)
             {
                 <NavLink class="enlace-menu" ActiveClass="activo" href="@Roles.Home(Role)" Match="NavLinkMatch.All"><span aria-hidden="true">⌂</span> Mi inicio</NavLink>
@@ -29,6 +30,12 @@
                 {
                     <NavLink class="enlace-menu" ActiveClass="activo" href="/perfil/mascotas">Mis mascotas</NavLink>
                     <NavLink class="enlace-menu" ActiveClass="activo" href="/perfil/direcciones">Direcciones de entrega</NavLink>
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/carrito">Mi carrito</NavLink>
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/mis-pedidos">Mis pedidos</NavLink>
+                }
+                @if (Role == Roles.Administrator || Role == Roles.Logistics)
+                {
+                    <NavLink class="enlace-menu" ActiveClass="activo" href="/gestion/pedidos">Gestión de pedidos</NavLink>
                 }
                 @if (Role == Roles.Administrator)
                 {
@@ -51,6 +58,7 @@
     </aside>
     <main class="contenido-principal" id="principal">@Body</main>
 </div>
+<ChatAssistant />
 @if (Authenticated)
 {
     var status = Accessor.HttpContext?.Items["SessionStatus"] as SessionStatus;
