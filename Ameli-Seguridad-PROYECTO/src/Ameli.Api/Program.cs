@@ -43,6 +43,8 @@ builder.Services.AddScoped<CustomerIdentityService>();
 builder.Services.AddScoped<ProductInformationService>();
 builder.Services.AddScoped<CommerceService>();
 builder.Services.AddScoped<AssistantService>();
+builder.Services.AddScoped<RecommendationService>();
+builder.Services.AddScoped<IRecommendationProfileProvider, DbRecommendationProfileProvider>();
 builder.Services.AddSingleton<IProfileRecommendationEngine, ProfileRecommendationEngine>();
 builder.Services.AddSingleton<AuditIntegrity>();
 builder.Services.AddScoped<TokenIssuer>();

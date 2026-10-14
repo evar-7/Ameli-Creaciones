@@ -58,3 +58,17 @@ public sealed class CustomerOrderItem
     public decimal UnitPrice { get; set; }
     public string PetSnapshot { get; set; } = "";
 }
+
+public sealed class RecommendationFeedback
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid OwnerUserId { get; set; }
+    public Guid PetId { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid SessionId { get; set; }
+    public string Value { get; set; } = "";
+    public string ReasonCode { get; set; } = "";
+    public string ReasonText { get; set; } = "";
+    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTimeOffset UpdatedAtUtc { get; set; }
+}

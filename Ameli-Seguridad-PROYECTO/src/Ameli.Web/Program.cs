@@ -96,6 +96,7 @@ app.MapGet("/", (HttpContext context) => Results.Redirect(context.User.Identity?
 app.MapAccountEndpoints();
 app.MapManagementEndpoints();
 app.MapCatalogEndpoints();
+app.MapRecommendationEndpoints();
 app.MapCustomerEndpoints();
 app.MapAssistantEndpoints();
 app.MapRazorComponents<App>();

@@ -10,6 +10,7 @@ public sealed partial class SecurityDbContext
     public DbSet<CartOperation> CartOperations => Set<CartOperation>();
     public DbSet<CustomerOrder> Orders => Set<CustomerOrder>();
     public DbSet<CustomerOrderItem> OrderItems => Set<CustomerOrderItem>();
+    public DbSet<RecommendationFeedback> RecommendationFeedback => Set<RecommendationFeedback>();
 
     private static void ConfigureAssistant(ModelBuilder b)
     {
@@ -63,6 +64,18 @@ public sealed partial class SecurityDbContext
             e.HasOne<CustomerOrder>().WithMany().HasForeignKey(x => x.OrderId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne<BaseProduct>().WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne<PetProfile>().WithMany().HasForeignKey(x => x.PetId).OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<RecommendationFeedback>(e =>
+        {
+            e.ToTable("recommendation_feedback"); e.HasKey(x => x.Id);
+            e.Property(x => x.Value).HasMaxLength(20).IsUnicode(false);
+            e.Property(x => x.ReasonCode).HasMaxLength(40).IsUnicode(false);
+            e.Property(x => x.ReasonText).HasMaxLength(300);
+            e.HasIndex(x => new { x.OwnerUserId, x.PetId, x.ProductId, x.SessionId }).IsUnique();
+            e.HasIndex(x => new { x.OwnerUserId, x.PetId, x.UpdatedAtUtc });
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<PetProfile>().WithMany().HasForeignKey(x => x.PetId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<BaseProduct>().WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

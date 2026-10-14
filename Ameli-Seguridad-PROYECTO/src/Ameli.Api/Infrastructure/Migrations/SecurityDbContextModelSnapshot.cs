@@ -952,6 +952,71 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.ToTable("product_size_rules", (string)null);
                 });
 
+            modelBuilder.Entity("Ameli.Api.Domain.RecommendationFeedback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("created_at_utc");
+
+                    b.Property<Guid>("OwnerUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("owner_user_id");
+
+                    b.Property<Guid>("PetId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("pet_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("ReasonCode")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(40)")
+                        .HasColumnName("reason_code");
+
+                    b.Property<string>("ReasonText")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("reason_text");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("session_id");
+
+                    b.Property<DateTimeOffset>("UpdatedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("updated_at_utc");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PetId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("OwnerUserId", "PetId", "UpdatedAtUtc");
+
+                    b.HasIndex("OwnerUserId", "PetId", "ProductId", "SessionId")
+                        .IsUnique();
+
+                    b.ToTable("recommendation_feedback", (string)null);
+                });
+
             modelBuilder.Entity("Ameli.Api.Domain.RecoveryAttempt", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1329,6 +1394,27 @@ namespace Ameli.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Ameli.Api.Domain.ProductSizeRule", b =>
                 {
+                    b.HasOne("Ameli.Api.Domain.BaseProduct", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.RecommendationFeedback", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Ameli.Api.Domain.PetProfile", null)
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Ameli.Api.Domain.BaseProduct", null)
                         .WithMany()
                         .HasForeignKey("ProductId")

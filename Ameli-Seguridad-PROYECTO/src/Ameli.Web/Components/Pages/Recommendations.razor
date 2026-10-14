@@ -1,0 +1,24 @@
+@page "/recomendados"
+@attribute [Authorize(Roles = Roles.Client)]
+
+<PageTitle>Recomendados | Ameli</PageTitle>
+<PageHeading Eyebrow="Cliente · Recomendaciones" Title="Recomendados para tu mascota" Description="Sugerencias personalizadas con restricciones de talla, alergias, preferencias y disponibilidad." />
+
+<section class="panel recomendacion-cabecera" id="recommendations" aria-live="polite">
+    <form id="recommendation-token" class="oculto"><AntiforgeryToken /></form>
+    <div>
+        <span class="kicker">Motor determinístico seguro</span>
+        <h2>Selecciona una mascota y recalcula cuando actualices su perfil</h2>
+        <p>Las sugerencias excluyen productos incompatibles por alergias, talla o stock.</p>
+    </div>
+    <div class="grupo-botones recommendation-actions">
+        <label>Mascota
+            <select id="recommendation-pet">
+                <option value="">Seleccionar mascota</option>
+            </select>
+        </label>
+        <button class="boton primario" id="recommendation-refresh" type="button">↻ Recalcular</button>
+    </div>
+</section>
+<div id="recommendation-feedback" class="feedback oculto" role="status" tabindex="-1"></div>
+<section id="recommendation-results" class="productos-grid recomendaciones-grid" aria-live="polite"></section>
