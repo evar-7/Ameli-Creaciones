@@ -29,3 +29,11 @@ La sesión caduca a los 15 minutos de inactividad y tiene un máximo absoluto de
 El frontend Blazor mantiene ambos tokens en el servidor y usa su cookie HttpOnly y antiforgery para los formularios `/account/*`. No copies esos endpoints de formulario al cliente Android: usa la API REST.
 
 Los enlaces de recuperación incluyen un token secreto. No registres cuerpos de login/refresh/reset ni cadenas de consulta de `/restablecer` en IIS, proxies, telemetría o herramientas de captura. La aplicación suprime los logs de solicitudes ASP.NET de nivel Information y usa `Referrer-Policy: no-referrer`, pero el registro del servidor frontal se configura por separado.
+
+## Carrito
+
+`POST assistant/cart` requiere una cuenta de cliente. Su cuerpo contiene `requestId` (UUID único por operación, conservado en reintentos), `productId`, `size`, `quantity` (1–20) y `petId` opcional. La API controla también la cantidad acumulada contra el stock.
+
+Para una compra manual de un producto sin tallas publicadas, envía `size: ""`, `petId: null` y `acknowledgesUnspecifiedSize: true`, después de la confirmación explícita del cliente. Sin esa confirmación responde `size_confirmation_required`. El campo es opcional y su valor predeterminado es `false`, de modo que las solicitudes existentes con una talla publicada siguen funcionando.
+
+No uses esa confirmación para omitir la talla de un producto que sí tiene tabla o para una recomendación vinculada a una mascota. La API rechaza esas combinaciones. La confirmación del pedido vuelve a validar disponibilidad y selección. Consulta [la verificación del carrito](VERIFICACION-CARRITO.md).

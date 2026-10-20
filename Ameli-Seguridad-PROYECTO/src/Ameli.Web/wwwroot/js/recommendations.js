@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       target.append(retry);
     }
   }
-  function card(item) {
+  function card(item, petId) {
     const wrap = el("div", null, "recomendacion-item");
     const article = el("article", null, "tarjeta-producto");
     const image = el("div", null, "imagen-producto"); image.append(el("span", item.icon || "🎀"));
@@ -103,6 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const useful = el("button", "Útil", "boton secundario"); useful.type = "button";
     const skip = el("button", "No me interesa", "boton claro"); skip.type = "button";
     actions.append(product, why, useful, skip); content.append(actions);
+    if (item.canAddToCart && item.isAvailable && item.stockQuantity > 0 && item.suggestedSize) {
+      content.append(window.ameliShop.createCartForm({ id: item.productId, name: item.name,
+        stockQuantity: item.stockQuantity, sizes: [{ name: item.suggestedSize }] }, { petId, size: item.suggestedSize }));
+    }
     article.append(image, content); wrap.append(article);
     const detail = el("div", null, "explicacion oculto"); wrap.append(detail);
     why.addEventListener("click", () => {
@@ -137,9 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
   async function load(announce = false) {
     clearMessage();
     if (!pet.value) { empty("Selecciona una mascota", "Primero elige una mascota activa para generar sugerencias.", "/perfil/mascotas", "Mis mascotas"); return; }
+    const selectedPetId = pet.value;
     refresh.disabled = true;
     try {
-      const data = await call("/account/recommendations/list?petId=" + encodeURIComponent(pet.value));
+      const data = await call("/account/recommendations/list?petId=" + encodeURIComponent(selectedPetId));
+      if (pet.value !== selectedPetId) return;
       if (data.status === "incomplete_pet") { renderIncomplete(data); if (announce) show(data.message); return; }
       if (data.status === "fallback") {
         empty("Cálculo temporalmente no disponible", data.message, data.actionUrl, data.actionLabel, data.alternatives);
@@ -152,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       results.replaceChildren();
-      data.items.filter(item => !hidden.has(item.productId)).forEach(item => results.append(card(item)));
+      data.items.filter(item => !hidden.has(item.productId)).forEach(item => results.append(card(item, selectedPetId)));
       if (announce) show("Recomendaciones actualizadas.", true);
     } catch (error) {
       empty("No disponible", error.message || "No se pudieron cargar las recomendaciones.", "/perfil/mascotas", "Ver perfil");

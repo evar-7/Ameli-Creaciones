@@ -10,8 +10,64 @@ window.ameliShop = (() => {
     const response = await fetch(path, { method, body: body === undefined ? undefined : JSON.stringify(body), signal, headers, credentials: "same-origin", cache: "no-store" });
     if (response.status === 204) return null;
     let data; try { data = await response.json(); } catch { throw new Error("No se pudo leer la respuesta. Reintenta cuando haya conexión."); }
-    if (!response.ok) throw Object.assign(new Error(data.message || (response.status === 401 ? "Inicia sesión para continuar." : "No se pudo completar la operación.")), { status: response.status, errors: data.errors });
+    if (!response.ok) throw Object.assign(new Error(data.message || (response.status === 401 ? "Inicia sesión para continuar." : "No se pudo completar la operación.")), { status: response.status, code: data.code, errors: data.errors });
     return data;
+  }
+  function bindCartForm(form) {
+    if (form.dataset.cartBound) return;
+    form.dataset.cartBound = "true";
+    const button = form.querySelector('button[type="submit"]'), result = form.querySelector(".cart-add-result");
+    const size = form.elements.namedItem("Size"), quantity = form.elements.namedItem("Quantity"), acknowledgment = form.elements.namedItem("AcknowledgesUnspecifiedSize");
+    const controls = [size, quantity, acknowledgment].filter(Boolean).map(input => ({ input, disabled: input.disabled }));
+    const lock = value => controls.forEach(control => control.input.disabled = value || control.disabled);
+    let command, pending = false;
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (pending || (!command && !form.reportValidity())) return;
+      command ||= {
+        requestId: crypto.randomUUID(), productId: form.dataset.productId,
+        petId: form.dataset.petId || null, size: size?.value || "", quantity: Number(quantity.value),
+        acknowledgesUnspecifiedSize: acknowledgment?.checked === true
+      };
+      pending = true; button.disabled = true; lock(true); result.textContent = "Agregando al carrito…";
+      try {
+        const data = await request("/account/shop/cart", "POST", command);
+        result.textContent = data.message;
+        const link = el("a", "Ir al carrito"); link.href = "/carrito"; result.append(link);
+        command = null; lock(false); button.textContent = "Agregar más";
+      } catch (error) {
+        result.textContent = error.message;
+        button.textContent = "Reintentar agregar";
+        // A missing response or HTTP 5xx can follow a committed write. Retry the same selection and ID.
+        if (error.status >= 400 && error.status < 500) { command = null; lock(false); }
+      } finally { pending = false; button.disabled = false; }
+    });
+  }
+  function createCartForm(product, selection = {}) {
+    if (selection.petId && !product.sizes.some(size => size.name === selection.size))
+      return el("p", "Actualiza las recomendaciones para obtener una talla compatible.");
+    const form = el("form", null, "cart-add-form formulario-apilado");
+    form.dataset.productId = product.id;
+    if (selection.petId) form.dataset.petId = selection.petId;
+    if (product.sizes.length) {
+      const label = el("label", "Talla "), select = el("select"); select.name = "Size"; select.required = true;
+      select.setAttribute("aria-label", `Talla de ${product.name}`);
+      const placeholder = el("option", "Seleccionar talla"); placeholder.value = ""; select.append(placeholder);
+      for (const size of product.sizes) { const option = el("option", size.name); option.value = size.name; select.append(option); }
+      if (selection.size) select.value = selection.size;
+      select.disabled = Boolean(selection.petId); label.append(select); form.append(label);
+    } else {
+      form.append(el("p", "Este producto no tiene tallas publicadas. No se puede verificar su ajuste."));
+      const label = el("label", null, "cart-size-confirmation"), acknowledgment = el("input");
+      acknowledgment.type = "checkbox"; acknowledgment.name = "AcknowledgesUnspecifiedSize"; acknowledgment.required = true;
+      label.append(acknowledgment, document.createTextNode("Quiero comprarlo sin talla especificada.")); form.append(label);
+    }
+    const label = el("label", "Cantidad "), quantity = el("input"); quantity.type = "number"; quantity.name = "Quantity";
+    quantity.min = "1"; quantity.max = String(Math.min(20, product.stockQuantity)); quantity.step = "1"; quantity.value = "1"; quantity.required = true;
+    quantity.setAttribute("aria-label", `Cantidad de ${product.name}`); label.append(quantity);
+    const add = el("button", "Agregar al carrito", "boton primario"); add.type = "submit";
+    const result = el("p", null, "cart-add-result"); result.setAttribute("role", "status"); result.setAttribute("aria-live", "polite");
+    form.append(label, add, result); bindCartForm(form); return form;
   }
   function sizesTable(sizes) {
     const wrap = el("div", null, "chat-table"), table = el("table");
@@ -33,28 +89,13 @@ window.ameliShop = (() => {
     if (card.reason) node.append(el("p", card.reason));
     const link = el("a", "Ver producto", "boton secundario"); link.href = p.productUrl;
     const guide = el("a", "Guía visual", "boton claro"); guide.href = p.guideUrl; node.append(link, guide);
-    if (p.stockQuantity > 0 && p.sizes.length) {
+    if (p.stockQuantity > 0) {
       if (!isClient) { const login = el("a", "Iniciar sesión para agregar", "boton claro"); login.href = "/ingresar"; node.append(login); }
-      else {
-        const label = el("label", "Talla para el carrito "), select = el("select"); select.setAttribute("aria-label", `Talla de ${p.name}`);
-        for (const size of p.sizes) { const option = el("option", size.name); option.value = size.name; select.append(option); }
-        if (card.suggestedSize) select.value = card.suggestedSize;
-        if (card.petId) select.disabled = true;
-        label.append(select); node.append(label);
-        const add = el("button", "Agregar al carrito", "boton primario"); add.type = "button"; node.append(add);
-        const result = el("p"); result.setAttribute("role", "status"); node.append(result);
-        let command;
-        add.addEventListener("click", async () => {
-          command ||= { requestId: crypto.randomUUID(), productId: p.id, size: select.value, petId: card.petId || null, quantity: 1 };
-          add.disabled = true; select.disabled = true;
-          try { const data = await request("/account/shop/cart", "POST", command); result.textContent = data.message; add.textContent = "Agregado"; }
-          catch (error) { result.textContent = error.message; add.disabled = false; add.textContent = "Reintentar agregar"; }
-        });
-      }
+      else node.append(createCartForm(p, { size: card.suggestedSize, petId: card.petId }));
     }
     return node;
   }
-  return { el, request, money, date, sizesTable, productCard };
+  return { el, request, money, date, sizesTable, productCard, bindCartForm, createCartForm };
 })();
 
 document.addEventListener("DOMContentLoaded", () => {

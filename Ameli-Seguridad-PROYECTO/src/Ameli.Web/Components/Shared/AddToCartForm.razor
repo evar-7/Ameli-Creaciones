@@ -1,0 +1,44 @@
+@inject IHttpContextAccessor Accessor
+
+@if (Product.StockQuantity <= 0)
+{
+    <p class="cart-availability">Agotado</p>
+}
+else if (Accessor.HttpContext?.User.IsInRole(Roles.Client) == true)
+{
+    <form class="cart-add-form formulario-apilado" data-product-id="@Product.Id">
+        <AntiforgeryToken />
+        @if (Product.Sizes.Count > 0)
+        {
+            <label>Talla
+                <select name="Size" required aria-label="Talla de @Product.Name">
+                    <option value="">Seleccionar talla</option>
+                    @foreach (var size in Product.Sizes) { <option value="@size.Name">@size.Name</option> }
+                </select>
+            </label>
+        }
+        else
+        {
+            <p>Este producto no tiene tallas publicadas. No se puede verificar su ajuste.</p>
+            <label class="cart-size-confirmation"><input type="checkbox" name="AcknowledgesUnspecifiedSize" required />
+                Quiero comprarlo sin talla especificada.</label>
+        }
+        <label>Cantidad
+            <input type="number" name="Quantity" min="1" max="@Math.Min(20, Product.StockQuantity)" step="1" value="1" required aria-label="Cantidad de @Product.Name" />
+        </label>
+        <button class="boton primario" type="submit">Agregar al carrito</button>
+        <p class="cart-add-result" role="status" aria-live="polite"></p>
+    </form>
+}
+else if (Accessor.HttpContext?.User.Identity?.IsAuthenticated != true)
+{
+    <a class="boton primario" href="/ingresar">Iniciar sesión para agregar</a>
+}
+else
+{
+    <p>Las compras están disponibles con una cuenta de cliente.</p>
+}
+
+@code {
+    [Parameter, EditorRequired] public StoreProductView Product { get; set; } = null!;
+}

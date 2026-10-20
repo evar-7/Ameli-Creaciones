@@ -37,7 +37,7 @@ test("AAC: real web/API flow from registration to recommendation, cart and order
     await page.locator("#chat-intent").selectOption("recommendations"); await page.locator("#chat-pet").selectOption({ label: "Luna " + suffix }); await page.locator("#chat-send-button").click();
     await page.waitForFunction(() => document.getElementById("chat-status").textContent === "Consulta respondida.");
     const card = page.locator(".chat-product").filter({ hasText: product.name }); assert.equal(await card.count(), 1);
-    assert.match(await card.textContent(), /Talla sugerida: S/); await card.getByRole("button", { name: "Agregar al carrito" }).click(); await card.getByRole("button", { name: "Agregado", exact: true }).waitFor();
+    assert.match(await card.textContent(), /Talla sugerida: S/); await card.getByRole("button", { name: "Agregar al carrito" }).click(); await card.getByRole("button", { name: "Agregar más", exact: true }).waitFor();
     await page.goto(web + "/carrito"); await page.waitForFunction(() => document.getElementById("shop-cart").textContent.includes("Suéter"));
     page.once("dialog", dialog => dialog.accept()); await page.locator("#checkout-button").click(); await page.waitForURL("**/mis-pedidos?numero=*");
     await page.locator("#shop-orders h2").waitFor(); const number = await page.locator("#shop-orders h2").first().textContent();

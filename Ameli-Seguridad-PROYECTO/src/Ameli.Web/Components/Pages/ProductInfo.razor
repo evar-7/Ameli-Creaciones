@@ -2,7 +2,6 @@
 @page "/productos/{Id:guid}/guia"
 @attribute [AllowAnonymous]
 @inject SecurityApiClient Api
-@inject IHttpContextAccessor Accessor
 <PageTitle>Producto y guía de tallas | Ameli</PageTitle>
 <p><a href="/productos">← Catálogo</a></p>
 @if (Product is null) { <section class="panel"><p role="alert">@Error</p></section> }
@@ -15,12 +14,7 @@ else
             <p>Materiales: @(Product.Material.Length > 0 ? Product.Material : "Sin información publicada")</p>
             <p>Cuidados: @(Product.CareInstructions.Length > 0 ? Product.CareInstructions : "Sin información publicada")</p>
             <p>Colores: @(Product.Colors.Length > 0 ? string.Join(", ", Product.Colors) : "Sin información publicada")</p>
-            @if (Accessor.HttpContext?.User.IsInRole(Roles.Client) == true && Product.StockQuantity > 0 && Product.Sizes.Count > 0)
-            {
-                <form id="product-add" data-id="@Product.Id" class="formulario-apilado"><AntiforgeryToken /><label>Talla<select name="Size">@foreach (var s in Product.Sizes) { <option>@s.Name</option> }</select></label>
-                    <button class="boton primario" type="submit">Agregar al carrito</button><p id="product-add-result" role="status"></p></form>
-            }
-            else if (Accessor.HttpContext?.User.Identity?.IsAuthenticated != true) { <a class="boton primario" href="/ingresar">Iniciar sesión para agregar</a> }
+            <AddToCartForm Product="@Product" />
         </article>
         <article class="panel" id="guia-visual"><h2>Guía visual y equivalencias</h2>
             <img class="measure-diagram" src="/images/measure-guide.svg" alt="Mide la altura desde el suelo hasta la cruz, donde los hombros se unen al cuello. El peso se mide con una balanza en kilogramos." />

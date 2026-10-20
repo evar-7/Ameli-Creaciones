@@ -24,9 +24,18 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
         Entity = action.StartsWith("cart", StringComparison.Ordinal) ? "cart_lines" : "customer_orders", EntityId = id.ToString(),
         Origin = origin.Ip, CorrelationId = origin.CorrelationId
     });
-    private async Task ValidateSelection(Actor actor, StoreProductView product, string size, Guid? petId, CancellationToken ct)
+    private async Task ValidateSelection(Actor actor, StoreProductView product, string size, Guid? petId,
+        bool acknowledgesUnspecifiedSize, CancellationToken ct)
     {
         if (product.StockQuantity <= 0) throw new SecurityFault("out_of_stock", "Agotado. Elige otro producto.", 409);
+        if (product.Sizes.Count == 0)
+        {
+            if (size.Length > 0 || petId.HasValue)
+                throw new SecurityFault("invalid_size", "Este producto no tiene tallas publicadas. Solo puedes comprarlo sin talla y sin mascota vinculada.");
+            if (!acknowledgesUnspecifiedSize)
+                throw new SecurityFault("size_confirmation_required", "Confirma que deseas comprar este producto sin talla especificada.");
+            return;
+        }
         if (!product.Sizes.Any(s => s.Name == size)) throw new SecurityFault("invalid_size", "Selecciona una talla publicada para este producto.");
         if (petId is null) return;
         var pet = await db.Pets.SingleOrDefaultAsync(p => p.Id == petId && p.OwnerUserId == actor.UserId, ct)
@@ -42,7 +51,9 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
     {
         if (request.RequestId == Guid.Empty || request.Quantity is < 1 or > 20) throw new SecurityFault("invalid_cart", "Solicitud de carrito inválida.");
         var size = request.Size?.Trim() ?? "";
-        var fingerprint = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{request.ProductId}|{request.PetId}|{size}|{request.Quantity}")));
+        var selection = $"{request.ProductId}|{request.PetId}|{size}|{request.Quantity}";
+        if (request.AcknowledgesUnspecifiedSize) selection += "|unspecified";
+        var fingerprint = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(selection)));
         await using var tx = await transactions.BeginAsync(["ameli:catalogs", SqlSecurityTransaction.User(actor.UserId)], ct);
         var user = await Client(actor, ct);
         var prior = await db.CartOperations.SingleOrDefaultAsync(o => o.OwnerUserId == actor.UserId && o.RequestId == request.RequestId, ct);
@@ -52,7 +63,7 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
             await tx.CommitAsync(ct); return new(request.RequestId, "Producto agregado al carrito.", prior.ResultQuantity);
         }
         var product = await products.ProductAsync(request.ProductId, ct);
-        await ValidateSelection(actor, product, size, request.PetId, ct);
+        await ValidateSelection(actor, product, size, request.PetId, request.AcknowledgesUnspecifiedSize, ct);
         var used = await db.CartLines.Where(l => l.OwnerUserId == actor.UserId && l.ProductId == request.ProductId).SumAsync(l => l.Quantity, ct);
         if (used + request.Quantity > product.StockQuantity) throw new SecurityFault("insufficient_stock", "La cantidad supera el stock disponible.", 409);
         var line = await db.CartLines.SingleOrDefaultAsync(l => l.OwnerUserId == actor.UserId && l.ProductId == request.ProductId &&
@@ -107,7 +118,9 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
             if (group.Sum(l => l.Quantity) > product.StockQuantity) throw new SecurityFault("insufficient_stock", $"El stock de {product.Name} cambió. Revisa tu carrito.", 409);
             foreach (var line in group)
             {
-                await ValidateSelection(actor, product, line.Size, line.PetId, ct);
+                // An empty size in a saved cart line was explicitly accepted when it was added.
+                // If a size table is published later, the normal size validation rejects that line.
+                await ValidateSelection(actor, product, line.Size, line.PetId, acknowledgesUnspecifiedSize: true, ct);
                 var pet = line.PetId.HasValue ? await db.Pets.SingleAsync(p => p.Id == line.PetId && p.OwnerUserId == actor.UserId, ct) : null;
                 items.Add(new CustomerOrderItem { OrderId = order.Id, ProductId = product.Id, PetId = line.PetId, ProductName = product.Name,
                     Sku = product.Sku, Size = line.Size, Quantity = line.Quantity, UnitPrice = product.UnitPrice,

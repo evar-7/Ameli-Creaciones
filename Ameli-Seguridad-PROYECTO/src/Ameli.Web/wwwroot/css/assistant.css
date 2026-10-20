@@ -1,4 +1,11 @@
 [hidden] { display: none !important; }
+.cart-add-form { margin-top: 12px; gap: 10px; min-width: 0; }
+.cart-add-form label:not(.cart-size-confirmation) { display: grid; gap: 5px; }
+.cart-add-form select, .cart-add-form input[type="number"] { width: 100%; min-width: 0; padding: 9px; border: 1px solid var(--borde); border-radius: 8px; }
+.cart-add-form .cart-size-confirmation { display: flex; align-items: flex-start; gap: 8px; }
+.cart-add-form input[type="checkbox"] { width: auto; flex: 0 0 auto; margin-top: 3px; }
+.cart-add-form .cart-add-result { margin: 0; overflow-wrap: anywhere; }
+.cart-add-form .cart-add-result a { display: inline-block; margin-left: 6px; }
 .chat-launch { position: fixed; z-index: 42; right: 20px; bottom: 20px; padding: 13px 18px; border: 0; border-radius: 999px; background: var(--morado-oscuro); color: white; box-shadow: var(--sombra); font-weight: 700; }
 .chat-launch span { padding-left: 8px; }
 .ameli-chat { position: fixed; z-index: 45; right: 20px; bottom: 20px; width: min(460px, calc(100vw - 24px)); height: min(740px, calc(100dvh - 100px)); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--borde); border-radius: 20px; background: white; box-shadow: 0 16px 60px #38214740; font-size: .9rem; }

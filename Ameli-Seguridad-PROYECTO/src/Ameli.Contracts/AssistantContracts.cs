@@ -61,6 +61,7 @@ public sealed class AddCartRequest
     public Guid ProductId { get; set; }
     public Guid? PetId { get; set; }
     [MaxLength(20)] public string Size { get; set; } = "";
+    public bool AcknowledgesUnspecifiedSize { get; set; }
     [Range(1, 20)] public int Quantity { get; set; } = 1;
 }
 public sealed record CartLineView(Guid Id, Guid ProductId, string ProductName, string Sku, string Size,

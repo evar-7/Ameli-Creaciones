@@ -1,17 +1,7 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", () => {
   const { el, request, money, date } = window.ameliShop;
-  const addForm = document.getElementById("product-add");
-  if (addForm) {
-    let command;
-    addForm.addEventListener("submit", async event => {
-      event.preventDefault(); const button = addForm.querySelector('button[type="submit"]'), feedback = document.getElementById("product-add-result");
-      command ||= { requestId: crypto.randomUUID(), productId: addForm.dataset.id, size: addForm.elements.namedItem("Size").value, quantity: 1 };
-      button.disabled = true;
-      try { const result = await request("/account/shop/cart", "POST", command); feedback.textContent = result.message; feedback.append(document.createTextNode(" ")); const link = el("a", "Ir al carrito"); link.href = "/carrito"; feedback.append(link); button.textContent = "Agregado"; }
-      catch (error) { feedback.textContent = error.message; button.disabled = false; if (error.status) command = null; }
-    });
-  }
+  document.querySelectorAll(".cart-add-form").forEach(window.ameliShop.bindCartForm);
   const cart = document.getElementById("shop-cart");
   if (cart) void initCart(cart);
   const orders = document.getElementById("shop-orders");
@@ -26,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await request("/account/shop/cart"); container.replaceChildren(); hasItems = data.lines.length > 0;
       if (!hasItems) container.append(el("p", "Tu carrito está vacío. Consulta el catálogo o pide recomendaciones en el chat.", "panel"));
       for (const line of data.lines) {
-        const row = el("article", null, "panel"); row.append(el("h2", line.productName), el("p", `${line.sku} · Talla ${line.size} · ${line.quantity} unidades`), el("p", line.petName ? `Para: ${line.petName}` : "Sin mascota vinculada"),
+        const row = el("article", null, "panel"); row.append(el("h2", line.productName), el("p", `${line.sku} · ${line.size ? `Talla ${line.size}` : "Sin talla especificada"} · ${line.quantity} unidades`), el("p", line.petName ? `Para: ${line.petName}` : "Sin mascota vinculada"),
           el("p", `${money(line.unitPrice)} por unidad · ${line.availableStock} disponibles ahora`));
         if (line.quantity > line.availableStock) row.append(el("p", "El stock cambió. Elimina esta selección y ajusta la cantidad antes de confirmar.", "feedback error"));
         const remove = el("button", "Eliminar del carrito", "boton secundario"); remove.type = "button";
@@ -41,14 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!command && !confirm("¿Confirmas que quieres registrar este pedido?")) return;
       command ||= { requestId: crypto.randomUUID(), addressId: select.value }; button.disabled = true; select.disabled = true; feedback.textContent = "Registrando pedido…";
       try { const order = await request("/account/shop/checkout", "POST", command); location.assign("/mis-pedidos?numero=" + encodeURIComponent(order.number)); }
-      catch (error) { feedback.textContent = error.message; button.disabled = false; button.textContent = "Reintentar confirmar"; if (error.status) { command = null; select.disabled = false; } }
+      catch (error) { feedback.textContent = error.message; button.disabled = false; button.textContent = "Reintentar confirmar"; if (error.status >= 400 && error.status < 500) { command = null; select.disabled = false; } }
     });
   }
   function orderCard(order) {
     const card = el("article", null, "panel order-card"); card.append(el("h2", order.number), el("strong", order.status),
       el("p", `Última actualización: ${date(order.updatedAtUtc)}`), el("p", `Transportista: ${order.carrier || "Sin asignar"}`), el("p", `Guía: ${order.trackingNumber || "Sin asignar"}`),
       el("p", `Dirección registrada: ${order.deliverySnapshot}`), el("p", `Total: ${money(order.total)}`));
-    for (const item of order.items) card.append(el("p", `${item.quantity} × ${item.productName} · ${item.sku} · Talla ${item.size} · ${money(item.unitPrice)}`), el("p", `Perfil registrado: ${item.petSnapshot}`));
+    for (const item of order.items) card.append(el("p", `${item.quantity} × ${item.productName} · ${item.sku} · ${item.size ? `Talla ${item.size}` : "Sin talla especificada"} · ${money(item.unitPrice)}`), el("p", `Perfil registrado: ${item.petSnapshot}`));
     return card;
   }
   async function initOrders(container) {

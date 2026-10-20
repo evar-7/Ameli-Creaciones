@@ -1,5 +1,7 @@
 # Ameli Creaciones · Seguridad, gestión interna y auditoría
 
+Actualización del carrito (20/10/2026): compra desde catálogo, ficha, chat y Recomendados; confirmación para productos sin tallas publicadas y corrección de NuGet incluida. Consulta [comportamiento, pruebas ejecutadas y comprobaciones pendientes](docs/VERIFICACION-CARRITO.md).
+
 **Actualización Desarrollador 2:** GUI-001 a GUI-004, BIT-001 y SYA-004, integrada con las historias de acceso anteriores.
 
 Empieza por [ACTUALIZAR-GESTION-AUDITORIA.md](ACTUALIZAR-GESTION-AUDITORIA.md). Incluye instrucciones para Visual Studio sin PowerShell y para conservar tu base y tus secretos.

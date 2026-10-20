@@ -14,7 +14,8 @@ else
             <article class="tarjeta-producto"><div class="imagen-producto"><span aria-hidden="true">@(p.Icon.Length > 0 ? p.Icon : "🎀")</span></div>
                 <div class="contenido-producto"><span class="categoria-producto">@p.CategoryName</span><h2>@p.Name</h2><p>@p.Sku · @p.Material</p>
                     <p>@p.UnitPrice.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-CR"))</p><p>@(p.StockQuantity > 0 ? $"{p.StockQuantity} disponibles" : "Agotado")</p>
-                    <a class="boton primario" href="@p.ProductUrl">Ver producto</a><a class="boton claro" href="@p.GuideUrl">Guía de tallas</a></div></article>
+                    <a class="boton secundario" href="@p.ProductUrl">Ver producto</a><a class="boton claro" href="@p.GuideUrl">Guía de tallas</a>
+                    <AddToCartForm Product="@p" /></div></article>
         }
     </section>
 }
