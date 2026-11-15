@@ -10,6 +10,8 @@ public sealed class SecurityOptions
     public int AbsoluteSessionHours { get; set; } = 8;
     public int RecoveryAccountLimit { get; set; } = 3;
     public int RecoveryOriginLimit { get; set; } = 10;
+    public int BackupWindowHours { get; set; } = 30;
+    public string BackupLocalPath { get; set; } = "";
     public string WebBaseUrl { get; set; } = "https://localhost:7240";
 }
 public sealed class JwtOptions
