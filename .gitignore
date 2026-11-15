@@ -13,3 +13,6 @@
 
 # Local configuration
 **/appsettings.Local.json
+
+# Team process notes
+/docs/git-flow.md
