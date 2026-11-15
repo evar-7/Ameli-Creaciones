@@ -106,6 +106,16 @@ document.addEventListener("DOMContentLoaded", () => {
   void load(Math.max(1, Number(initial.get("page")) || 1));
   if (audit) {
     const dialog = document.getElementById("export-confirm"); let selected;
+    document.getElementById("check-backup").addEventListener("click", async e => {
+      const button = e.currentTarget; button.disabled = true; show("Verificando respaldo diario…", true);
+      try {
+        const backup = await (await request("audit/backup-check", { windowHours: 30 })).json();
+        const when = backup.lastBackupAtUtc ? ` Último respaldo: ${date(backup.lastBackupAtUtc)} UTC.` : " Sin respaldo reciente registrado.";
+        const fallback = backup.fallbackReason ? ` (${backup.fallbackReason})` : "";
+        show(`${backup.message}${when} Fuente: ${backup.source}. Ubicación: ${backup.location}.${fallback}`, backup.isHealthy);
+      } catch (error) { show(error.message || "No se pudo verificar el respaldo diario."); }
+      finally { button.disabled = false; feedback.focus(); }
+    });
     document.getElementById("export-audit").addEventListener("click", () => { selected = values(); document.getElementById("export-filters").textContent = Object.entries(selected).map(([k,v]) => `${k}: ${v}`).join("\n") || "Todos los registros, sin filtros."; dialog.showModal(); });
     document.getElementById("confirm-export").addEventListener("click", async e => {
       const button = e.currentTarget; button.disabled = true;

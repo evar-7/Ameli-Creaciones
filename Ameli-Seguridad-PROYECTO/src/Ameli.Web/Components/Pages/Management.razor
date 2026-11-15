@@ -52,7 +52,7 @@ else
     }
         <div class="form-actions"><button class="boton primario" type="submit">Consultar</button><button class="boton secundario" type="button" id="clear-filters">Limpiar filtros</button></div>
     </form>
-    @if(Mode=="audit"){<div class="management-toolbar"><span>Solo lectura · Más recientes primero · Fechas UTC</span><div class="form-actions"><button class="boton secundario" type="button" id="verify-audit">Verificar integridad</button><button class="boton primario" type="button" id="export-audit">Exportar registros</button></div></div>}
+    @if(Mode=="audit"){<div class="management-toolbar"><span>Solo lectura · Más recientes primero · Fechas UTC</span><div class="form-actions"><button class="boton secundario" type="button" id="check-backup">Verificar respaldo diario</button><button class="boton secundario" type="button" id="verify-audit">Verificar integridad</button><button class="boton primario" type="button" id="export-audit">Exportar registros</button></div></div>}
     <section class="panel" id="management-results" aria-live="polite"><p class="estado-vacio">Cargando registros…</p></section>
     @if(Mode=="audit"){<dialog class="access-dialog" id="export-confirm"><h2>Confirmar exportación</h2><p>Se exportarán todos los resultados de estos filtros, hasta 10 000 registros por archivo.</p><pre id="export-filters"></pre><p>El ZIP incluye los eventos y un manifiesto con huella de integridad. La exportación quedará registrada.</p><div class="form-actions"><button type="button" class="boton secundario" data-cancel-dialog>Cancelar</button><button type="button" class="boton primario" id="confirm-export">Confirmar y descargar</button></div></dialog>}
 }

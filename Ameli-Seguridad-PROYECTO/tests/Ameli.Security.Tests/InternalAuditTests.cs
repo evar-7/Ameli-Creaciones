@@ -35,6 +35,20 @@ public sealed class InternalAuditTests(SecurityFixture f):IClassFixture<Security
         using var http=f.Http(token);var r=New();r.Name="";r.Phone="bad";r.Role=Roles.Client;
         var response=await http.PostAsJsonAsync("/api/v1/admin/internal-accounts",r);Assert.Equal(HttpStatusCode.BadRequest,response.StatusCode);Assert.NotEmpty((await response.Content.ReadFromJsonAsync<ApiError>())!.Errors!);Assert.Equal(3,await f.Db(db=>db.Users.CountAsync()));
     }
+    [Fact]public async Task SYA007_BackupCheckReturnsStatusAndWritesAuditEvent()
+    {
+        using var http=f.Http(token);
+        var response=await http.PostAsJsonAsync("/api/v1/admin/audit/backup-check",new BackupCheckRequest{WindowHours=30});
+        Assert.Equal(HttpStatusCode.OK,response.StatusCode);
+        var payload=await response.Content.ReadFromJsonAsync<BackupCheckView>();
+        Assert.NotNull(payload);
+        Assert.Equal(30,payload!.WindowHours);
+        Assert.True(payload.Source is "sqlserver" or "folder");
+        var ev=await f.Db(db=>db.Events.OrderByDescending(e=>e.Id).FirstAsync(e=>e.Action=="backup_daily_check"));
+        Assert.Equal("Auditoría",ev.Module);
+        Assert.Contains("windowHours=30",ev.Detail);
+        Assert.True(ev.Outcome is "Exitoso" or "Advertencia");
+    }
     [Fact]public async Task GUI002_FilterPaginationEmptyAndInternalPrivacy()
     {
         var r=New();r.IsActive=false;await Create(r);

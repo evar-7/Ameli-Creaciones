@@ -52,7 +52,12 @@ public class AuditQuery : IValidatableObject
     { if(From>To || To==DateOnly.MaxValue) yield return new("Revisa el intervalo de fechas.",[nameof(From),nameof(To)]); }
 }
 public sealed class AuditExportRequest : AuditQuery { public bool Confirmed { get; set; } }
+public sealed class BackupCheckRequest
+{
+    [Range(1,168)] public int? WindowHours { get; set; } = 30;
+}
+public sealed record BackupCheckView(bool IsHealthy,string Severity,string Source,string DatabaseName,DateTimeOffset CheckedAtUtc,DateTimeOffset? LastBackupAtUtc,int WindowHours,string Message,string Location,string FallbackReason);
 public sealed record AuditEventView(long Id,DateTimeOffset OccurredAtUtc,Guid? ActorUserId,string ActorName,string ActorEmail,string ActorRole,string Module,string Action,string Entity,string EntityId,Guid? SubjectUserId,Guid? SessionId,string Outcome,string Origin,string CorrelationId,string Detail,string BeforeJson,string AfterJson,int? FailedAttempts,DateTimeOffset? LockoutStartedAtUtc,DateTimeOffset? LockedUntilUtc,bool IsLegacy,int IntegrityVersion,string PreviousHash,string IntegrityHash);
 public sealed record IntegrityIssue(long? EventId,string Reason);
 public sealed record IntegrityReport(bool IsValid,long CheckedRecords,int SelectedRecords,long? LastEventId,DateTimeOffset? BaselineAtUtc,List<IntegrityIssue> Issues,int IssueCount,string Message);
-public sealed record WebAccessDeniedRequest([property:Required,MaxLength(250)] string Path);
+public sealed record WebAccessDeniedRequest([Required, MaxLength(250)] string Path);

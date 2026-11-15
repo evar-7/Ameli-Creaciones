@@ -19,6 +19,7 @@ public static class ManagementEndpoints
         g.MapPost("/accounts/{id:guid}/state",async(Guid id,InternalStateRequest r,SecurityApiClient api,CancellationToken ct)=>Results.Ok(await api.SendAsync<InternalAccountView>(HttpMethod.Put,$"admin/internal-accounts/{id}/state",r,ct)));
         g.MapGet("/audit",async(HttpContext c,SecurityApiClient api)=>Results.Ok(await api.SendAsync<PagedResult<AuditEventView>>(HttpMethod.Get,"admin/audit"+c.Request.QueryString,ct:c.RequestAborted)));
         g.MapPost("/audit/verify",async(AuditQuery r,SecurityApiClient api,CancellationToken ct)=>Results.Ok(await api.SendAsync<IntegrityReport>(HttpMethod.Post,"admin/audit/verify",r,ct)));
+        g.MapPost("/audit/backup-check",async(BackupCheckRequest r,SecurityApiClient api,CancellationToken ct)=>Results.Ok(await api.SendAsync<BackupCheckView>(HttpMethod.Post,"admin/audit/backup-check",r,ct)));
         g.MapPost("/audit/export",async(AuditExportRequest r,SecurityApiClient api,CancellationToken ct)=>Results.File(await api.SendAsync<byte[]>(HttpMethod.Post,"admin/audit/export",r,ct),"application/zip","Ameli-Auditoria.zip"));
     }
 }
