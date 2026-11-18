@@ -72,6 +72,7 @@ public sealed class SecurityFixture : IAsyncLifetime
         await Db(async db =>
         {
             await db.CartLines.ExecuteDeleteAsync(); await db.CartOperations.ExecuteDeleteAsync();
+            await db.PurchaseRatings.ExecuteDeleteAsync(); await db.OrderIncidents.ExecuteDeleteAsync(); await db.InventoryAlerts.ExecuteDeleteAsync();
             await db.OrderHistory.ExecuteDeleteAsync(); await db.PaymentAttempts.ExecuteDeleteAsync();
             await db.OrderItems.ExecuteDeleteAsync(); await db.Orders.ExecuteDeleteAsync(); await db.ProductSizes.ExecuteDeleteAsync();
             await db.RecommendationFeedback.ExecuteDeleteAsync();

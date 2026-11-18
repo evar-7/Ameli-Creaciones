@@ -46,6 +46,9 @@ public sealed partial class SecurityService
         try
         {
             ValidateInput(request);
+            if (request.IsActive != product.IsActive)
+                throw new SecurityFault("availability_action_required", "Usa Desactivar o Reactivar para cambiar la disponibilidad.")
+                    { Errors = new() { ["IsActive"] = ["El cambio de estado requiere su acción y confirmación propias."] } };
             if (request.Revision != product.Revision)
                 throw new SecurityFault("product_conflict", "El producto cambió mientras lo editabas. Revisa la versión vigente antes de guardar.", 409)
                     { Errors = new() { ["Revision"] = ["Hay una versión más reciente del producto."] } };

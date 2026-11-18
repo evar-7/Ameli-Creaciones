@@ -44,9 +44,11 @@ test("AAC: real web/API flow from registration to recommendation, cart and order
     await page.locator("#shop-orders h2").waitFor(); const number = await page.locator("#shop-orders h2").first().textContent();
     assert.match(number, /^AML-[A-F0-9]{32}$/);
     const all = await call("assistant/staff/orders", undefined, token, "GET"); const order = all.find(o => o.number === number); assert.ok(order);
-    await call(`assistant/staff/orders/${order.id}`, { status: "En camino", carrier: "Correos", trackingNumber: "CR-123" }, token, "PUT");
+    await call(`assistant/staff/orders/${order.id}/prepare`, {}, token);
+    await call(`assistant/staff/orders/${order.id}/packing`, { items: order.items.map(item => ({ itemId: item.id, quantity: item.quantity })) }, token, "PUT");
+    await call(`assistant/staff/orders/${order.id}/dispatch`, { carrier: "Correos", trackingNumber: "CR-" + suffix }, token);
     await page.locator("#chat-launch").click(); await page.locator("#chat-intent").selectOption("order"); await page.locator('#chat-tools [name="OrderNumber"]').fill(number); await page.locator("#chat-send-button").click();
-    await page.waitForFunction(() => document.getElementById("chat-status").textContent === "Consulta respondida."); assert.match(await page.locator("#chat-log").textContent(), /CR-123/);
+    await page.waitForFunction(() => document.getElementById("chat-status").textContent === "Consulta respondida."); assert.ok((await page.locator("#chat-log").textContent()).includes("CR-" + suffix));
     assert.deepEqual(errors, []);
   } finally { await context.close(); await browser.close(); }
 });

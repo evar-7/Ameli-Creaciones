@@ -14,7 +14,7 @@ public sealed partial class SecurityService
     private static string Snapshot(ProductCategory category) => JsonSerializer.Serialize(new { category.Name, category.Description, category.IsActive });
     private static string Snapshot(Supplier supplier) => JsonSerializer.Serialize(new { supplier.Name, supplier.ContactName, supplier.Email, supplier.Phone, supplier.Notes, supplier.IsActive });
     private static string Snapshot(BaseProduct product) => JsonSerializer.Serialize(new { product.Name, product.Description, product.CategoryId, product.SupplierId, product.Species, product.Material, product.Icon, product.UnitPrice, product.StockQuantity, product.IsActive });
-    private static CategoryView View(ProductCategory category) => new(category.Id, category.Name, category.Description, category.IsActive, category.CreatedAtUtc, category.UpdatedAtUtc);
+    private static CategoryView View(ProductCategory category) => new(category.Id, category.Name, category.Description, category.IsActive, category.CreatedAtUtc, category.UpdatedAtUtc, category.Revision);
     private static SupplierView View(Supplier supplier) => new(supplier.Id, supplier.Name, supplier.ContactName, supplier.Email, supplier.Phone, supplier.Notes, supplier.IsActive, supplier.CreatedAtUtc, supplier.UpdatedAtUtc);
     private static BaseProductView View(BaseProduct product, string categoryName, string supplierName) => new(product.Id, product.Name, product.Description, product.CategoryId, categoryName, product.SupplierId, supplierName, product.Species, product.Material, product.Icon, product.UnitPrice, product.StockQuantity, product.IsActive, product.CreatedAtUtc, product.UpdatedAtUtc);
     private static void Clean(CategoryRequest request)

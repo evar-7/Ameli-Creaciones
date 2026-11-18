@@ -44,6 +44,9 @@ public sealed class AssistantCommerceTests(SecurityFixture f) : IClassFixture<Se
         await f.AddUser("otro@example.test", Roles.Client); using var other = f.Http(await f.Login("otro@example.test"));
         Assert.Equal(HttpStatusCode.NotFound, (await other.GetAsync($"/api/v1/assistant/orders/{order.Number}")).StatusCode);
         using var staff = f.Http(await f.Login("logistica@ameli.test"));
+        Assert.Equal(HttpStatusCode.OK, (await staff.PostAsJsonAsync($"/api/v1/assistant/staff/orders/{order.Id}/prepare", new { })).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await staff.PutAsJsonAsync($"/api/v1/assistant/staff/orders/{order.Id}/packing",
+            new PackingRequest { Items = order.Items.Select(item => new OrderLineQuantity { ItemId = item.Id, Quantity = item.Quantity }).ToArray() })).StatusCode);
         Assert.Equal(HttpStatusCode.OK, (await staff.PutAsJsonAsync($"/api/v1/assistant/staff/orders/{order.Id}",
             new OrderUpdateRequest { Status = OrderStatuses.Shipped, Carrier = "Correos", TrackingNumber = "CR-123" })).StatusCode);
         var reply = (await (await http.PostAsJsonAsync("/api/v1/assistant/messages", new ChatRequest { RequestId = Guid.NewGuid(), Intent = "order", OrderNumber = order.Number }))

@@ -17,7 +17,7 @@ public sealed class AssistantReadTests : IAsyncLifetime
     private AssistantService Assistant()
     {
         var tx = new SqlSecurityTransaction(db); var products = new ProductInformationService(db, tx, TimeProvider.System);
-        return new(db, products, new CommerceService(db, tx, products, TimeProvider.System, new UnusedPayments(), Microsoft.Extensions.Options.Options.Create(new CommerceOptions())), new ProfileRecommendationEngine());
+        return new(db, products, new CommerceService(db, tx, products, TimeProvider.System, new UnusedPayments(), Microsoft.Extensions.Options.Options.Create(new CommerceOptions()), new Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider()), new ProfileRecommendationEngine());
     }
     private sealed class UnusedPayments : IPaymentGateway
     {

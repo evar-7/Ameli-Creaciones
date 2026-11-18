@@ -104,12 +104,58 @@ public sealed class OrderUpdateRequest
     public string Status { get; set; } = "";
     [MaxLength(100)] public string Carrier { get; set; } = "";
     [MaxLength(100)] public string TrackingNumber { get; set; } = "";
+    public DateTimeOffset? DeliveredAtUtc { get; set; }
+    [MaxLength(200)] public string ReceiptReference { get; set; } = "";
+    [MaxLength(200)] public string CarrierConfirmation { get; set; } = "";
+    public OrderLineQuantity[] Items { get; set; } = [];
 }
 public sealed record OrderItemView(string ProductName, string Sku, string Size, int Quantity,
-    decimal UnitPrice, string PetSnapshot);
+    decimal UnitPrice, string PetSnapshot, Guid Id = default, int ReservedQuantity = 0, int PackedQuantity = 0);
 public sealed record OrderView(Guid Id, string Number, string Status, DateTimeOffset UpdatedAtUtc,
     string Carrier, string TrackingNumber, DateTimeOffset CreatedAtUtc, decimal Total,
     string DeliverySnapshot, List<OrderItemView> Items, List<OrderStatusView>? History = null,
-    decimal Subtotal = 0, decimal Discount = 0, decimal Tax = 0, string PaymentMode = "", string PaymentReference = "");
-public sealed record OrderStatusView(string Status, DateTimeOffset OccurredAtUtc, string Carrier, string TrackingNumber);
+    decimal Subtotal = 0, decimal Discount = 0, decimal Tax = 0, string PaymentMode = "", string PaymentReference = "",
+    OrderFulfillmentView? Fulfillment = null, List<OrderIncidentView>? Incidents = null, PurchaseRatingView? Rating = null);
+public sealed record OrderStatusView(string Status, DateTimeOffset OccurredAtUtc, string Carrier, string TrackingNumber, string ActorName = "");
 public sealed record ProductImagePayload(string ContentType, byte[] Content);
+
+public sealed class OrderLineQuantity
+{
+    public Guid ItemId { get; set; }
+    [Range(0, 100000)] public int Quantity { get; set; }
+}
+public sealed class PackingRequest { public OrderLineQuantity[] Items { get; set; } = []; }
+public sealed class DispatchRequest
+{
+    [MaxLength(100)] public string Carrier { get; set; } = "";
+    [MaxLength(100)] public string TrackingNumber { get; set; } = "";
+}
+public sealed class DeliveryRequest
+{
+    public DateTimeOffset? DeliveredAtUtc { get; set; }
+    [MaxLength(200)] public string ReceiptReference { get; set; } = "";
+    [MaxLength(200)] public string CarrierConfirmation { get; set; } = "";
+    public OrderLineQuantity[] Items { get; set; } = [];
+}
+public sealed class OrderIncidentRequest
+{
+    public Guid RequestId { get; set; }
+    [Required, StringLength(1000, MinimumLength = 5)] public string Detail { get; set; } = "";
+    public OrderLineQuantity[] MissingItems { get; set; } = [];
+}
+public sealed class ReservationCorrectionRequest
+{
+    [Required, StringLength(500, MinimumLength = 5)] public string Reason { get; set; } = "";
+    public OrderLineQuantity[] Items { get; set; } = [];
+}
+public sealed class PurchaseRatingRequest
+{
+    [Range(1, 5)] public int Stars { get; set; }
+    [StringLength(1000)] public string Comment { get; set; } = "";
+}
+public sealed record OrderFulfillmentView(string PaymentStatus, Guid? ResponsibleUserId, string ResponsibleName,
+    DateTimeOffset? PreparationStartedAtUtc, DateTimeOffset? DispatchedAtUtc, DateTimeOffset? DeliveredAtUtc,
+    DateTimeOffset? DeliveryRecordedAtUtc, string DeliveryUserName, string ReceiptReference, string CarrierConfirmation,
+    bool PointsEnabled, bool RatingEnabled, string? InventoryAlert);
+public sealed record OrderIncidentView(Guid Id, string Detail, string MissingItems, string ReportedByName, DateTimeOffset OccurredAtUtc);
+public sealed record PurchaseRatingView(int Stars, string Comment, DateTimeOffset CreatedAtUtc);

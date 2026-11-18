@@ -86,12 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       results.append(grid);
     } else if (kind === "categories") {
-      renderTable(["Nombre", "Descripción", "Estado", "Última actualización (UTC)"], tbody => {
+      renderTable(["Nombre", "Descripción", "Estado", "Última actualización (UTC)", "Acciones"], tbody => {
         for (const item of data.items) {
           const row = el("tr");
           row.append(el("td", item.name), el("td", item.description || "Sin descripción"));
           const state = el("span", item.isActive ? "Activo" : "Inactivo", "estado " + (item.isActive ? "exito" : "peligro"));
-          const stateCell = el("td"); stateCell.append(state); row.append(stateCell, el("td", date(item.updatedAtUtc))); tbody.append(row);
+          const stateCell = el("td"); stateCell.append(state); row.append(stateCell, el("td", date(item.updatedAtUtc)));
+          const actions = el("td"), edit = el("a", "Editar categoría", "boton secundario"); edit.href = `/administracion/catalogos/categorias/${item.id}/editar`; actions.append(edit); row.append(actions); tbody.append(row);
         }
       });
     } else {

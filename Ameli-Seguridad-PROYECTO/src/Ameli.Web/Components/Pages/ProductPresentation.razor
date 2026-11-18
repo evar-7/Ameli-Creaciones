@@ -18,7 +18,8 @@
         </div>
         <label>Cuidados<textarea name="CareInstructions" maxlength="1000" rows="3"></textarea><small class="field-error" data-error="CareInstructions"></small></label>
         <label>Notas de ajuste<textarea name="FitNotes" maxlength="500" rows="2" placeholder="Describe la holgura y las medidas adicionales que requiere esta prenda."></textarea><small class="field-error" data-error="FitNotes"></small></label>
-        <label class="identity-check"><input name="IsActive" type="checkbox" /> Producto activo</label>
+        <label class="identity-check"><input name="IsActive" type="checkbox" disabled /> Producto activo</label>
+        <a href="@($"/administracion/catalogos/productos/{Id}/editar")">Cambiar disponibilidad desde Editar producto</a>
         <h3>Tabla específica del producto</h3><p>Altura a la cruz en cm y peso en kg. Introduce los rangos del fabricante; no se crean tallas por defecto.</p>
         <div id="presentation-sizes" class="presentation-sizes"></div><small class="field-error" data-error="Sizes"></small>
         <button type="button" id="presentation-add-size" class="boton secundario">Añadir talla</button><button type="submit" class="boton primario">Guardar ficha</button>

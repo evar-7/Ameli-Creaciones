@@ -1,6 +1,7 @@
 @page "/gestion/pedidos"
 @attribute [Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+@inject IHttpContextAccessor Accessor
 <PageTitle>Gestión de pedidos | Ameli</PageTitle>
-<PageHeading Eyebrow="Operación" Title="Gestión de pedidos" Description="Actualiza el estado de entrega, transportista y número de guía." />
+<PageHeading Eyebrow="Operación" Title="Gestión de pedidos" Description="Toma la preparación, verifica el empaque y registra el despacho y la entrega." />
 <form class="oculto"><AntiforgeryToken /></form>
-<section id="shop-orders" data-staff="true" class="shop-list"><p>Cargando pedidos…</p></section>
+<section id="shop-orders" data-staff="true" data-admin="@(Accessor.HttpContext?.User.IsInRole(Roles.Administrator) == true ? "true" : "false")" data-user-id="@(Accessor.HttpContext?.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)" class="shop-list"><p>Cargando pedidos…</p></section>

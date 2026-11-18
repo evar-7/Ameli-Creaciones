@@ -167,8 +167,13 @@ public sealed class GolStoriesTests(SecurityFixture fixture) : IClassFixture<Sec
         using var staff = fixture.Http(await fixture.Login("logistica@ameli.test"));
         foreach (var status in new[] { OrderStatuses.Preparing, OrderStatuses.LegacyShipped, OrderStatuses.Delivered })
         {
+            if (status == OrderStatuses.LegacyShipped)
+                Assert.Equal(HttpStatusCode.OK, (await staff.PutAsJsonAsync($"/api/v1/assistant/staff/orders/{order.Id}/packing",
+                    new PackingRequest { Items = order.Items.Select(item => new OrderLineQuantity { ItemId = item.Id, Quantity = item.Quantity }).ToArray() })).StatusCode);
             using var updated = await staff.PutAsJsonAsync($"/api/v1/assistant/staff/orders/{order.Id}",
-                new OrderUpdateRequest { Status = status, Carrier = "Correos", TrackingNumber = "CR-123" });
+                new OrderUpdateRequest { Status = status, Carrier = "Correos", TrackingNumber = "CR-123",
+                    DeliveredAtUtc = fixture.Clock.GetUtcNow(), CarrierConfirmation = "Confirmación del transportista", ReceiptReference = "Recibido por cliente",
+                    Items = order.Items.Select(item => new OrderLineQuantity { ItemId = item.Id, Quantity = item.Quantity }).ToArray() });
             Assert.Equal(HttpStatusCode.OK, updated.StatusCode);
         }
         var tracked = (await http.GetFromJsonAsync<OrderView>($"/api/v1/assistant/orders/{order.Number}"))!;
