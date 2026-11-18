@@ -1,0 +1,17 @@
+@page "/administracion/catalogos/categorias/{Id:guid}/editar"
+@attribute [Authorize(Roles = Roles.Administrator)]
+<PageTitle>Editar categoría | Ameli</PageTitle>
+<PageHeading Eyebrow="Administración · Catálogo" Title="Editar categoría" Description="Actualiza su clasificación sin perder los productos asociados." />
+<p><a href="/administracion/catalogos/categorias">← Volver a categorías</a></p>
+<section class="panel" id="category-editor" data-id="@Id">
+    <form id="category-edit-form" class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <div id="category-edit-result" class="feedback oculto" role="alert" tabindex="-1"></div>
+        <small class="field-error" data-error="Revision"></small>
+        <label>Nombre<input name="Name" minlength="2" maxlength="120" required /><small class="field-error" data-error="Name"></small></label>
+        <label>Descripción<textarea name="Description" rows="3" maxlength="500"></textarea><small class="field-error" data-error="Description"></small></label>
+        <div class="form-actions"><button type="submit" class="boton primario">Guardar cambios</button><button type="button" id="category-edit-reload" class="boton secundario">Revisar versión vigente</button></div>
+    </form>
+</section>
+<CatalogAvailability Kind="categories" Id="Id" />
+@code { [Parameter] public Guid Id { get; set; } }

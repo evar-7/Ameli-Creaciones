@@ -1,0 +1,18 @@
+<section class="panel availability-panel" data-availability-kind="@Kind" data-id="@Id">
+    <h2>Disponibilidad</h2>
+    <p data-availability-state>Cargando estado…</p>
+    <form class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <div class="feedback oculto" data-availability-result role="alert" tabindex="-1"></div>
+        <label data-availability-reason>Motivo de desactivación<textarea name="Reason" maxlength="500" rows="2"></textarea><small class="field-error" data-error="Reason"></small></label>
+        <small class="field-error" data-error="IsActive"></small><small class="field-error" data-error="Revision"></small>
+        <small class="field-error" data-error="CategoryId"></small><small class="field-error" data-error="SupplierId"></small>
+        <small class="field-error" data-error="UnitPrice"></small><small class="field-error" data-error="Name"></small>
+        <button type="submit" class="boton secundario" disabled data-availability-action>Cargando…</button>
+        <button type="button" class="boton claro" data-availability-reload>Revisar estado vigente</button>
+    </form>
+</section>
+@code {
+    [Parameter, EditorRequired] public string Kind { get; set; } = "";
+    [Parameter] public Guid Id { get; set; }
+}

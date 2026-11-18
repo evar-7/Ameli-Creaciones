@@ -503,6 +503,12 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("carrier");
 
+                    b.Property<string>("CarrierConfirmation")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("carrier_confirmation");
+
                     b.Property<Guid>("CheckoutRequestId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("checkout_request_id");
@@ -511,16 +517,43 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("created_at_utc");
 
+                    b.Property<DateTimeOffset?>("DeliveredAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("delivered_at_utc");
+
+                    b.Property<DateTimeOffset?>("DeliveryRecordedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("delivery_recorded_at_utc");
+
                     b.Property<string>("DeliverySnapshot")
                         .IsRequired()
                         .HasMaxLength(1200)
                         .HasColumnType("nvarchar(1200)")
                         .HasColumnName("delivery_snapshot");
 
+                    b.Property<Guid?>("DeliveryUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("delivery_user_id");
+
+                    b.Property<string>("DeliveryUserName")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("delivery_user_name");
+
                     b.Property<decimal>("Discount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("discount");
+
+                    b.Property<DateTimeOffset?>("DispatchedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("dispatched_at_utc");
+
+                    b.Property<string>("NormalizedTrackingNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("normalized_tracking_number");
 
                     b.Property<string>("Number")
                         .IsRequired()
@@ -544,6 +577,40 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("payment_reference");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("payment_status");
+
+                    b.Property<bool>("PointsEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("points_enabled");
+
+                    b.Property<DateTimeOffset?>("PreparationStartedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("preparation_started_at_utc");
+
+                    b.Property<Guid?>("PreparationUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("preparation_user_id");
+
+                    b.Property<string>("PreparationUserName")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("preparation_user_name");
+
+                    b.Property<bool>("RatingEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("rating_enabled");
+
+                    b.Property<string>("ReceiptReference")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("receipt_reference");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -578,8 +645,16 @@ namespace Ameli.Api.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeliveryUserId");
+
+                    b.HasIndex("NormalizedTrackingNumber")
+                        .IsUnique()
+                        .HasFilter("[normalized_tracking_number] IS NOT NULL");
+
                     b.HasIndex("Number")
                         .IsUnique();
+
+                    b.HasIndex("PreparationUserId");
 
                     b.HasIndex("OwnerUserId", "CheckoutRequestId")
                         .IsUnique();
@@ -597,6 +672,10 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
+
+                    b.Property<int>("PackedQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("packed_quantity");
 
                     b.Property<Guid?>("PetId")
                         .HasColumnType("uniqueidentifier")
@@ -621,6 +700,10 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
+
+                    b.Property<int>("ReservedQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("reserved_quantity");
 
                     b.Property<string>("Size")
                         .IsRequired()
@@ -707,12 +790,95 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.ToTable("delivery_addresses", (string)null);
                 });
 
+            modelBuilder.Entity("Ameli.Api.Domain.OrderIncident", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Detail")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("detail");
+
+                    b.Property<string>("MissingItemsJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("missing_items_json");
+
+                    b.Property<DateTimeOffset>("OccurredAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("occurred_at_utc");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("ReportedByName")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("reported_by_name");
+
+                    b.Property<Guid>("ReportedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("reported_by_user_id");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("request_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId", "RequestId")
+                        .IsUnique();
+
+                    b.ToTable("order_incidents", (string)null);
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.OrderInventoryAlert", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("Detail")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("detail");
+
+                    b.Property<DateTimeOffset>("RaisedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("raised_at_utc");
+
+                    b.Property<DateTimeOffset?>("ResolvedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("resolved_at_utc");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("order_inventory_alerts", (string)null);
+                });
+
             modelBuilder.Entity("Ameli.Api.Domain.OrderStatusHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
+
+                    b.Property<string>("ActorName")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("actor_name");
+
+                    b.Property<Guid?>("ActorUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("actor_user_id");
 
                     b.Property<string>("Carrier")
                         .IsRequired()
@@ -1039,6 +1205,11 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("varchar(120)")
                         .HasColumnName("normalized_name");
 
+                    b.Property<Guid>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("revision");
+
                     b.Property<DateTimeOffset>("UpdatedAtUtc")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("updated_at_utc");
@@ -1102,6 +1273,31 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("product_size_rules", (string)null);
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PurchaseRating", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("comment");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("created_at_utc");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("int")
+                        .HasColumnName("stars");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("purchase_ratings", (string)null);
                 });
 
             modelBuilder.Entity("Ameli.Api.Domain.RecommendationFeedback", b =>
@@ -1492,9 +1688,19 @@ namespace Ameli.Api.Infrastructure.Migrations
                 {
                     b.HasOne("Ameli.Api.Domain.AppUser", null)
                         .WithMany()
+                        .HasForeignKey("DeliveryUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Ameli.Api.Domain.AppUser", null)
+                        .WithMany()
                         .HasForeignKey("OwnerUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Ameli.Api.Domain.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("PreparationUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Ameli.Api.Domain.CustomerOrderItem", b =>
@@ -1522,6 +1728,24 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.HasOne("Ameli.Api.Domain.AppUser", null)
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.OrderIncident", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.CustomerOrder", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.OrderInventoryAlert", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.CustomerOrder", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -1567,6 +1791,15 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.HasOne("Ameli.Api.Domain.BaseProduct", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PurchaseRating", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.CustomerOrder", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

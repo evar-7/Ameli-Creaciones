@@ -92,10 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (file) { body.imageFileName = file.name; body.imageBase64Data = await readFile(file); }
       await request(path, "PUT", body);
       await load(); showIdentityMessage(feedback, "Producto actualizado correctamente.", "info");
+      document.dispatchEvent(new CustomEvent("catalog-editor-saved"));
     } catch (error) {
       handleIdentityError(form, feedback, error);
       if (error.status === 409) reloadButton.classList.remove("oculto");
     } finally { save.disabled = false; }
   });
   void load().catch(error => handleIdentityError(form, feedback, error));
+  document.addEventListener("catalog-availability-changed", () => void load().catch(error => handleIdentityError(form, feedback, error)));
 });

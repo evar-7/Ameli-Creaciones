@@ -68,7 +68,7 @@ public sealed class BaseProductQuery
     [Range(1, 100)] public int PageSize { get; set; } = 20;
 }
 
-public sealed record CategoryView(Guid Id, string Name, string Description, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
+public sealed record CategoryView(Guid Id, string Name, string Description, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc, Guid Revision = default);
 public sealed record SupplierView(Guid Id, string Name, string ContactName, string Email, string Phone, string Notes, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
 public sealed record BaseProductView(Guid Id, string Name, string Description, Guid CategoryId, string CategoryName, Guid SupplierId, string SupplierName, string Species, string Material, string Icon, decimal UnitPrice, int StockQuantity, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
 public sealed record LookupItem(Guid Id, string Name, bool IsActive);
@@ -84,3 +84,16 @@ public sealed class ProductUpdateRequest : BaseProductRequest
 }
 public sealed record ProductEditView(BaseProductView Product, Guid Revision, decimal UnitCost,
     int MinimumStock, List<ProductSizeView> Sizes, string? ImageUrl);
+
+public sealed class CategoryUpdateRequest
+{
+    [Required, StringLength(120, MinimumLength = 2)] public string Name { get; set; } = "";
+    [StringLength(500)] public string Description { get; set; } = "";
+    [Required] public Guid? Revision { get; set; }
+}
+public sealed class AvailabilityRequest
+{
+    public bool IsActive { get; set; }
+    [Required] public Guid? Revision { get; set; }
+    [StringLength(500)] public string Reason { get; set; } = "";
+}

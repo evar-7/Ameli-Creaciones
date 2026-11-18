@@ -44,7 +44,7 @@ public sealed class AssistantService(SecurityDbContext db, ProductInformationSer
             var order = await commerce.OwnOrderAsync(actor!, number, ct);
             if (order is null) return Reply(request, "order_unavailable", "No puedo consultar ese pedido. Verifica el número desde Mis pedidos.", url: "/mis-pedidos", label: "Mis pedidos");
             // Only tracking information is included in the chat response.
-            var tracking = order with { DeliverySnapshot = "", Items = [], Total = 0, Subtotal = 0, Discount = 0, Tax = 0, PaymentMode = "", PaymentReference = "" };
+            var tracking = order with { DeliverySnapshot = "", Items = [], Total = 0, Subtotal = 0, Discount = 0, Tax = 0, PaymentMode = "", PaymentReference = "", Fulfillment = null, Incidents = null, Rating = null };
             return Reply(request, "order", $"El pedido {order.Number} está {order.Status}.", order: tracking, url: "/mis-pedidos", label: "Ver Mis pedidos");
         }
         if (intent == "recommendations")

@@ -38,6 +38,8 @@ public sealed class AssistantController(AssistantService assistant, ProductInfor
     public Task<OrderView> Checkout(CheckoutRequest request, CancellationToken ct) => commerce.CheckoutAsync(Actor, request, HttpOrigin.Create(HttpContext), ct);
     [HttpGet("orders"), Authorize(Roles = Roles.Client)]
     public Task<List<OrderView>> Orders(CancellationToken ct) => commerce.OrdersAsync(Actor, false, ct);
+    [HttpPost("orders/{id:guid}/rating"), Authorize(Roles = Roles.Client)]
+    public Task<PurchaseRatingView> Rate(Guid id, PurchaseRatingRequest request, CancellationToken ct) => commerce.RateAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
     [HttpGet("orders/{number}"), Authorize(Roles = Roles.Client)]
     public async Task<ActionResult<OrderView>> Order(string number, CancellationToken ct)
     {
@@ -49,4 +51,16 @@ public sealed class AssistantController(AssistantService assistant, ProductInfor
     [HttpPut("staff/orders/{id:guid}"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
     public Task<OrderView> UpdateOrder(Guid id, OrderUpdateRequest request, CancellationToken ct) =>
         commerce.UpdateOrderAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPost("staff/orders/{id:guid}/prepare"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+    public Task<OrderView> Prepare(Guid id, CancellationToken ct) => commerce.StartPreparationAsync(Actor, id, HttpOrigin.Create(HttpContext), ct);
+    [HttpPut("staff/orders/{id:guid}/packing"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+    public Task<OrderView> Packing(Guid id, PackingRequest request, CancellationToken ct) => commerce.SavePackingAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPost("staff/orders/{id:guid}/dispatch"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+    public Task<OrderView> Dispatch(Guid id, DispatchRequest request, CancellationToken ct) => commerce.DispatchAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPost("staff/orders/{id:guid}/deliver"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+    public Task<OrderView> Deliver(Guid id, DeliveryRequest request, CancellationToken ct) => commerce.DeliverAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPost("staff/orders/{id:guid}/incidents"), Authorize(Roles = Roles.Administrator + "," + Roles.Logistics)]
+    public Task<OrderView> Incident(Guid id, OrderIncidentRequest request, CancellationToken ct) => commerce.RecordIncidentAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPut("staff/orders/{id:guid}/reservations"), Authorize(Roles = Roles.Administrator)]
+    public Task<OrderView> Reservations(Guid id, ReservationCorrectionRequest request, CancellationToken ct) => commerce.CorrectReservationsAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
 }

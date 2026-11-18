@@ -20,7 +20,7 @@
             <label>Existencias<input name="StockQuantity" type="number" min="0" step="1" required /><small class="field-error" data-error="StockQuantity"></small></label>
         </div>
         <label>Descripción<textarea name="Description" rows="3" maxlength="1000"></textarea><small class="field-error" data-error="Description"></small></label>
-        <label class="identity-check"><input name="IsActive" type="checkbox" /> Producto activo</label>
+        <label class="identity-check"><input name="IsActive" type="checkbox" disabled /> Producto activo (usa la sección Disponibilidad para cambiarlo)</label>
         <h2>Tallas</h2><p>Altura en centímetros y peso en kilogramos.</p>
         <div id="product-edit-sizes" class="presentation-sizes"></div><small class="field-error" data-error="Sizes"></small>
         <button id="product-edit-add-size" type="button" class="boton secundario">Añadir talla</button>
@@ -29,4 +29,5 @@
         <div class="form-actions"><button type="submit" class="boton primario">Guardar cambios</button><button id="product-edit-reload" type="button" class="boton secundario oculto">Revisar versión vigente</button></div>
     </form>
 </section>
+<CatalogAvailability Kind="products" Id="Id" />
 @code { [Parameter] public Guid Id { get; set; } }

@@ -1,5 +1,7 @@
 # Ameli Creaciones · Seguridad, gestión interna y auditoría
 
+**Actualización GOL-006, GOL-007, GOL-008, GOL-012, GOL-015 y GOL-016 (18/11/2026):** responsables y reservas, verificación de empaque, despacho y entrega, incidencias, edición y disponibilidad de categorías y productos. Consulta [GOL-006-007-008-012-015-016.md](GOL-006-007-008-012-015-016.md) para actualizar la base y probarlo sobre la solución original.
+
 **Actualización GOL-002, GOL-003, GOL-004, GOL-005 y GOL-011 (17/11/2026):** carrito editable, checkout con pagos de prueba, historial de pedidos y edición comercial con auditoría. Abre [GOL-002-003-004-005-011.md](GOL-002-003-004-005-011.md) para actualizar la base y probar los escenarios sobre la solución original.
 
 Actualización del carrito (20/10/2026): compra desde catálogo, ficha, chat y Recomendados; confirmación para productos sin tallas publicadas y corrección de NuGet incluida. Consulta [comportamiento, pruebas ejecutadas y comprobaciones pendientes](docs/VERIFICACION-CARRITO.md).

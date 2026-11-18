@@ -4,13 +4,14 @@ using System.Text.Json;
 using Ameli.Api.Domain;
 using Ameli.Api.Infrastructure;
 using Ameli.Contracts;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Ameli.Api.Application;
 
-public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction transactions,
-    ProductInformationService products, TimeProvider clock, IPaymentGateway payments, IOptions<CommerceOptions> options)
+public sealed partial class CommerceService(SecurityDbContext db, SqlSecurityTransaction transactions,
+    ProductInformationService products, TimeProvider clock, IPaymentGateway payments, IOptions<CommerceOptions> options, IDataProtectionProvider protection)
 {
     private async Task<AppUser> Client(Actor actor, CancellationToken ct) =>
         await db.Users.SingleOrDefaultAsync(user => user.Id == actor.UserId && user.IsActive && user.RoleName == Roles.Client, ct)
@@ -218,7 +219,7 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
             items.Add(new CustomerOrderItem
             {
                 OrderId = order.Id, ProductId = product.Id, PetId = line.PetId, ProductName = product.Name,
-                Sku = product.Sku, Size = line.Size, Quantity = line.Quantity, UnitPrice = product.UnitPrice,
+                Sku = product.Sku, Size = line.Size, Quantity = line.Quantity, ReservedQuantity = line.Quantity, UnitPrice = product.UnitPrice,
                 PetSnapshot = pet is null ? "Sin mascota vinculada" : $"{pet.Name}; {pet.Species}; {pet.Breed}; {pet.AgeYears} años; {pet.WeightKg} kg; {pet.HeightCm} cm; Alergias: {(pet.Allergies.Length > 0 ? pet.Allergies : "Sin alergias conocidas")}" 
             });
         }
@@ -246,10 +247,11 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
         }
         order.PaymentMode = authorization.Provider;
         order.PaymentReference = authorization.Reference;
+        order.PaymentStatus = "Pagado";
         db.Orders.Add(order);
         db.OrderItems.AddRange(items);
         db.CartLines.RemoveRange(lines);
-        db.OrderHistory.Add(new OrderStatusHistory { OrderId = order.Id, Status = OrderStatuses.Confirmed, OccurredAtUtc = order.CreatedAtUtc });
+        db.OrderHistory.Add(new OrderStatusHistory { OrderId = order.Id, Status = OrderStatuses.Confirmed, OccurredAtUtc = order.CreatedAtUtc, ActorUserId = user.Id, ActorName = user.Name });
         Audit(actor, user, "order_create", order.Id, origin);
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
@@ -261,14 +263,22 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
     private async Task<OrderView> View(CustomerOrder order, CancellationToken ct)
     {
         var history = await db.OrderHistory.AsNoTracking().Where(item => item.OrderId == order.Id)
-            .OrderBy(item => item.OccurredAtUtc).ThenBy(item => item.Sequence).Select(item => new OrderStatusView(item.Status, item.OccurredAtUtc, item.Carrier, item.TrackingNumber)).ToListAsync(ct);
+            .OrderBy(item => item.OccurredAtUtc).ThenBy(item => item.Sequence).Select(item => new OrderStatusView(item.Status, item.OccurredAtUtc, item.Carrier, item.TrackingNumber, item.ActorName)).ToListAsync(ct);
         if (history.Count == 0) history.Add(new(NormalizeStatus(order.Status), order.UpdatedAtUtc, order.Carrier, order.TrackingNumber));
+        var alert = await db.InventoryAlerts.AsNoTracking().SingleOrDefaultAsync(x => x.OrderId == order.Id && x.ResolvedAtUtc == null, ct);
+        var incidents = await db.OrderIncidents.AsNoTracking().Where(x => x.OrderId == order.Id).OrderBy(x => x.OccurredAtUtc)
+            .Select(x => new OrderIncidentView(x.Id, x.Detail, x.MissingItemsJson, x.ReportedByName, x.OccurredAtUtc)).ToListAsync(ct);
+        var rating = await db.PurchaseRatings.AsNoTracking().Where(x => x.OrderId == order.Id)
+            .Select(x => new PurchaseRatingView(x.Stars, x.Comment, x.CreatedAtUtc)).SingleOrDefaultAsync(ct);
         return new(order.Id, order.Number, NormalizeStatus(order.Status), order.UpdatedAtUtc, order.Carrier, order.TrackingNumber,
             order.CreatedAtUtc, order.Total, order.DeliverySnapshot,
             await db.OrderItems.AsNoTracking().Where(item => item.OrderId == order.Id)
-                .Select(item => new OrderItemView(item.ProductName, item.Sku, item.Size, item.Quantity, item.UnitPrice, item.PetSnapshot)).ToListAsync(ct),
+                .Select(item => new OrderItemView(item.ProductName, item.Sku, item.Size, item.Quantity, item.UnitPrice, item.PetSnapshot, item.Id, item.ReservedQuantity, item.PackedQuantity)).ToListAsync(ct),
             history, order.Subtotal == 0 && order.Total > 0 ? order.Total : order.Subtotal, order.Discount, order.Tax,
-            order.PaymentMode, order.PaymentReference);
+            order.PaymentMode, order.PaymentReference,
+            new(order.PaymentStatus, order.PreparationUserId, order.PreparationUserName, order.PreparationStartedAtUtc,
+                order.DispatchedAtUtc, order.DeliveredAtUtc, order.DeliveryRecordedAtUtc, order.DeliveryUserName,
+                order.ReceiptReference, order.CarrierConfirmation, order.PointsEnabled, order.RatingEnabled, alert?.Detail), incidents, rating);
     }
 
     public async Task<OrderView?> OwnOrderAsync(Actor actor, string number, CancellationToken ct)
@@ -290,48 +300,14 @@ public sealed class CommerceService(SecurityDbContext db, SqlSecurityTransaction
         return result;
     }
 
-    public async Task<OrderView> UpdateOrderAsync(Actor actor, Guid id, OrderUpdateRequest request, RequestOrigin origin, CancellationToken ct)
-    {
-        await using var tx = await transactions.BeginAsync(["ameli:catalogs", "ameli:orders", SqlSecurityTransaction.User(actor.UserId)], ct);
-        var user = await Staff(actor, ct);
-        var order = await db.Orders.SingleOrDefaultAsync(item => item.Id == id, ct)
-            ?? throw new SecurityFault("order_not_found", "Pedido no encontrado.", 404);
-        request.Status = NormalizeStatus(request.Status);
-        var current = NormalizeStatus(order.Status);
-        var allowed = request.Status == current || (current switch
+    // Legacy URL obeys the same rules as the dedicated actions; it cannot skip preparation or proof of delivery.
+    public Task<OrderView> UpdateOrderAsync(Actor actor, Guid id, OrderUpdateRequest request, RequestOrigin origin, CancellationToken ct) =>
+        NormalizeStatus(request.Status) switch
         {
-            OrderStatuses.Confirmed => request.Status is OrderStatuses.Preparing or OrderStatuses.Shipped or OrderStatuses.Cancelled,
-            OrderStatuses.Preparing => request.Status is OrderStatuses.Shipped or OrderStatuses.Cancelled,
-            OrderStatuses.Shipped => request.Status == OrderStatuses.Delivered,
-            _ => false
-        });
-        if (!allowed) throw new SecurityFault("invalid_transition", "Ese cambio de estado no está permitido.", 409);
-        if (request.Status is OrderStatuses.Shipped or OrderStatuses.Delivered &&
-            (string.IsNullOrWhiteSpace(request.Carrier) || string.IsNullOrWhiteSpace(request.TrackingNumber)))
-            throw new SecurityFault("missing_tracking", "Indica transportista y guía para un pedido enviado.");
-        if (request.Status == OrderStatuses.Cancelled && current != OrderStatuses.Cancelled)
-        {
-            foreach (var group in (await db.OrderItems.Where(item => item.OrderId == id).ToListAsync(ct)).GroupBy(item => item.ProductId))
-            {
-                var product = await db.BaseProducts.SingleAsync(item => item.Id == group.Key, ct);
-                product.StockQuantity += group.Sum(item => item.Quantity);
-                product.UpdatedAtUtc = clock.GetUtcNow();
-                product.Revision = Guid.NewGuid();
-            }
-        }
-        order.Status = request.Status;
-        order.Carrier = request.Carrier?.Trim() ?? "";
-        order.TrackingNumber = request.TrackingNumber?.Trim() ?? "";
-        order.UpdatedAtUtc = clock.GetUtcNow();
-        if (current != order.Status)
-            db.OrderHistory.Add(new OrderStatusHistory
-            {
-                OrderId = id, Status = order.Status, OccurredAtUtc = order.UpdatedAtUtc,
-                Carrier = order.Carrier, TrackingNumber = order.TrackingNumber
-            });
-        Audit(actor, user, "order_status_update", id, origin);
-        await db.SaveChangesAsync(ct);
-        await tx.CommitAsync(ct);
-        return await View(order, ct);
-    }
+            OrderStatuses.Preparing => StartPreparationAsync(actor, id, origin, ct),
+            OrderStatuses.Shipped => DispatchAsync(actor, id, new() { Carrier = request.Carrier, TrackingNumber = request.TrackingNumber }, origin, ct),
+            OrderStatuses.Delivered => DeliverAsync(actor, id, new() { DeliveredAtUtc = request.DeliveredAtUtc, ReceiptReference = request.ReceiptReference, CarrierConfirmation = request.CarrierConfirmation, Items = request.Items }, origin, ct),
+            OrderStatuses.Cancelled => CancelOrderAsync(actor, id, origin, ct),
+            _ => throw new SecurityFault("invalid_transition", "Usa Iniciar preparación para avanzar un pedido confirmado.", 409)
+        };
 }

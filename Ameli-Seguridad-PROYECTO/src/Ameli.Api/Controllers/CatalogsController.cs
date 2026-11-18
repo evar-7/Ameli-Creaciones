@@ -16,6 +16,12 @@ public sealed class CatalogsController(SecurityService service, ProductInformati
 
     [HttpPost("categories")]
     public Task<CategoryView> CreateCategory(CategoryRequest request, CancellationToken ct) => service.CreateCategoryAsync(Actor, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpGet("categories/{id:guid}")]
+    public Task<CategoryView> Category(Guid id, CancellationToken ct) => service.CategoryForEditAsync(Actor, id, ct);
+    [HttpPut("categories/{id:guid}")]
+    public Task<CategoryView> UpdateCategory(Guid id, CategoryUpdateRequest request, CancellationToken ct) => service.UpdateCategoryAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPut("categories/{id:guid}/availability")]
+    public Task<CategoryView> CategoryAvailability(Guid id, AvailabilityRequest request, CancellationToken ct) => service.CategoryAvailabilityAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
 
     [HttpGet("suppliers")]
     public Task<PagedResult<SupplierView>> Suppliers([FromQuery] SupplierQuery query, CancellationToken ct) => service.SuppliersAsync(Actor, query, ct);
@@ -32,6 +38,8 @@ public sealed class CatalogsController(SecurityService service, ProductInformati
     public Task<ProductEditView> Product(Guid id, CancellationToken ct) => service.ProductForEditAsync(Actor, id, ct);
     [HttpPut("products/{id:guid}")]
     public Task<ProductEditView> UpdateProduct(Guid id, ProductUpdateRequest request, CancellationToken ct) => service.UpdateProductAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPut("products/{id:guid}/availability")]
+    public Task<ProductEditView> ProductAvailability(Guid id, AvailabilityRequest request, CancellationToken ct) => service.ProductAvailabilityAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
     [HttpGet("products/{id:guid}/image")]
     public Task<ProductImagePayload> ProductImage(Guid id, CancellationToken ct) => products.ImageAsync(id, ct, true);
 }

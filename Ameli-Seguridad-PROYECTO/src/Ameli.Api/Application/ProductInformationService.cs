@@ -97,6 +97,9 @@ public sealed class ProductInformationService(SecurityDbContext db, SqlSecurityT
         if (errors.Count > 0) throw new SecurityFault("invalid_fields", "Revisa los datos del producto.") { Errors = errors };
         if (await db.BaseProducts.AnyAsync(p => p.Id != id && p.Sku == sku, ct)) throw new SecurityFault("duplicate_sku", "Ese SKU ya está utilizado.", 409) { Errors = new() { ["Sku"] = ["SKU ya utilizado."] } };
         var product = await db.BaseProducts.SingleOrDefaultAsync(p => p.Id == id, ct) ?? throw new SecurityFault("product_not_found", "Producto no encontrado.", 404);
+        if (request.IsActive != product.IsActive)
+            throw new SecurityFault("availability_action_required", "Usa Desactivar o Reactivar desde Editar producto para cambiar la disponibilidad.")
+                { Errors = new() { ["IsActive"] = ["Cambia el estado desde Editar producto."] } };
         product.Sku = sku; product.CareInstructions = request.CareInstructions?.Trim() ?? ""; product.FitNotes = request.FitNotes?.Trim() ?? "";
         product.Material = request.Material?.Trim() ?? "";
         product.ColorsJson = JsonSerializer.Serialize(colors); product.GarmentType = request.GarmentType?.Trim() ?? ""; product.Style = request.Style?.Trim() ?? "";

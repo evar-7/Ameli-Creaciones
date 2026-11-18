@@ -34,11 +34,19 @@ public static class AssistantEndpoints
         { await api.SendAsync<object>(HttpMethod.Delete, $"assistant/cart/{id}", ct: ct); return Results.NoContent(); });
         clients.MapPost("/checkout", (CheckoutRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, "assistant/checkout", request, ct));
         clients.MapGet("/orders", (SecurityApiClient api, CancellationToken ct) => api.SendAsync<List<OrderView>>(HttpMethod.Get, "assistant/orders", ct: ct));
+        clients.MapPost("/orders/{id:guid}/rating", (Guid id, PurchaseRatingRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<PurchaseRatingView>(HttpMethod.Post, $"assistant/orders/{id}/rating", request, ct));
         var staff = app.MapGroup("/account/shop/staff").RequireAuthorization(p => p.RequireRole(Roles.Administrator, Roles.Logistics));
         staff.AddEndpointFilter(ValidateForm);
         staff.MapGet("/orders", (SecurityApiClient api, CancellationToken ct) => api.SendAsync<List<OrderView>>(HttpMethod.Get, "assistant/staff/orders", ct: ct));
         staff.MapPut("/orders/{id:guid}", (Guid id, OrderUpdateRequest request, SecurityApiClient api, CancellationToken ct) =>
             api.SendAsync<OrderView>(HttpMethod.Put, $"assistant/staff/orders/{id}", request, ct));
+        staff.MapPost("/orders/{id:guid}/prepare", (Guid id, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, $"assistant/staff/orders/{id}/prepare", new { }, ct));
+        staff.MapPut("/orders/{id:guid}/packing", (Guid id, PackingRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Put, $"assistant/staff/orders/{id}/packing", request, ct));
+        staff.MapPost("/orders/{id:guid}/dispatch", (Guid id, DispatchRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, $"assistant/staff/orders/{id}/dispatch", request, ct));
+        staff.MapPost("/orders/{id:guid}/deliver", (Guid id, DeliveryRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, $"assistant/staff/orders/{id}/deliver", request, ct));
+        staff.MapPost("/orders/{id:guid}/incidents", (Guid id, OrderIncidentRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, $"assistant/staff/orders/{id}/incidents", request, ct));
+        staff.MapPut("/orders/{id:guid}/reservations", (Guid id, ReservationCorrectionRequest request, SecurityApiClient api, CancellationToken ct) =>
+            api.SendAsync<OrderView>(HttpMethod.Put, $"assistant/staff/orders/{id}/reservations", request, ct)).RequireAuthorization(p => p.RequireRole(Roles.Administrator));
         var admin = app.MapGroup("/account/shop/admin").RequireAuthorization(p => p.RequireRole(Roles.Administrator));
         admin.AddEndpointFilter(ValidateForm);
         admin.MapGet("/products/{id:guid}", (Guid id, SecurityApiClient api, CancellationToken ct) => api.SendAsync<StoreProductView>(HttpMethod.Get, $"assistant/admin/products/{id}", ct: ct));

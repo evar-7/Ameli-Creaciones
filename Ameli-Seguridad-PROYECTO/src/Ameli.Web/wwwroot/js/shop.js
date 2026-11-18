@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function orderCard(order) {
     const card = el("article", null, "panel order-card");
+    card.dataset.orderId = order.id;
     if (new URLSearchParams(location.search).get("numero") === order.number) card.append(el("p", "Pedido confirmado", "feedback info"));
     card.append(el("h2", order.number), el("strong", order.status),
       el("p", `Última actualización: ${date(order.updatedAtUtc)}`),
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (order.paymentMode === "Demo") card.append(el("p", "Pago de prueba aprobado."));
     const history = el("ol", null, "order-history");
     for (const step of order.history || []) {
-      history.append(el("li", `${step.status} · ${date(step.occurredAtUtc)}${step.carrier ? " · " + step.carrier : ""}${step.trackingNumber ? " · Guía " + step.trackingNumber : ""}`));
+      history.append(el("li", `${step.status} · ${date(step.occurredAtUtc)}${step.actorName ? " · " + step.actorName : ""}${step.carrier ? " · " + step.carrier : ""}${step.trackingNumber ? " · Guía " + step.trackingNumber : ""}`));
     }
     card.append(history);
     for (const item of order.items) card.append(el("p", `${item.quantity} × ${item.productName} · ${item.sku} · ${item.size || "Sin talla especificada"} · ${money(item.unitPrice)}`), el("p", `Perfil registrado: ${item.petSnapshot}`));
@@ -136,23 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!orders.length) container.append(el("p", "No hay pedidos anteriores o en camino", "panel"));
       for (const order of orders) {
         const card = orderCard(order);
-        if (staff) {
-          const form = el("form", null, "formulario-apilado"), select = el("select"), label = el("label", "Estado ");
-          for (const value of ["Confirmado", "En preparación", "En camino", "Entregado", "Cancelado"]) { const option = el("option", value); option.value = value; select.append(option); }
-          select.value = order.status; label.append(select);
-          const carrier = el("input"); carrier.value = order.carrier; carrier.maxLength = 100;
-          const carrierLabel = el("label", "Transportista "); carrierLabel.append(carrier);
-          const tracking = el("input"); tracking.value = order.trackingNumber; tracking.maxLength = 100;
-          const trackingLabel = el("label", "Guía "); trackingLabel.append(tracking);
-          const save = el("button", "Guardar estado", "boton primario"); save.type = "submit";
-          const result = el("p"); result.setAttribute("role", "status");
-          form.append(label, carrierLabel, trackingLabel, save, result); card.append(form);
-          form.addEventListener("submit", async event => {
-            event.preventDefault(); save.disabled = true;
-            try { await request(`/account/shop/staff/orders/${order.id}`, "PUT", { status: select.value, carrier: carrier.value, trackingNumber: tracking.value }); await initOrders(container); }
-            catch (error) { result.textContent = error.message; save.disabled = false; }
-          });
-        }
+        if (staff) window.ameliFulfillment.renderStaff(order, card, container.dataset, () => initOrders(container));
+        else window.ameliFulfillment.renderCustomer(order, card, () => initOrders(container));
         container.append(card);
       }
     } catch (error) { container.replaceChildren(el("p", error.message, "feedback error")); }
