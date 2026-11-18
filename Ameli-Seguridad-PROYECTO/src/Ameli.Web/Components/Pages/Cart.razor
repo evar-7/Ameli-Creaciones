@@ -5,6 +5,15 @@
 <section id="shop-cart" class="shop-list"><p>Cargando carrito…</p></section>
 <section class="panel"><form id="shop-checkout" class="formulario-apilado"><AntiforgeryToken />
     <label>Dirección de entrega<select name="AddressId" id="checkout-address"><option value="">Seleccionar dirección</option></select></label>
-    <a href="/perfil/direcciones">Administrar mis direcciones</a><p>Al confirmar se registra el pedido para tramitarlo con Ameli. Esta versión no procesa cobros electrónicos.</p>
+    <small class="field-error" data-checkout-error="AddressId"></small>
+    <a href="/perfil/direcciones">Administrar mis direcciones</a>
+    <div class="feedback info"><strong>Pago de prueba</strong><p>Para aprobar usa 4242 4242 4242 4242. Para probar un rechazo usa 4000 0000 0000 0002. Ingresa una fecha futura y CVC 123.</p></div>
+    <fieldset id="checkout-card" class="identity-grid">
+        <legend>Información de la tarjeta de prueba</legend>
+        <label>Número de tarjeta<input name="CardNumber" inputmode="numeric" autocomplete="cc-number" maxlength="30" required /><small class="field-error" data-checkout-error="CardNumber"></small></label>
+        <label>Fecha de caducidad (MM/AA)<input name="ExpirationDate" autocomplete="cc-exp" placeholder="12/30" maxlength="7" required /><small class="field-error" data-checkout-error="ExpirationDate"></small></label>
+        <label>Nombre del titular<input name="CardholderName" autocomplete="cc-name" maxlength="100" required /><small class="field-error" data-checkout-error="CardholderName"></small></label>
+        <label>CVC<input name="Cvc" type="password" inputmode="numeric" autocomplete="cc-csc" minlength="3" maxlength="3" required /><small class="field-error" data-checkout-error="Cvc"></small></label>
+    </fieldset>
     <button type="submit" class="boton primario" id="checkout-button">Confirmar pedido</button><p id="checkout-result" role="status"></p>
 </form></section>

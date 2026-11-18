@@ -2,7 +2,7 @@
 
 @if (Product.StockQuantity <= 0)
 {
-    <p class="cart-availability">Agotado</p>
+    <p class="cart-availability">Producto agotado</p>
 }
 else if (Accessor.HttpContext?.User.IsInRole(Roles.Client) == true)
 {
@@ -24,7 +24,7 @@ else if (Accessor.HttpContext?.User.IsInRole(Roles.Client) == true)
                 Quiero comprarlo sin talla especificada.</label>
         }
         <label>Cantidad
-            <input type="number" name="Quantity" min="1" max="@Math.Min(20, Product.StockQuantity)" step="1" value="1" required aria-label="Cantidad de @Product.Name" />
+            <input type="number" name="Quantity" min="1" max="@Product.StockQuantity" step="1" value="1" required aria-label="Cantidad de @Product.Name" />
         </label>
         <button class="boton primario" type="submit">Agregar al carrito</button>
         <p class="cart-add-result" role="status" aria-live="polite"></p>

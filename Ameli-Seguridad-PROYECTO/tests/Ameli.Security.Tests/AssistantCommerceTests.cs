@@ -34,7 +34,7 @@ public sealed class AssistantCommerceTests(SecurityFixture f) : IClassFixture<Se
         Assert.Equal(HttpStatusCode.OK, (await http.PostAsJsonAsync("/api/v1/assistant/cart", command)).StatusCode);
         Assert.Equal(HttpStatusCode.OK, (await http.PostAsJsonAsync("/api/v1/assistant/cart", command)).StatusCode);
         Assert.Equal(1, (await http.GetFromJsonAsync<CartView>("/api/v1/assistant/cart"))!.Lines.Single().Quantity);
-        var checkout = new CheckoutRequest { RequestId = Guid.NewGuid(), AddressId = address.Id };
+        var checkout = new CheckoutRequest { RequestId = Guid.NewGuid(), AddressId = address.Id, CardNumber = "4242424242424242", CardholderName = "Cliente Prueba", ExpirationDate = "12/39", Cvc = "123" };
         var order = (await (await http.PostAsJsonAsync("/api/v1/assistant/checkout", checkout)).Content.ReadFromJsonAsync<OrderView>())!;
         var replay = (await (await http.PostAsJsonAsync("/api/v1/assistant/checkout", checkout)).Content.ReadFromJsonAsync<OrderView>())!;
         Assert.Equal(order.Id, replay.Id); Assert.Equal(4, await f.Db(db => db.BaseProducts.Where(p => p.Id == productId).Select(p => p.StockQuantity).SingleAsync()));

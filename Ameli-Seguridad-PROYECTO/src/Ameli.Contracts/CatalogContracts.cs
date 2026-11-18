@@ -27,7 +27,7 @@ public sealed class SupplierRequest
     [Required] public bool? IsActive { get; set; }
 }
 
-public sealed class BaseProductRequest
+public class BaseProductRequest
 {
     [Required(ErrorMessage = "El nombre del producto es obligatorio."), StringLength(160, MinimumLength = 2)] public string Name { get; set; } = "";
     [StringLength(1000)] public string Description { get; set; } = "";
@@ -72,3 +72,15 @@ public sealed record CategoryView(Guid Id, string Name, string Description, bool
 public sealed record SupplierView(Guid Id, string Name, string ContactName, string Email, string Phone, string Notes, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
 public sealed record BaseProductView(Guid Id, string Name, string Description, Guid CategoryId, string CategoryName, Guid SupplierId, string SupplierName, string Species, string Material, string Icon, decimal UnitPrice, int StockQuantity, bool IsActive, DateTimeOffset CreatedAtUtc, DateTimeOffset UpdatedAtUtc);
 public sealed record LookupItem(Guid Id, string Name, bool IsActive);
+
+public sealed class ProductUpdateRequest : BaseProductRequest
+{
+    [Required] public Guid? Revision { get; set; }
+    [Range(0.0, 99999999.99)] public decimal UnitCost { get; set; }
+    [Range(0, 100000)] public int MinimumStock { get; set; }
+    public ProductSizeRequest[] Sizes { get; set; } = [];
+    public string? ImageFileName { get; set; }
+    public string? ImageBase64Data { get; set; }
+}
+public sealed record ProductEditView(BaseProductView Product, Guid Revision, decimal UnitCost,
+    int MinimumStock, List<ProductSizeView> Sizes, string? ImageUrl);

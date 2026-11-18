@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const state = el("p", item.isActive ? "Activo" : "Inactivo", "estado " + (item.isActive ? "exito" : "peligro"));
         if (item.description) content.append(el("p", item.description));
         content.append(meta, footer, state);
+        const edit = el("a", "Editar producto", "boton primario"); edit.href = `/administracion/catalogos/productos/${item.id}/editar`; content.append(edit);
         const details = el("a", "Configurar ficha y tallas", "boton secundario"); details.href = `/administracion/productos/${item.id}/ficha`; content.append(details);
         card.append(image, content); grid.append(card);
       }

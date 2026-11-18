@@ -32,7 +32,7 @@ public sealed class CartPurchaseTests(SecurityFixture f) : IClassFixture<Securit
         command.AcknowledgesUnspecifiedSize = false;
         Assert.Equal(HttpStatusCode.Conflict, (await http.PostAsJsonAsync("/api/v1/assistant/cart", command)).StatusCode);
 
-        var checkout = new CheckoutRequest { RequestId = Guid.NewGuid(), AddressId = await Address() };
+        var checkout = new CheckoutRequest { RequestId = Guid.NewGuid(), AddressId = await Address(), CardNumber = "4242424242424242", CardholderName = "Cliente Prueba", ExpirationDate = "12/39", Cvc = "123" };
         var first = await http.PostAsJsonAsync("/api/v1/assistant/checkout", checkout);
         Assert.Equal(HttpStatusCode.OK, first.StatusCode);
         var order = (await first.Content.ReadFromJsonAsync<OrderView>())!;
@@ -64,7 +64,7 @@ public sealed class CartPurchaseTests(SecurityFixture f) : IClassFixture<Securit
 
     [Theory]
     [InlineData(0, HttpStatusCode.BadRequest)]
-    [InlineData(21, HttpStatusCode.BadRequest)]
+    [InlineData(21, HttpStatusCode.Conflict)]
     [InlineData(4, HttpStatusCode.Conflict)]
     public async Task ManualPurchaseStillEnforcesQuantityAndStock(int quantity, HttpStatusCode expected)
     {
@@ -130,7 +130,7 @@ public sealed class CartPurchaseTests(SecurityFixture f) : IClassFixture<Securit
             await db.SaveChangesAsync();
         });
         var response = await http.PostAsJsonAsync("/api/v1/assistant/checkout", new CheckoutRequest
-        { RequestId = Guid.NewGuid(), AddressId = await Address() });
+        { RequestId = Guid.NewGuid(), AddressId = await Address(), CardNumber = "4242424242424242", CardholderName = "Cliente Prueba", ExpirationDate = "12/39", Cvc = "123" });
         Assert.Equal(expected, response.StatusCode);
         Assert.Equal(code, (await response.Content.ReadFromJsonAsync<ApiError>())!.Code);
         Assert.Equal(0, await f.Db(db => db.Orders.CountAsync()));

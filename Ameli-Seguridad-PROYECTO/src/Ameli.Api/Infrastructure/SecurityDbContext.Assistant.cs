@@ -12,10 +12,16 @@ public sealed partial class SecurityDbContext
     public DbSet<CustomerOrderItem> OrderItems => Set<CustomerOrderItem>();
     public DbSet<RecommendationFeedback> RecommendationFeedback => Set<RecommendationFeedback>();
 
+    public DbSet<OrderStatusHistory> OrderHistory => Set<OrderStatusHistory>();
+    public DbSet<PaymentAttempt> PaymentAttempts => Set<PaymentAttempt>();
+
     private static void ConfigureAssistant(ModelBuilder b)
     {
         b.Entity<BaseProduct>(e =>
         {
+            e.Property(x => x.UnitCost).HasPrecision(18, 2);
+            e.Property(x => x.Revision).IsConcurrencyToken();
+            e.Property(x => x.ImageContentType).HasMaxLength(30);
             e.Property(x => x.Sku).HasMaxLength(40).IsUnicode(false); e.HasIndex(x => x.Sku).IsUnique();
             e.Property(x => x.CareInstructions).HasMaxLength(1000);
             e.Property(x => x.FitNotes).HasMaxLength(500);
@@ -33,6 +39,7 @@ public sealed partial class SecurityDbContext
         });
         b.Entity<CartLine>(e =>
         {
+            e.Property(x => x.Revision).IsConcurrencyToken();
             e.ToTable("cart_lines"); e.HasKey(x => x.Id); e.Property(x => x.Size).HasMaxLength(20);
             e.HasIndex(x => x.OwnerUserId);
             e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
@@ -53,6 +60,31 @@ public sealed partial class SecurityDbContext
             e.Property(x => x.Status).HasMaxLength(30); e.Property(x => x.Carrier).HasMaxLength(100);
             e.Property(x => x.TrackingNumber).HasMaxLength(100); e.Property(x => x.Total).HasPrecision(18, 2);
             e.Property(x => x.DeliverySnapshot).HasMaxLength(1200);
+            e.Property(x => x.Subtotal).HasPrecision(18, 2);
+            e.Property(x => x.Discount).HasPrecision(18, 2);
+            e.Property(x => x.Tax).HasPrecision(18, 2);
+            e.Property(x => x.PaymentMode).HasMaxLength(30);
+            e.Property(x => x.PaymentReference).HasMaxLength(100);
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<OrderStatusHistory>(e =>
+        {
+            e.ToTable("order_status_history"); e.HasKey(x => x.Id);
+            e.Property(x => x.Sequence).UseIdentityColumn();
+            e.Property(x => x.Status).HasMaxLength(30);
+            e.Property(x => x.Carrier).HasMaxLength(100);
+            e.Property(x => x.TrackingNumber).HasMaxLength(100);
+            e.HasIndex(x => new { x.OrderId, x.OccurredAtUtc });
+            e.HasOne<CustomerOrder>().WithMany().HasForeignKey(x => x.OrderId).OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<PaymentAttempt>(e =>
+        {
+            e.ToTable("payment_attempts"); e.HasKey(x => x.Id);
+            e.Property(x => x.Amount).HasPrecision(18, 2);
+            e.Property(x => x.Status).HasMaxLength(30);
+            e.Property(x => x.Provider).HasMaxLength(30);
+            e.Property(x => x.Reference).HasMaxLength(100);
+            e.HasIndex(x => new { x.OwnerUserId, x.RequestId }).IsUnique();
             e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.Restrict);
         });
         b.Entity<CustomerOrderItem>(e =>

@@ -32,7 +32,7 @@ public sealed record StoreProductView(Guid Id, string Sku, string Name, string D
     Guid CategoryId, string CategoryName, string Species, string Material, string Icon,
     decimal UnitPrice, int StockQuantity, bool IsActive, string CareInstructions, string FitNotes,
     string[] Colors, string GarmentType, string Style, List<ProductSizeView> Sizes,
-    DateTimeOffset UpdatedAtUtc, string ProductUrl, string GuideUrl);
+    DateTimeOffset UpdatedAtUtc, string ProductUrl, string GuideUrl, string? ImageUrl = null);
 
 public sealed class ChatRequest
 {
@@ -62,29 +62,45 @@ public sealed class AddCartRequest
     public Guid? PetId { get; set; }
     [MaxLength(20)] public string Size { get; set; } = "";
     public bool AcknowledgesUnspecifiedSize { get; set; }
-    [Range(1, 20)] public int Quantity { get; set; } = 1;
+    [Range(1, 100000)] public int Quantity { get; set; } = 1;
 }
 public sealed record CartLineView(Guid Id, Guid ProductId, string ProductName, string Sku, string Size,
-    Guid? PetId, string? PetName, int Quantity, decimal UnitPrice, int AvailableStock);
-public sealed record CartView(List<CartLineView> Lines, decimal Total);
-public sealed record CartAddResult(Guid RequestId, string Message, int Quantity);
+    Guid? PetId, string? PetName, int Quantity, decimal UnitPrice, int AvailableStock,
+    Guid Revision = default, int MaximumQuantity = 0, string? Issue = null)
+{
+    public decimal Subtotal => decimal.Round(Quantity * UnitPrice, 2);
+}
+public sealed record CartView(List<CartLineView> Lines, decimal Total, decimal Subtotal = 0,
+    decimal Discount = 0, decimal Tax = 0, bool CanCheckout = true, string Revision = "");
+public sealed record CartAddResult(Guid RequestId, string Message, int Quantity, CartView? Cart = null);
+public sealed class UpdateCartRequest
+{
+    [Range(1, 100000)] public int Quantity { get; set; }
+    [Required] public Guid? Revision { get; set; }
+}
 public sealed class CheckoutRequest
 {
     public Guid RequestId { get; set; }
     public Guid AddressId { get; set; }
+    [MaxLength(64)] public string CartRevision { get; set; } = "";
+    [MaxLength(30)] public string CardNumber { get; set; } = "";
+    [MaxLength(7)] public string ExpirationDate { get; set; } = "";
+    [MaxLength(100)] public string CardholderName { get; set; } = "";
+    [MaxLength(4)] public string Cvc { get; set; } = "";
 }
 public static class OrderStatuses
 {
     public const string Confirmed = "Confirmado";
     public const string Preparing = "En preparación";
-    public const string Shipped = "Enviado";
+    public const string Shipped = "En camino";
+    public const string LegacyShipped = "Enviado";
     public const string Delivered = "Entregado";
     public const string Cancelled = "Cancelado";
     public static readonly string[] All = [Confirmed, Preparing, Shipped, Delivered, Cancelled];
 }
 public sealed class OrderUpdateRequest
 {
-    [AllowedValues(OrderStatuses.Confirmed, OrderStatuses.Preparing, OrderStatuses.Shipped, OrderStatuses.Delivered, OrderStatuses.Cancelled)]
+    [AllowedValues(OrderStatuses.Confirmed, OrderStatuses.Preparing, OrderStatuses.Shipped, OrderStatuses.LegacyShipped, OrderStatuses.Delivered, OrderStatuses.Cancelled)]
     public string Status { get; set; } = "";
     [MaxLength(100)] public string Carrier { get; set; } = "";
     [MaxLength(100)] public string TrackingNumber { get; set; } = "";
@@ -93,4 +109,7 @@ public sealed record OrderItemView(string ProductName, string Sku, string Size, 
     decimal UnitPrice, string PetSnapshot);
 public sealed record OrderView(Guid Id, string Number, string Status, DateTimeOffset UpdatedAtUtc,
     string Carrier, string TrackingNumber, DateTimeOffset CreatedAtUtc, decimal Total,
-    string DeliverySnapshot, List<OrderItemView> Items);
+    string DeliverySnapshot, List<OrderItemView> Items, List<OrderStatusView>? History = null,
+    decimal Subtotal = 0, decimal Discount = 0, decimal Tax = 0, string PaymentMode = "", string PaymentReference = "");
+public sealed record OrderStatusView(string Status, DateTimeOffset OccurredAtUtc, string Carrier, string TrackingNumber);
+public sealed record ProductImagePayload(string ContentType, byte[] Content);

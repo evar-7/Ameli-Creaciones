@@ -1,0 +1,32 @@
+@page "/administracion/catalogos/productos/{Id:guid}/editar"
+@attribute [Authorize(Roles = Roles.Administrator)]
+<PageTitle>Editar producto | Ameli</PageTitle>
+<PageHeading Eyebrow="Administración · Catálogo" Title="Editar producto" Description="Actualiza los datos comerciales, las tallas y la imagen del producto." />
+<p><a href="/administracion/catalogos/productos">← Volver a productos</a></p>
+<section id="product-editor" data-id="@Id" class="panel">
+    <form id="product-edit-form" class="formulario-apilado" novalidate>
+        <AntiforgeryToken />
+        <div id="product-edit-result" class="feedback oculto" role="alert" tabindex="-1"></div>
+        <small class="field-error" data-error="Revision"></small>
+        <div class="identity-grid">
+            <label>Nombre<input name="Name" maxlength="160" required /><small class="field-error" data-error="Name"></small></label>
+            <label>Categoría<select name="CategoryId" required></select><small class="field-error" data-error="CategoryId"></small></label>
+            <label>Proveedor<select name="SupplierId" required></select><small class="field-error" data-error="SupplierId"></small></label>
+            <label>Precio (CRC)<input name="UnitPrice" type="number" min="0" step="0.01" required /><small class="field-error" data-error="UnitPrice"></small></label>
+            <label>Costo (CRC)<input name="UnitCost" type="number" min="0" step="0.01" required /><small class="field-error" data-error="UnitCost"></small></label>
+            <label>Material<input name="Material" maxlength="80" /><small class="field-error" data-error="Material"></small></label>
+            <label>Especie<select name="Species"><option>Perro</option><option>Gato</option><option>Todos</option></select><small class="field-error" data-error="Species"></small></label>
+            <label>Stock mínimo<input name="MinimumStock" type="number" min="0" step="1" required /><small class="field-error" data-error="MinimumStock"></small></label>
+            <label>Existencias<input name="StockQuantity" type="number" min="0" step="1" required /><small class="field-error" data-error="StockQuantity"></small></label>
+        </div>
+        <label>Descripción<textarea name="Description" rows="3" maxlength="1000"></textarea><small class="field-error" data-error="Description"></small></label>
+        <label class="identity-check"><input name="IsActive" type="checkbox" /> Producto activo</label>
+        <h2>Tallas</h2><p>Altura en centímetros y peso en kilogramos.</p>
+        <div id="product-edit-sizes" class="presentation-sizes"></div><small class="field-error" data-error="Sizes"></small>
+        <button id="product-edit-add-size" type="button" class="boton secundario">Añadir talla</button>
+        <label>Imagen JPG, PNG o WEBP (máximo 5 MB)<input name="Image" type="file" accept="image/jpeg,image/png,image/webp" /><small class="field-error" data-error="Image"></small></label>
+        <img id="product-edit-preview" class="product-edit-preview oculto" alt="Imagen actual del producto" />
+        <div class="form-actions"><button type="submit" class="boton primario">Guardar cambios</button><button id="product-edit-reload" type="button" class="boton secundario oculto">Revisar versión vigente</button></div>
+    </form>
+</section>
+@code { [Parameter] public Guid Id { get; set; } }

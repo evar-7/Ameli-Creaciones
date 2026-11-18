@@ -39,11 +39,12 @@ test("AAC: real web/API flow from registration to recommendation, cart and order
     const card = page.locator(".chat-product").filter({ hasText: product.name }); assert.equal(await card.count(), 1);
     assert.match(await card.textContent(), /Talla sugerida: S/); await card.getByRole("button", { name: "Agregar al carrito" }).click(); await card.getByRole("button", { name: "Agregar más", exact: true }).waitFor();
     await page.goto(web + "/carrito"); await page.waitForFunction(() => document.getElementById("shop-cart").textContent.includes("Suéter"));
+    for (const [name, value] of Object.entries({ CardNumber: "4242424242424242", ExpirationDate: "12/39", CardholderName: "Cliente Prueba", Cvc: "123" })) await page.locator(`#shop-checkout [name="${name}"]`).fill(value);
     page.once("dialog", dialog => dialog.accept()); await page.locator("#checkout-button").click(); await page.waitForURL("**/mis-pedidos?numero=*");
     await page.locator("#shop-orders h2").waitFor(); const number = await page.locator("#shop-orders h2").first().textContent();
     assert.match(number, /^AML-[A-F0-9]{32}$/);
     const all = await call("assistant/staff/orders", undefined, token, "GET"); const order = all.find(o => o.number === number); assert.ok(order);
-    await call(`assistant/staff/orders/${order.id}`, { status: "Enviado", carrier: "Correos", trackingNumber: "CR-123" }, token, "PUT");
+    await call(`assistant/staff/orders/${order.id}`, { status: "En camino", carrier: "Correos", trackingNumber: "CR-123" }, token, "PUT");
     await page.locator("#chat-launch").click(); await page.locator("#chat-intent").selectOption("order"); await page.locator('#chat-tools [name="OrderNumber"]').fill(number); await page.locator("#chat-send-button").click();
     await page.waitForFunction(() => document.getElementById("chat-status").textContent === "Consulta respondida."); assert.match(await page.locator("#chat-log").textContent(), /CR-123/);
     assert.deepEqual(errors, []);

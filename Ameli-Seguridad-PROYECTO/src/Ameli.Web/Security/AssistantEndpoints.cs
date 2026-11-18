@@ -8,6 +8,11 @@ public static class AssistantEndpoints
 {
     public static void MapAssistantEndpoints(this WebApplication app)
     {
+        app.MapGet("/product-images/{id:guid}", async (Guid id, SecurityApiClient api, CancellationToken ct) =>
+        {
+            var image = await api.PublicAsync<ProductImagePayload>(HttpMethod.Get, $"assistant/products/{id}/image", ct: ct);
+            return Results.File(image.Content, image.ContentType);
+        }).AllowAnonymous();
         var publicGroup = app.MapGroup("/account/assistant").AllowAnonymous();
         publicGroup.AddEndpointFilter(ValidateForm);
         publicGroup.MapGet("/products", (HttpContext ctx, SecurityApiClient api) =>
@@ -24,6 +29,7 @@ public static class AssistantEndpoints
         clients.AddEndpointFilter(ValidateForm);
         clients.MapGet("/cart", (SecurityApiClient api, CancellationToken ct) => api.SendAsync<CartView>(HttpMethod.Get, "assistant/cart", ct: ct));
         clients.MapPost("/cart", (AddCartRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<CartAddResult>(HttpMethod.Post, "assistant/cart", request, ct));
+        clients.MapPut("/cart/{id:guid}", (Guid id, UpdateCartRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<CartView>(HttpMethod.Put, $"assistant/cart/{id}", request, ct));
         clients.MapDelete("/cart/{id:guid}", async (Guid id, SecurityApiClient api, CancellationToken ct) =>
         { await api.SendAsync<object>(HttpMethod.Delete, $"assistant/cart/{id}", ct: ct); return Results.NoContent(); });
         clients.MapPost("/checkout", (CheckoutRequest request, SecurityApiClient api, CancellationToken ct) => api.SendAsync<OrderView>(HttpMethod.Post, "assistant/checkout", request, ct));

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ameli.Api.Controllers;
 
 [ApiController, Route("api/v1/admin/catalog"), Authorize(Roles = Roles.Administrator)]
-public sealed class CatalogsController(SecurityService service) : ControllerBase
+public sealed class CatalogsController(SecurityService service, ProductInformationService products) : ControllerBase
 {
     private Actor Actor => new(Guid.Parse(User.FindFirstValue("sub")!), Guid.Parse(User.FindFirstValue("sid")!));
 
@@ -28,4 +28,10 @@ public sealed class CatalogsController(SecurityService service) : ControllerBase
 
     [HttpPost("products")]
     public Task<BaseProductView> CreateProduct(BaseProductRequest request, CancellationToken ct) => service.CreateBaseProductAsync(Actor, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpGet("products/{id:guid}")]
+    public Task<ProductEditView> Product(Guid id, CancellationToken ct) => service.ProductForEditAsync(Actor, id, ct);
+    [HttpPut("products/{id:guid}")]
+    public Task<ProductEditView> UpdateProduct(Guid id, ProductUpdateRequest request, CancellationToken ct) => service.UpdateProductAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpGet("products/{id:guid}/image")]
+    public Task<ProductImagePayload> ProductImage(Guid id, CancellationToken ct) => products.ImageAsync(id, ct, true);
 }

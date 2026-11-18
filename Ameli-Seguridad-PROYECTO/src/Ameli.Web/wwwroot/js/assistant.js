@@ -16,6 +16,7 @@ window.ameliShop = (() => {
   function bindCartForm(form) {
     if (form.dataset.cartBound) return;
     form.dataset.cartBound = "true";
+    form.noValidate = true;
     const button = form.querySelector('button[type="submit"]'), result = form.querySelector(".cart-add-result");
     const size = form.elements.namedItem("Size"), quantity = form.elements.namedItem("Quantity"), acknowledgment = form.elements.namedItem("AcknowledgesUnspecifiedSize");
     const controls = [size, quantity, acknowledgment].filter(Boolean).map(input => ({ input, disabled: input.disabled }));
@@ -23,7 +24,14 @@ window.ameliShop = (() => {
     let command, pending = false;
     form.addEventListener("submit", async event => {
       event.preventDefault();
-      if (pending || (!command && !form.reportValidity())) return;
+      if (pending) return;
+      if (!command) {
+        if (quantity.max && Number(quantity.value) > Number(quantity.max)) {
+          result.textContent = Number(quantity.max) === 0 ? "Producto agotado" : "Existencias de artículo superadas";
+          return;
+        }
+        if (!form.reportValidity()) return;
+      }
       command ||= {
         requestId: crypto.randomUUID(), productId: form.dataset.productId,
         petId: form.dataset.petId || null, size: size?.value || "", quantity: Number(quantity.value),
@@ -32,7 +40,7 @@ window.ameliShop = (() => {
       pending = true; button.disabled = true; lock(true); result.textContent = "Agregando al carrito…";
       try {
         const data = await request("/account/shop/cart", "POST", command);
-        result.textContent = data.message;
+        result.textContent = data.cart ? `${data.message} Subtotal: ${money(data.cart.subtotal)} · Total: ${money(data.cart.total)}` : data.message;
         const link = el("a", "Ir al carrito"); link.href = "/carrito"; result.append(link);
         command = null; lock(false); button.textContent = "Agregar más";
       } catch (error) {
@@ -63,7 +71,7 @@ window.ameliShop = (() => {
       label.append(acknowledgment, document.createTextNode("Quiero comprarlo sin talla especificada.")); form.append(label);
     }
     const label = el("label", "Cantidad "), quantity = el("input"); quantity.type = "number"; quantity.name = "Quantity";
-    quantity.min = "1"; quantity.max = String(Math.min(20, product.stockQuantity)); quantity.step = "1"; quantity.value = "1"; quantity.required = true;
+    quantity.min = "1"; quantity.max = String(product.stockQuantity); quantity.step = "1"; quantity.value = "1"; quantity.required = true;
     quantity.setAttribute("aria-label", `Cantidad de ${product.name}`); label.append(quantity);
     const add = el("button", "Agregar al carrito", "boton primario"); add.type = "submit";
     const result = el("p", null, "cart-add-result"); result.setAttribute("role", "status"); result.setAttribute("aria-live", "polite");
@@ -81,7 +89,7 @@ window.ameliShop = (() => {
   function productCard(card, isClient) {
     const p = card.product, node = el("article", null, "chat-product");
     node.append(el("h3", `${p.icon || ""} ${p.name}`), el("p", `${p.sku} · ${money(p.unitPrice)}`),
-      el("p", p.stockQuantity > 0 ? `${p.stockQuantity} disponibles` : "Agotado"),
+      el("p", p.stockQuantity > 0 ? `${p.stockQuantity} disponibles` : "Producto agotado"),
       el("p", `Tallas: ${p.sizes.map(s => s.name).join(", ") || "Sin tabla publicada"}`),
       el("p", `Materiales: ${p.material || "Sin información publicada"}`), el("p", `Cuidados: ${p.careInstructions || "Sin información publicada"}`),
       el("p", `Última actualización del producto: ${date(p.updatedAtUtc)}`));

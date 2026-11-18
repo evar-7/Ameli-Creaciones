@@ -7,6 +7,7 @@
 @if (Product is null) { <section class="panel"><p role="alert">@Error</p></section> }
 else
 {
+    @if(Product.ImageUrl is not null){<img class="product-edit-preview" src="@Product.ImageUrl" alt="@Product.Name" />}
     <PageHeading Eyebrow="@Product.CategoryName" Title="@Product.Name" Description="@Product.Description" />
     <div class="shop-product-info">
         <article class="panel"><h2>Información del producto</h2><p>SKU: @Product.Sku</p><p>Especie: @Product.Species</p>

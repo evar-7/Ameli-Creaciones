@@ -42,6 +42,10 @@ builder.Services.AddScoped<SecurityService>();
 builder.Services.AddScoped<CustomerIdentityService>();
 builder.Services.AddScoped<ProductInformationService>();
 builder.Services.AddScoped<CommerceService>();
+builder.Services.AddScoped<IPaymentGateway, DemoPaymentGateway>();
+builder.Services.AddOptions<CommerceOptions>().Bind(builder.Configuration.GetSection("Commerce"))
+    .Validate(options => options.DiscountPercent is >= 0 and <= 100 && options.TaxPercent is >= 0 and <= 100,
+        "Los porcentajes de descuento e impuesto deben estar entre 0 y 100.").ValidateOnStart();
 builder.Services.AddScoped<AssistantService>();
 builder.Services.AddScoped<RecommendationService>();
 builder.Services.AddScoped<IRecommendationProfileProvider, DbRecommendationProfileProvider>();

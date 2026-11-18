@@ -18,6 +18,8 @@ public sealed class AssistantController(AssistantService assistant, ProductInfor
     public Task<List<StoreProductView>> Products([FromQuery] string? search, CancellationToken ct) => products.ProductsAsync(search, ct);
     [HttpGet("products/{id:guid}"), AllowAnonymous]
     public Task<StoreProductView> Product(Guid id, CancellationToken ct) => products.ProductAsync(id, ct);
+    [HttpGet("products/{id:guid}/image"), AllowAnonymous]
+    public Task<ProductImagePayload> Image(Guid id, CancellationToken ct) => products.ImageAsync(id, ct);
     [HttpGet("admin/products/{id:guid}"), Authorize(Roles = Roles.Administrator)]
     public Task<StoreProductView> AdminProduct(Guid id, CancellationToken ct) => products.ProductAsync(id, ct, true);
     [HttpPut("admin/products/{id:guid}"), Authorize(Roles = Roles.Administrator)]
@@ -27,6 +29,8 @@ public sealed class AssistantController(AssistantService assistant, ProductInfor
     public Task<CartView> Cart(CancellationToken ct) => commerce.CartAsync(Actor, ct);
     [HttpPost("cart"), Authorize(Roles = Roles.Client)]
     public Task<CartAddResult> Add(AddCartRequest request, CancellationToken ct) => commerce.AddAsync(Actor, request, HttpOrigin.Create(HttpContext), ct);
+    [HttpPut("cart/{id:guid}"), Authorize(Roles = Roles.Client)]
+    public Task<CartView> UpdateCart(Guid id, UpdateCartRequest request, CancellationToken ct) => commerce.UpdateAsync(Actor, id, request, HttpOrigin.Create(HttpContext), ct);
     [HttpDelete("cart/{id:guid}"), Authorize(Roles = Roles.Client)]
     public async Task<IActionResult> Remove(Guid id, CancellationToken ct)
     { await commerce.RemoveAsync(Actor, id, HttpOrigin.Create(HttpContext), ct); return NoContent(); }

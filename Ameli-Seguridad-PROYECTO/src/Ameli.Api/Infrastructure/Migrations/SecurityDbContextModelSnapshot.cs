@@ -308,6 +308,15 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("nvarchar(8)")
                         .HasColumnName("icon");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image");
+
+                    b.Property<string>("ImageContentType")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("image_content_type");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit")
                         .HasColumnName("is_active");
@@ -317,6 +326,10 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("material");
+
+                    b.Property<int>("MinimumStock")
+                        .HasColumnType("int")
+                        .HasColumnName("minimum_stock");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -330,6 +343,11 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(160)")
                         .HasColumnName("normalized_name");
+
+                    b.Property<Guid>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("revision");
 
                     b.Property<string>("Sku")
                         .IsRequired()
@@ -357,6 +375,11 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.Property<Guid>("SupplierId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("supplier_id");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("unit_cost");
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
@@ -406,6 +429,11 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
+
+                    b.Property<Guid>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("revision");
 
                     b.Property<string>("Size")
                         .IsRequired()
@@ -489,6 +517,11 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("nvarchar(1200)")
                         .HasColumnName("delivery_snapshot");
 
+                    b.Property<decimal>("Discount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("discount");
+
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -500,11 +533,33 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("owner_user_id");
 
+                    b.Property<string>("PaymentMode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("payment_mode");
+
+                    b.Property<string>("PaymentReference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("payment_reference");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("status");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("subtotal");
+
+                    b.Property<decimal>("Tax")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("tax");
 
                     b.Property<decimal>("Total")
                         .HasPrecision(18, 2)
@@ -652,6 +707,53 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.ToTable("delivery_addresses", (string)null);
                 });
 
+            modelBuilder.Entity("Ameli.Api.Domain.OrderStatusHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Carrier")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("carrier");
+
+                    b.Property<DateTimeOffset>("OccurredAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("occurred_at_utc");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("order_id");
+
+                    b.Property<long>("Sequence")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("sequence");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Sequence"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("status");
+
+                    b.Property<string>("TrackingNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("tracking_number");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId", "OccurredAtUtc");
+
+                    b.ToTable("order_status_history", (string)null);
+                });
+
             modelBuilder.Entity("Ameli.Api.Domain.OutgoingEmail", b =>
                 {
                     b.Property<Guid>("Id")
@@ -737,6 +839,56 @@ namespace Ameli.Api.Infrastructure.Migrations
                     b.HasIndex("UserId", "CreatedAtUtc");
 
                     b.ToTable("password_resets", (string)null);
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PaymentAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTimeOffset>("OccurredAtUtc")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("occurred_at_utc");
+
+                    b.Property<Guid>("OwnerUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("owner_user_id");
+
+                    b.Property<string>("Provider")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("provider");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("reference");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("request_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerUserId", "RequestId")
+                        .IsUnique();
+
+                    b.ToTable("payment_attempts", (string)null);
                 });
 
             modelBuilder.Entity("Ameli.Api.Domain.PetProfile", b =>
@@ -1374,11 +1526,29 @@ namespace Ameli.Api.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Ameli.Api.Domain.OrderStatusHistory", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.CustomerOrder", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ameli.Api.Domain.PasswordReset", b =>
                 {
                     b.HasOne("Ameli.Api.Domain.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ameli.Api.Domain.PaymentAttempt", b =>
+                {
+                    b.HasOne("Ameli.Api.Domain.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

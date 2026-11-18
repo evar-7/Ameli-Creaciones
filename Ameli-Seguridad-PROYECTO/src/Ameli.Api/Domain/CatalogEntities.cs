@@ -44,6 +44,11 @@ public sealed class BaseProduct
     public string Material { get; set; } = "";
     public string Icon { get; set; } = "";
     public decimal UnitPrice { get; set; }
+    public decimal UnitCost { get; set; }
+    public int MinimumStock { get; set; }
+    public byte[]? Image { get; set; }
+    public string? ImageContentType { get; set; }
+    public Guid Revision { get; set; } = Guid.NewGuid();
     public int StockQuantity { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTimeOffset CreatedAtUtc { get; set; }

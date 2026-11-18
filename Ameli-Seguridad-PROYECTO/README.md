@@ -1,5 +1,7 @@
 # Ameli Creaciones · Seguridad, gestión interna y auditoría
 
+**Actualización GOL-002, GOL-003, GOL-004, GOL-005 y GOL-011 (17/11/2026):** carrito editable, checkout con pagos de prueba, historial de pedidos y edición comercial con auditoría. Abre [GOL-002-003-004-005-011.md](GOL-002-003-004-005-011.md) para actualizar la base y probar los escenarios sobre la solución original.
+
 Actualización del carrito (20/10/2026): compra desde catálogo, ficha, chat y Recomendados; confirmación para productos sin tallas publicadas y corrección de NuGet incluida. Consulta [comportamiento, pruebas ejecutadas y comprobaciones pendientes](docs/VERIFICACION-CARRITO.md).
 
 **Actualización Desarrollador 2:** GUI-001 a GUI-004, BIT-001 y SYA-004, integrada con las historias de acceso anteriores.
@@ -92,7 +94,7 @@ En **Editar mascota**, **Guardar cambios** aplica en una sola operación las med
 
 La migración `CustomerIdentity` crea `pet_profiles` y `delivery_addresses`, y agrega nombre/apellidos a `users`. En desarrollo se aplica al arrancar **Ameli.Api** mediante el inicializador existente: conserva la base, las cuentas, la cadena de auditoría y su clave `audit-integrity.key`. No borres `App_Data` ni cambies `Audit:IntegrityKey` al actualizar.
 
-El sprint AAC incorpora carrito, confirmación de pedidos y un motor local de recomendaciones. Al confirmar se guardan copias de los datos de mascota y dirección; los pedidos conservan esas copias después de desactivar perfiles o eliminar direcciones. El inventario se valida de nuevo al agregar y confirmar; las solicitudes repetidas no duplican cantidades ni pedidos. La confirmación no procesa pagos electrónicos.
+El sprint AAC incorpora carrito, confirmación de pedidos y un motor local de recomendaciones. Al confirmar se guardan copias de los datos de mascota y dirección; los pedidos conservan esas copias después de desactivar perfiles o eliminar direcciones. El inventario se valida de nuevo al agregar y confirmar; las solicitudes repetidas no duplican cantidades ni pedidos. La ampliación GOL incluye un adaptador de pagos de prueba; los cobros reales requieren una pasarela externa.
 
 ### Chatbot (sprint AAC)
 
@@ -102,7 +104,7 @@ En Administración → Productos base → **Configurar ficha y tallas**, publica
 
 El motor `ProfileRecommendationEngine` calcula similitud de coseno entre características de estilo y aplica antes los filtros de especie, talla, alergias y disponibilidad. Es un recomendador local basado en contenido; no usa un servicio generativo ni requiere una nueva clave de API. Las tallas y datos comerciales siempre salen de SQL Server. Sin preferencias explícitas usa las medidas, alergias y disponibilidad; no afirma tendencias externas ni inventa datos faltantes.
 
-El cliente puede usar **Mi carrito** y **Mis pedidos**. Administración y Logística usan **Gestión de pedidos** para registrar estados, transportista y guía. El estado “Enviado” requiere transportista y guía. El chat solo muestra el seguimiento del pedido propio, sin incluir la dirección ni el detalle de sus artículos.
+El cliente puede usar **Mi carrito** y **Mis pedidos**. Administración y Logística usan **Gestión de pedidos** para registrar estados, transportista y guía. El estado “En camino” requiere transportista y guía. El chat solo muestra el seguimiento del pedido propio, sin incluir la dirección ni el detalle de sus artículos.
 
 Consulta [VERIFICACION-AAC.md](docs/VERIFICACION-AAC.md) para actualización, configuración y escenarios de prueba.
 

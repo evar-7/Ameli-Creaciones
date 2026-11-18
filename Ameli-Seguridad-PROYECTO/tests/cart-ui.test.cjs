@@ -6,12 +6,12 @@ const vm = require("node:vm");
 const { webcrypto } = require("node:crypto");
 
 // Test the shipped JavaScript with form/transport adapters; these are not browser or SQL tests.
-function setup(respond, { size = "S", petId = "", consent = false, valid = true } = {}) {
+function setup(respond, { size = "S", petId = "", consent = false, valid = true, stock = 30 } = {}) {
   const button = { disabled: false, textContent: "Agregar al carrito" };
   const feedback = { textContent: "", links: [], append(node) { this.links.push(node); } };
   const controls = {
     Size: { value: size, disabled: Boolean(petId) },
-    Quantity: { value: "1", disabled: false },
+    Quantity: { value: "1", max: String(stock), disabled: false },
     ...(consent ? { AcknowledgesUnspecifiedSize: { checked: true, disabled: false } } : {})
   };
   let submit;
@@ -59,6 +59,20 @@ test("An invalid form makes no request", async () => {
   const ui = setup(ok, { valid: false });
   await ui.submit();
   assert.equal(ui.calls.length, 0);
+});
+
+test("Excess quantity shows the required stock message before submitting", async () => {
+  const ui = setup(ok, { stock: 3 });
+  ui.controls.Quantity.value = "4";
+  await ui.submit();
+  assert.equal(ui.calls.length, 0);
+  assert.equal(ui.feedback.textContent, "Existencias de artículo superadas");
+});
+
+test("A successful addition displays the subtotal and total returned by the API", async () => {
+  const ui = setup(() => ({ ok: true, status: 200, json: async () => ({ message: "Producto agregado al carrito.", cart: { subtotal: 200, total: 226 } }) }));
+  await ui.submit();
+  assert.match(ui.feedback.textContent, /Subtotal:.*200.*Total:.*226/);
 });
 
 test("Double submission sends once; an intentional second purchase has a fresh request ID", async () => {

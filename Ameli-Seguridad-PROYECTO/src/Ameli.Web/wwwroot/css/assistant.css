@@ -68,3 +68,11 @@
 }
 @media (prefers-reduced-motion: reduce) { .ameli-chat * { scroll-behavior: auto; animation: none; transition: none; } }
 @media print { .ameli-chat, .chat-launch { display: none !important; } }
+
+.product-photo{width:100%;height:100%;object-fit:cover}
+.product-edit-preview{display:block;max-width:260px;max-height:260px;object-fit:contain;border-radius:12px}
+.order-history{padding-left:1.4rem}
+.order-history li{margin:.6rem 0}
+.cart-totals p{margin:.4rem 0}
+#checkout-card{border:1px solid #ddd;border-radius:12px;padding:1rem}
+#shop-cart article input[type=number]{max-width:160px}
