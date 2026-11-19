@@ -15,7 +15,7 @@ public sealed class AssistantController(AssistantService assistant, ProductInfor
     public Task<ChatReply> Message(ChatRequest request, CancellationToken ct) =>
         assistant.RespondAsync(User.Identity?.IsAuthenticated == true ? Actor : null, request, ct);
     [HttpGet("products"), AllowAnonymous]
-    public Task<List<StoreProductView>> Products([FromQuery] string? search, CancellationToken ct) => products.ProductsAsync(search, ct);
+    public Task<List<StoreProductView>> Products([FromQuery] PublicCatalogQuery query, CancellationToken ct) => products.ProductsAsync(query, ct);
     [HttpGet("products/{id:guid}"), AllowAnonymous]
     public Task<StoreProductView> Product(Guid id, CancellationToken ct) => products.ProductAsync(id, ct);
     [HttpGet("products/{id:guid}/image"), AllowAnonymous]
