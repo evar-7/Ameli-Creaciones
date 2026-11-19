@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http.Json;
 using Ameli.Api.Application;
 using Ameli.Api.Domain;
 using Ameli.Contracts;
@@ -149,9 +151,45 @@ public sealed class CatalogStoriesTests(SecurityFixture f) : IClassFixture<Secur
         return supplier.Id;
     });
 
-    private Task<Guid> AddProduct(string name, Guid categoryId, Guid supplierId, string species, bool active) => f.Db(async db =>
+    [Fact]
+    public async Task GOL001_VisitorCanQueryCatalogAndFilterBySpeciesAndStock()
     {
-        var product = new BaseProduct { Name = name, NormalizedName = SecurityService.NormalizeEmail(name), Description = name, CategoryId = categoryId, SupplierId = supplierId, Species = species, Material = "Lona", Icon = "🎀", UnitPrice = 1000, StockQuantity = 5, IsActive = active, CreatedAtUtc = f.Clock.GetUtcNow(), UpdatedAtUtc = f.Clock.GetUtcNow() };
+        var accessories = await AddCategory("Accesorios");
+        var supplier = await AddSupplier("Taller Visitantes", "visitantes@ameli.test");
+        await AddProduct("Abrigo perro", accessories, supplier, ProductSpecies.Dog, true, 7);
+        await AddProduct("Abrigo gato", accessories, supplier, ProductSpecies.Cat, true, 0);
+
+        using var http = f.Http();
+        var response = await http.GetAsync("/api/v1/assistant/products?species=Perro&inStockOnly=true");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var items = await response.Content.ReadFromJsonAsync<List<StoreProductView>>();
+        Assert.NotNull(items);
+        Assert.Single(items!);
+        Assert.Equal("Abrigo perro", items[0].Name);
+    }
+
+    [Fact]
+    public async Task GOL001_VisitorCanSearchCatalogWithoutAuthentication()
+    {
+        var accessories = await AddCategory("Ropa");
+        var supplier = await AddSupplier("Taller Filtro", "filtro@ameli.test");
+        await AddProduct("Poncho azul", accessories, supplier, ProductSpecies.Dog, true, 3);
+        await AddProduct("Capa roja", accessories, supplier, ProductSpecies.Cat, true, 3);
+
+        using var http = f.Http();
+        var response = await http.GetAsync("/api/v1/assistant/products?search=poncho");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var items = await response.Content.ReadFromJsonAsync<List<StoreProductView>>();
+        Assert.NotNull(items);
+        Assert.Single(items!);
+        Assert.Equal("Poncho azul", items[0].Name);
+    }
+
+    private Task<Guid> AddProduct(string name, Guid categoryId, Guid supplierId, string species, bool active, int stock = 5) => f.Db(async db =>
+    {
+        var product = new BaseProduct { Name = name, NormalizedName = SecurityService.NormalizeEmail(name), Description = name, CategoryId = categoryId, SupplierId = supplierId, Species = species, Material = "Lona", Icon = "🎀", UnitPrice = 1000, StockQuantity = stock, IsActive = active, CreatedAtUtc = f.Clock.GetUtcNow(), UpdatedAtUtc = f.Clock.GetUtcNow() };
         db.BaseProducts.Add(product);
         await db.SaveChangesAsync();
         return product.Id;

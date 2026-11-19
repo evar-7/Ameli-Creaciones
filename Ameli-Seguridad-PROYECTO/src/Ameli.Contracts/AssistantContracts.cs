@@ -28,6 +28,14 @@ public sealed class ProductPresentationRequest
     public int StockQuantity { get; set; }
     public bool IsActive { get; set; }
 }
+public sealed class PublicCatalogQuery
+{
+    [MaxLength(160)] public string? Search { get; set; }
+    public Guid? CategoryId { get; set; }
+    [MaxLength(10)] public string? Species { get; set; }
+    public bool? InStockOnly { get; set; }
+    [Range(1,100)] public int PageSize { get; set; } = 30;
+}
 public sealed record StoreProductView(Guid Id, string Sku, string Name, string Description,
     Guid CategoryId, string CategoryName, string Species, string Material, string Icon,
     decimal UnitPrice, int StockQuantity, bool IsActive, string CareInstructions, string FitNotes,

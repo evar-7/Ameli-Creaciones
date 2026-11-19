@@ -12,16 +12,21 @@ public sealed class ProductInformationService(SecurityDbContext db, SqlSecurityT
     private IQueryable<BaseProduct> Active => db.BaseProducts.AsNoTracking().Where(p => p.IsActive &&
         db.Categories.Any(c => c.Id == p.CategoryId && c.IsActive));
 
-    public async Task<List<StoreProductView>> ProductsAsync(string? search, CancellationToken ct)
+    public async Task<List<StoreProductView>> ProductsAsync(PublicCatalogQuery request, CancellationToken ct)
     {
         var query = Active;
-        if (!string.IsNullOrWhiteSpace(search))
+        if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            var term = search.Trim();
+            var term = request.Search.Trim();
             query = query.Where(p => p.Name.Contains(term) || p.Sku.Contains(term) || p.Material.Contains(term) || p.Description.Contains(term));
         }
-        return await ViewsAsync(await query.OrderBy(p => p.Name).Take(30).ToListAsync(ct), ct);
+        if (request.CategoryId.HasValue) query = query.Where(p => p.CategoryId == request.CategoryId.Value);
+        if (!string.IsNullOrWhiteSpace(request.Species)) query = query.Where(p => p.Species == request.Species || p.Species == ProductSpecies.All);
+        if (request.InStockOnly == true) query = query.Where(p => p.StockQuantity > 0);
+        var pageSize = request.PageSize is < 1 or > 100 ? 30 : request.PageSize;
+        return await ViewsAsync(await query.OrderBy(p => p.Name).Take(pageSize).ToListAsync(ct), ct);
     }
+    public Task<List<StoreProductView>> ProductsAsync(string? search, CancellationToken ct) => ProductsAsync(new PublicCatalogQuery { Search = search }, ct);
     public async Task<List<StoreProductView>> IdentifyAsync(string message, CancellationToken ct)
     {
         var text = ProductSizing.Fold(message);
@@ -32,7 +37,7 @@ public sealed class ProductInformationService(SecurityDbContext db, SqlSecurityT
         {
             var stop = new HashSet<string> { "que", "hay", "tienes", "tienen", "precio", "stock", "producto", "productos", "material", "materiales", "disponible", "disponibilidad", "catalogo", "quiero", "ver", "de", "del", "el", "la", "los", "las", "un", "una", "para", "cuanto", "cuesta", "tallas", "talla", "guia", "por", "favor", "es" };
             var terms = Regex.Split(text, @"[^\p{L}\p{N}-]+").Where(t => t.Length > 1 && !stop.Contains(t)).Take(8).ToArray();
-            if (terms.Length == 0) return await ProductsAsync(null, ct);
+            if (terms.Length == 0) return await ProductsAsync((string?)null, ct);
             exact = index.Where(p => terms.All(t => ProductSizing.Fold(p.Name).Contains(t, StringComparison.Ordinal) ||
                 ProductSizing.Fold(p.Sku).Contains(t, StringComparison.Ordinal))).Select(p => p.Id).Take(10).ToArray();
             if (exact.Length == 0) return await ProductsAsync(string.Join(" ", terms), ct);

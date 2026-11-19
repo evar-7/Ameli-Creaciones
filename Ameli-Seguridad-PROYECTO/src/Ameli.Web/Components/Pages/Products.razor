@@ -3,7 +3,18 @@
 @inject SecurityApiClient Api
 <PageTitle>Productos | Ameli</PageTitle>
 <PageHeading Eyebrow="Catálogo" Title="Productos para tu mascota" Description="Consulta precios, materiales y disponibilidad. Abre el chat para resolver dudas o calcular una talla." />
-<form method="get" class="panel barra-filtros"><label>Nombre, SKU o material<input name="search" type="search" value="@Search" maxlength="160" /></label><button class="boton primario" type="submit">Buscar</button></form>
+<form method="get" class="panel barra-filtros">
+    <label>Nombre, SKU o material<input name="search" type="search" value="@Search" maxlength="160" /></label>
+    <label>Especie
+        <select name="species">
+            <option value="" selected="@(string.IsNullOrWhiteSpace(Species))">Todas</option>
+            <option value="Perro" selected="@(Species == "Perro")">Perro</option>
+            <option value="Gato" selected="@(Species == "Gato")">Gato</option>
+        </select>
+    </label>
+    <label><input type="checkbox" name="inStockOnly" value="true" checked="@(InStockOnly == true)" /> Solo con stock</label>
+    <button class="boton primario" type="submit">Buscar</button>
+</form>
 @if (Error is not null) { <div class="feedback error" role="alert">@Error</div> }
 else if (Items.Count == 0) { <section class="panel"><p>No hay productos activos que coincidan con tu búsqueda.</p></section> }
 else
@@ -12,20 +23,33 @@ else
         @foreach (var p in Items)
         {
             <article class="tarjeta-producto"><div class="imagen-producto">@if(p.ImageUrl is not null){<img class="product-photo" src="@p.ImageUrl" alt="@p.Name" />}else{<span aria-hidden="true">@(p.Icon.Length > 0 ? p.Icon : "🎀")</span>}</div>
-                <div class="contenido-producto"><span class="categoria-producto">@p.CategoryName</span><h2>@p.Name</h2><p>@p.Sku · @p.Material</p>
+                <div class="contenido-producto"><span class="categoria-producto">@p.CategoryName</span><h2>@p.Name</h2><p>@p.Sku · @p.Material · @p.Species</p>
                     <p>@p.UnitPrice.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-CR"))</p><p>@(p.StockQuantity > 0 ? $"{p.StockQuantity} disponibles" : "Agotado")</p>
                     <a class="boton secundario" href="@p.ProductUrl">Ver producto</a><a class="boton claro" href="@p.GuideUrl">Guía de tallas</a>
-                    <AddToCartForm Product="@p" /></div></article>
+                    @if (Context?.User?.Identity?.IsAuthenticated == true) { <AddToCartForm Product="@p" /> }
+                </div>
+            </article>
         }
     </section>
 }
 @code {
     [SupplyParameterFromQuery(Name = "search")] public string? Search { get; set; }
+    [SupplyParameterFromQuery(Name = "species")] public string? Species { get; set; }
+    [SupplyParameterFromQuery(Name = "inStockOnly")] public bool? InStockOnly { get; set; }
+    [CascadingParameter] public HttpContext? Context { get; set; }
     private List<StoreProductView> Items = [];
     private string? Error;
     protected override async Task OnParametersSetAsync()
     {
-        try { Items = await Api.PublicAsync<List<StoreProductView>>(HttpMethod.Get, "assistant/products?search=" + Uri.EscapeDataString(Search ?? "")); }
+        try
+        {
+            var query = new List<string>();
+            if (!string.IsNullOrWhiteSpace(Search)) query.Add("search=" + Uri.EscapeDataString(Search));
+            if (!string.IsNullOrWhiteSpace(Species)) query.Add("species=" + Uri.EscapeDataString(Species));
+            if (InStockOnly == true) query.Add("inStockOnly=true");
+            var suffix = query.Count == 0 ? "" : "?" + string.Join("&", query);
+            Items = await Api.PublicAsync<List<StoreProductView>>(HttpMethod.Get, "assistant/products" + suffix);
+        }
         catch (Exception ex) when (ex is ApiFault or HttpRequestException or TaskCanceledException) { Error = "No se pudo cargar el catálogo. Intenta de nuevo."; }
     }
 }
